@@ -1,0 +1,13 @@
+version: '2'
+services:
+  decision_trees:
+    build: .
+    volumes:
+      - ./public:/app/public
+      - ./src:/app/src
+    environment:
+      NODE_ENV: development
+      APP_ENV: dev
+    ports:
+      - "3000:3000"
+    tty: true
