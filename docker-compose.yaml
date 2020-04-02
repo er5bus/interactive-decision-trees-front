@@ -5,9 +5,8 @@ services:
     volumes:
       - ./public:/app/public
       - ./src:/app/src
-    environment:
-      NODE_ENV: development
-      APP_ENV: dev
+    env_file:
+      - ./.env
     ports:
       - "3000:3000"
     tty: true
