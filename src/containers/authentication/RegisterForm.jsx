@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next"
 import { required, email, maxLength, minLength } from "./../../utils/validations"
 
 import InputField from "./../../components/InputField"
-import InputRadioField from "./../../components/InputRadioField"
+import InputRadioField from "./../../components/InputRadioCheckboxField"
 
 const minLength4 = minLength(4)
 const maxLength30 = maxLength(30)
@@ -23,7 +23,7 @@ const RegisterForm = (props) => {
         component={InputField}
         className="form-control"
         icon="ni ni-hat-3"
-        label={t("Name")}
+        placeholder={t("Name")}
         type="text"
         validate={[ required, minLength4, maxLength30 ]}
       />
@@ -32,7 +32,7 @@ const RegisterForm = (props) => {
         component={InputField}
         className="form-control"
         icon="ni ni-email-83"
-        label={t("Email")}
+        placeholder={t("Email")}
         type="text"
         validate={[ email, required ]}
       />
@@ -41,16 +41,16 @@ const RegisterForm = (props) => {
         component={InputField}
         className="form-control"
         icon="ni ni-lock-circle-open"
-        label={t("Password")}
+        placeholder={t("Password")}
         type="password"
         validate={[required, minLength4, maxLength30]}
       />
       <Field
         name="privacy_policy"
         component={InputRadioField}
-        choices={{
-          accept: t("I agree with the Privacy Policy")
-        }}
+        type="checkbox"
+        label={t("I agree with the Privacy Policy")}
+        value={true}
         validate={[required]}
       />
       <div className="text-center">

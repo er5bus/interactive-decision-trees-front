@@ -65,8 +65,8 @@
 // Small icon
 
 .icon-sm {
-	width: $icon-size-sm;
-	height: $icon-size-sm;
+	width: $icon-size-sm !important;
+	height: $icon-size-sm !important;
 
 	i, svg {
 		font-size: $icon-size-sm - .75;

@@ -1,19 +1,21 @@
 import { CALL_API } from "./../constants"
 import makeCall from "./../utils/api"
 
+import { sessionService } from "redux-react-session"
 
-export const api = store => next => action => {
+
+export const api = store => next => async action => {
   if (!action || action.type !== CALL_API ){
     return next(action)
   }
 
-  const { actions, endpoint, method, jwt, params } = action.meta
-  const { accessToken=null } = store.getState().session
-  
+  const { actions, endpoint, method, jwt, params, extraData={} } = action.meta
+  const { user : { access_token: accessToken=null  } } = store.getState().session
+
   const dispatch = (action, payload = {}) => {
     if (!Array.isArray(action)) return next({type: action, payload})
     return action.map(a => store.dispatch({type: a, payload}));
-  };
+  }
   
   if (jwt && !accessToken){
     return dispatch(actions.fail, { error: "Invalid access token" })
@@ -29,7 +31,7 @@ export const api = store => next => action => {
   }
   
   makeCall(method, endpoint, action.payload, headers, params)
-    .then( resp => dispatch(actions.success, resp.data || action.payload))
+    .then( resp => dispatch(actions.success, Object.assign({}, resp.data, extraData )))
     .catch(err => dispatch(actions.fail, ( err.response && err.response.data) || {}))
 }
 

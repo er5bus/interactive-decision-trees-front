@@ -77,3 +77,9 @@
     min-width: 450px;
     border-radius: $border-radius-lg;
 }
+
+.dropdown-menu-arrow.dropdown-menu.dropdown-menu-right.show {
+    top: auto !important;
+    left: auto !important;
+    right: 0px;
+}

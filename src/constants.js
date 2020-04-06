@@ -1,6 +1,8 @@
 export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL
 export const CALL_API = "CALL_API"
 export const SAVE_SESSION = "SAVE_SESSION"
+export const DELETE_SESSION = "DELETE_SESSION"
+
 
 export const HTTP_METHODS = {
   GET: "GET",
@@ -14,4 +16,21 @@ export const HTTP_METHODS = {
 export const INIT_STATE = {
   auth: {currentUser: null, accessToken: null, isLoading: false, error: null},
   form: {}
+}
+
+
+export const ROUTES = {
+  AUTH : {
+    MAIN_PATH: "/auth",
+    LOGIN: "/login",
+    REGISTER: "/register"
+  },
+  USER : {
+    MAIN_PATH: "/user",
+    TREE_INDEX: "/tree",
+    TREE_NEW: "/tree/new/",
+    TREE_EDIT: "/tree/:param/edit",
+    TREE_VIEW: "/tree/view",
+    TREE_NODE: "/tree/node"
+  }
 }

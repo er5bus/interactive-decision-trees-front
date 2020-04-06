@@ -1,5 +1,5 @@
 import { ACTIONS, ENDPOINT } from "./constants"
-import { CALL_API, HTTP_METHODS, SAVE_SESSION } from "./../../constants"
+import { CALL_API, HTTP_METHODS, SAVE_SESSION, DELETE_SESSION } from "./../../constants"
 
 
 export const login = (payload) =>
@@ -30,5 +30,21 @@ export const register = (payload) =>
       },
       endpoint: ENDPOINT.REGISTER,
       method: HTTP_METHODS.POST
+    }
+  })
+
+
+export const logout = () =>
+  ({
+    type: CALL_API,
+    meta: {
+      actions: {
+        init: ACTIONS.ACCOUNT_LOGOUT_INIT,
+        success: [DELETE_SESSION, ACTIONS.ACCOUNT_LOGOUT_SUCCEDED],
+        fail: ACTIONS.ACCOUNT_LOGOUT_FAILED
+      },
+      endpoint: ENDPOINT.LOGOUT,
+      method: HTTP_METHODS.POST,
+      jwt: true
     }
   })

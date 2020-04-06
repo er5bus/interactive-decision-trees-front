@@ -11,9 +11,11 @@ import "./assets/scss/main.scss"
 // store
 import configureStore from "./configureStore"
 
-import AuthLayout from "./components/AuthLayout"
+// load layouts
+import AuthLayout from "./containers/layout/AuthLayout"
+import UserLayout from "./containers/layout/UserLayout"
 
-import { INIT_STATE } from "./constants"
+import { INIT_STATE, ROUTES } from "./constants"
 
 // load translation
 import './i18n'
@@ -21,15 +23,17 @@ import './i18n'
 const store = configureStore(INIT_STATE)
 
 // Init the session service
-sessionService.initSessionService(store)
-
-ReactDOM.render(
-  <Provider store={store}>
-    <BrowserRouter>
-      <Switch>
-        <Route path={"/auth"} component={AuthLayout} />
-      </Switch>
-    </BrowserRouter>
-  </Provider>,
-  document.getElementById("root")
-)
+sessionService.initSessionService(store, {refreshOnCheckAuth: true})
+  .finally(() =>
+    ReactDOM.render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <Switch>
+            <Route onEnter={sessionService.checkAuth} path={ROUTES.AUTH.MAIN_PATH} component={AuthLayout} />
+            <Route path={ROUTES.USER.MAIN_PATH} component={UserLayout} />
+          </Switch>
+        </BrowserRouter>
+      </Provider>,
+      document.getElementById("root")
+    )
+  )

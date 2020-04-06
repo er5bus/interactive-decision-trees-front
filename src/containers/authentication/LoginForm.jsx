@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next"
 import { required, email, maxLength, minLength } from "./../../utils/validations"
 
 import InputField from "./../../components/InputField"
-import InputRadioField from "./../../components/InputRadioField"
+import InputRadioField from "./../../components/InputRadioCheckboxField"
 
 const minLength4 = minLength(4)
 const maxLength30 = maxLength(30)
@@ -23,7 +23,7 @@ const LoginForm = (props) => {
         component={InputField}
         className="form-control"
         icon="ni ni-email-83"
-        label={t("Email")}
+        placeholder={t("Email")}
         type="text"
         validate={[ email, required ]}
       />
@@ -32,16 +32,16 @@ const LoginForm = (props) => {
         component={InputField}
         className="form-control"
         icon="ni ni-lock-circle-open"
-        label={t("Password")}
+        placeholder={t("Password")}
         type="password"
         validate={[required, minLength4, maxLength30]}
       />
       <Field
         name="remember_me"
         component={InputRadioField}
-        choices={{
-          accept: t("Remember me")
-        }}
+        label={ t("Remember me") }
+        value={true}
+        type="checkbox"
       />
       <div className="text-center">
         <Button className="mt-4" color="primary" type="submit">
