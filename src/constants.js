@@ -30,7 +30,13 @@ export const ROUTES = {
     TREE_INDEX: "/tree",
     TREE_NEW: "/tree/new/",
     TREE_EDIT: "/tree/:param/edit",
-    TREE_VIEW: "/tree/view",
-    TREE_NODE: "/tree/node"
+    TREE_VIEW: "/tree/:param/nodes",
+    TREE_NEW_CONTENT_NODE: "/tree/:treeparam/new/content-node",
+    TREE_NEW_LOGIC_NODE: "/tree/:treeparam/new/logic-node",
+    TREE_EDIT_CONTENT_NODE: "/tree/:treeparam/edit/:nodeparam/content-node",
+    TREE_EDIT_LOGIC_NODE: "/tree/:treeparam/edit/:nodeparam/logic-node",
+    TREE_VIEW_CONTENT_NODE: "/tree/:treeparam/view/:nodeparam/content-node",
+    TREE_VIEW_LOGIC_NODE: "/tree/:treeparam/view/:nodeparam/logic-node",
+
   }
 }

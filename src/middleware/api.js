@@ -1,8 +1,6 @@
 import { CALL_API } from "./../constants"
 import makeCall from "./../utils/api"
 
-import { sessionService } from "redux-react-session"
-
 
 export const api = store => next => async action => {
   if (!action || action.type !== CALL_API ){

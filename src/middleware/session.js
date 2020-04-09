@@ -1,6 +1,5 @@
 import { SAVE_SESSION, DELETE_SESSION } from "./../constants"
 import { sessionService } from "redux-react-session"
-import { browserHistory } from "react-router"
 
 
 export const saveSession = store => next => action => {

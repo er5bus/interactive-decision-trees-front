@@ -11,12 +11,19 @@ import { deleteSession, saveSession } from "./middleware/session"
 // reducers
 import authReducer from "./containers/authentication/reducer"
 import treeReducer from "./containers/tree/reducer"
+import nodeReducer from "./containers/node/reducer"
+import contentNodeReducer from "./containers/content_node/reducer"
+import logicNodeReducer from "./containers/logic_node/reducer"
+
 
 const rootReducer = combineReducers({
   auth: authReducer,
   session: sessionReducer,
   form: formReducer,
-  tree: treeReducer
+  tree: treeReducer,
+  nodes: nodeReducer,
+  contentNode: contentNodeReducer,
+  logicNode: logicNodeReducer
 })
 
 export default ( preloadedState = {} ) => {

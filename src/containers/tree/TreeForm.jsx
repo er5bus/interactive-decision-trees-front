@@ -6,7 +6,7 @@ import { connect } from "react-redux"
 
 import { Row, Col } from "reactstrap"
 
-import { required, email, maxLength, minLength } from "./../../utils/validations"
+import { required, maxLength, minLength } from "./../../utils/validations"
 
 import InputField from "./../../components/InputField"
 import InputListField from "./../../components/InputListField"
@@ -31,11 +31,6 @@ const renderScore = ({ fields, t }) =>  {
       </div>
       { fields.map((score, index) => (
         <Row key={index} className="mt-4">
-          <Col lg="1" md="2">
-            <Button className="form-controle-button" onClick={() => fields.remove(index)} color="danger" type="button">
-              <i className="fas fa-trash" />
-            </Button>
-          </Col>
           <Col lg="5" md="5">
             <Field
               name={`${score}.name`}
@@ -59,6 +54,11 @@ const renderScore = ({ fields, t }) =>  {
               row={3}
               validate={[ required, minLength2, maxLength200 ]}
             />
+          </Col>
+          <Col lg="1" md="2">
+            <Button className="form-controle-button" onClick={() => fields.remove(index)} color="danger" type="button">
+              <i className="fas fa-trash" />
+            </Button>
           </Col>
         </Row>
       )) }

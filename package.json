@@ -11,6 +11,8 @@
     "url": "git+https://sfari@bitbucket.org/sfari/decision-trees-react.git"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^18.0.0",
+    "@ckeditor/ckeditor5-react": "^2.1.0",
     "@fortawesome/fontawesome-free": "5.12.1",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.28",

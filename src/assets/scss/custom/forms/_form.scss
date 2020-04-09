@@ -43,6 +43,11 @@ textarea[resize="horizontal"] {
     resize: horizontal!important;
 }
 
+.ck.ck-editor {
+  box-shadow: 0 1px 3px rgba(50, 50, 93, 0.15), 0 1px 0 rgba(0, 0, 0, 0.02);
+  border: 0;
+  transition: box-shadow .15s ease;
+}
 
 // Form input variations
 

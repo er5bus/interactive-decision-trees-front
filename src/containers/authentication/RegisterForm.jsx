@@ -19,7 +19,7 @@ const RegisterForm = (props) => {
   return (
     <Form onSubmit={handleSubmit}>
       <Field
-        name="fullname"
+        name="full_name"
         component={InputField}
         className="form-control"
         icon="ni ni-hat-3"

@@ -6,17 +6,16 @@ import { Link } from "react-router-dom"
 import { withTranslation } from 'react-i18next'
 
 import ConfirmModal from "./../../components/ConfirmModal"
-import CardNotFound from "./../../components/CardNotFound"
 
 import graphIcon from "./../../assets/img/graph.svg"
-
 import { ROUTES } from "./../../constants"
-import { fetchTrees, deleteTree } from "./actions"
+
+import { fetchNode } from "./actions"
 
 import Moment from 'react-moment'
 
 
-class TreeList extends React.Component {
+class TreeView extends React.Component {
 
   constructor(props){
     super(props)
@@ -81,7 +80,6 @@ class TreeList extends React.Component {
           <Row className="justify-content-center">
             <Col lg="12">
               <Row className="row-grid">
-                { !items.length && <CardNotFound /> }
                 { items.map((tree, i) =>
                 <Col key={i} lg="4" className="pb-5">
                   <Card className="card-lift--hover shadow border-0">
@@ -101,7 +99,7 @@ class TreeList extends React.Component {
                       <Button
                         className="btn-sm mt-4"
                         color="primary"
-                        to={ ROUTES.USER.MAIN_PATH + ROUTES.USER.TREE_VIEW.replace(":param", tree.uid) }
+                        to={ ROUTES.USER.MAIN_PATH + ROUTES.USER.TREE_VIEW }
                         tag={Link}
                       >
                         <i className="fas fa-eye" /> { t("View") }
@@ -134,8 +132,8 @@ class TreeList extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ fetchTrees, deleteTree }, dispatch)
-const mapStateToProps = state => state.tree
+const mapDispatchToProps = (dispatch) => bindActionCreators({}, dispatch)
+const mapStateToProps = state => state.contentNode
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(TreeList))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(TreeView))
