@@ -1,4 +1,4 @@
-FROM node:lts
+FROM node:12-alpine3.11
 
 LABEL MAINTAINER="Rami sfari <rami2sfari@gmail.com>"
 
@@ -10,9 +10,9 @@ WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
 # install app dependencies
-RUN ["npm", "install", "--silence"]
+RUN yarn
 
 EXPOSE 3000
 
-# Runtime configuration
-ENTRYPOINT ["/app/entrypoint.sh"]
+# start the container
+CMD ["yarn", "start"]

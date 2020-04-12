@@ -1,10 +1,10 @@
 version: '2'
 
 services:
-  decision_trees:
+  decision_trees_prod:
     build:
       context: .
-      dockerfile: Dockerfile-build
+      dockerfile: Dockerfile-prod
     env_file:
       - ./.env
     ports:
