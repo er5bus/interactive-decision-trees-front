@@ -6,7 +6,6 @@ import { withTranslation } from "react-i18next"
 
 // reactstrap components
 import { Card, Row, CardBody, Col, Container } from "reactstrap"
-import Alert from "./../../components/Alert"
 
 import { editTree, fetchTree } from "./actions"
 
@@ -17,12 +16,7 @@ import graphIcon from "./../../assets/img/graph.svg"
 
 class TreeEdit extends React.Component {
 
-  constructor(props){
-    super(props)
-  }
-
   componentWillMount(){
-    console.log(this.props)
     this.props.fetchTree(this.props.match.params)
   }
 
@@ -52,17 +46,10 @@ class TreeEdit extends React.Component {
         </Container>
 
         <Row className="justify-content-center">
-          { error
-              &&  <Col lg="12">
-                <Row className="justify-content-center">
-                  <Col lg="7" md="8"><Alert.Error object={error} /></Col>
-                </Row>
-              </Col>
-          }
           <Col lg="12">
             <Card className="shadow">
               <CardBody className="px-lg-5 py-lg-5">
-                <TreeForm onSubmit={this.onSubmit} />
+                <TreeForm onSubmit={this.onSubmit} errors={error} />
               </CardBody>
             </Card>
           </Col>

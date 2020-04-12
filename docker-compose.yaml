@@ -1,7 +1,9 @@
-version: '2'
+version: '3'
 services:
   decision_trees:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     volumes:
       - ./public:/app/public
       - ./src:/app/src

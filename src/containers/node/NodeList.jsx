@@ -1,20 +1,27 @@
 import React from "react"
 import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
-import {Badge, Button, Card, CardBody, CardImg, Container,Row, Col} from "reactstrap"
+import {Badge, Button, Card, CardBody, Container,Row, Col, Spinner } from "reactstrap"
 import { Link } from "react-router-dom"
 import { withTranslation } from 'react-i18next'
 
 import ConfirmModal from "./../../components/ConfirmModal"
 import CardNotFound from "./../../components/CardNotFound"
+import FilterNavbar from "./../../components/FilterNavbar"
+
+import ContentNodeItem from "./content_node/NodeItem"
+import LogicNodeItem from "./logic_node/NodeItem"
+
 
 import nodeIcon from "./../../assets/img/nodes.svg"
 
 import { ROUTES } from "./../../constants"
-import { fetchNodes, deleteNode } from "./actions"
+import { fetchNodes, filterNodes, deleteNode } from "./actions"
+import {  getFilteredLogicNodes, getFilteredContentNodes } from "./selector"
 
-import Moment from 'react-moment'
+import InfiniteScroll from 'react-infinite-scroller'
 
+//import Moment from 'react-moment'
 
 class NodeList extends React.Component {
 
@@ -22,26 +29,33 @@ class NodeList extends React.Component {
     super(props)
     this.state = {
       showModal: false,
-      uid: null
+      uid: null,
+      type: null,
     }
   }
 
-  componentWillMount() {
-    this.props.fetchNodes(this.props.match.params)
+  onFetchNodes = async (pageNumber) => {
+    if (!this.props.isLoading){
+      this.props.fetchNodes({ ...this.props.match.params, pageNumber })  
+    }
   }
 
-  onToggleModal = (uid) => {
-    this.setState({ showModal: !this.state.showModal, uid })
+  onToggleModal = (uid, type) => {
+    this.setState({ showModal: !this.state.showModal, uid, type })
   }
 
   onDeleteNode = () => {
-    this.props.deleteNode(this.state.uid)
+    const { param: treeparam } = this.props.match.params
+    const { uid: nodeparam, type: nodeType } = this.state
+    this.props.deleteNode({ treeparam, nodeparam, nodeType })
+  }
+
+  onSearch = (e) => {
+    this.props.filterNodes(e.target.value.trim())
   }
 
   render() {
-    const { t, item } = this.props
-    const { logic_nodes=[], content_nodes=[] } = item
-    const { param } = this.props.match.params
+    const { t, match: { params: { param } }, tree: {  logic_nodes=[], content_nodes=[] }, hasMore } = this.props
     return (
       <>
         <Container className="py-lg-md d-flex pb-5">
@@ -55,6 +69,7 @@ class NodeList extends React.Component {
                 <p className="lead text-white">
                   { t("Create, Update and Manage your nodes") }
                 </p>
+                <Col  key="spinner" className="pt-4 pb-4" lg="12"><Spinner className="pt-2" color="primary" /></Col>
                 <div className="btn-wrapper">
                   <Link
                     className="btn-icon mb-3 mb-sm-0 btn btn-info"
@@ -89,96 +104,23 @@ class NodeList extends React.Component {
             buttonText={ t("Delete this node") }
           />
           }
-          <Row className="justify-content-center">
+          <Row>
+            <Col lg="12" className="pb-5">
+              <FilterNavbar onSearch={this.onSearch} />
+            </Col>
             <Col lg="12">
-              <Row className="row-grid">
-                { ( content_nodes && !content_nodes.length && logic_nodes && !logic_nodes.length) && <CardNotFound /> }
-                { content_nodes && content_nodes.length && content_nodes.map((node, i) =>
-                <Col key={i} lg="4" className="pb-5">
-                  <Card className="card-lift--hover shadow">
-                    <CardBody className="py-5">
-                      <div className="icon icon-shape icon-shape-primary rounded-circle mb-4">
-                        <i className="far fa-file-word" />
-                      </div>
-                      <h6 className="text-primary text-uppercase">
-                        { node.node_name }{ " (" }{ t("Content Node") }{")"}
-                      </h6>
-                      <p className="description mt-3">
-                        { node.question }
-                      </p>
-                      <div>
-                        { node.actions.map((action, i) => <Badge key={i} className="mr-1" color="primary" pill>{action.name}</Badge> ) }
-                      </div>
-                      <Button
-                        className="btn-sm mt-4"
-                        color="primary"
-                        disabled={true}
-                        to={ ROUTES.USER.MAIN_PATH + ROUTES.USER.TREE_VIEW_CONTENT_NODE.replace(":treepram", param).replace(":nodeparam", node.uid) }
-                        tag={Link}
-                      >
-                        <i className="fas fa-eye" /> { t("View") }
-                      </Button>
-                      <Button
-                        className="btn-sm mt-4"
-                        color="warning"
-                        to={ ROUTES.USER.MAIN_PATH + ROUTES.USER.TREE_EDIT_CONTENT_NODE.replace(":treeparam", param).replace(":nodeparam", node.uid) }
-                        tag={Link}
-                      >
-                        <i className="fa fa-pencil-alt" /> { t("Edit") }
-                      </Button>
-                      <Button
-                        className="btn-sm mt-4"
-                        color="danger"
-                        onClick={() => this.onToggleModal(node.uid) }
-                      >
-                        <i className="fas fa-trash" /> { t("Delete") }
-                      </Button>
-                    </CardBody>
-                  </Card>
-                </Col>
-                )}
-                { logic_nodes && logic_nodes.length && logic_nodes.map((node, i) =>
-                <Col key={i} lg="4" className="pb-5">
-                  <Card className="card-lift--hover shadow">
-                    <CardBody className="py-5">
-                      <div className="icon icon-shape icon-shape-primary rounded-circle mb-4">
-                        <i className="fas fa-tools" />
-                      </div>
-                      <h6 className="text-primary text-uppercase">
-                        { node.node_name } {" ("}{ t("Logic Node") }{")"}
-                      </h6>
-                      <div>
-                        { node.rules.map((rule, i) => <Badge key={i} className="mr-1" color="primary" pill>{rule.operator}{" "}{rule.value}</Badge> ) }
-                      </div>
-                      <Button
-                        className="btn-sm mt-4"
-                        color="primary"
-                        disabled={true}
-                        to={ ROUTES.USER.MAIN_PATH + ROUTES.USER.TREE_VIEW_LOGIC_NODE.replace(":treepram", param).replace(":nodeparam", node.uid) }
-                        tag={Link}
-                      >
-                        <i className="fas fa-eye" /> { t("View") }
-                      </Button>
-                      <Button
-                        className="btn-sm mt-4"
-                        color="warning"
-                        to={ ROUTES.USER.MAIN_PATH + ROUTES.USER.TREE_EDIT_LOGIC_NODE.replace(":treeparam", param).replace(":nodeparam", node.uid) }
-                        tag={Link}
-                      >
-                        <i className="fa fa-pencil-alt" /> { t("Edit") }
-                      </Button>
-                      <Button
-                        className="btn-sm mt-4"
-                        color="danger"
-                        onClick={() => this.onToggleModal(node.uid) }
-                      >
-                        <i className="fas fa-trash" /> { t("Delete") }
-                      </Button>
-                    </CardBody>
-                  </Card>
-                </Col>
-                )}
+              <InfiniteScroll
+                pageStart={0}
+                loadMore={this.onFetchNodes}
+                hasMore={hasMore}
+                loader={<Col  key="spinner" className="pt-4 pb-4" lg="12"><Spinner className="pt-2" color="primary" /></Col>}
+              >
+              <Row key={0} className="row-grid">
+                { ( content_nodes.length === 0 && logic_nodes.length === 0) && <CardNotFound /> }
+                { content_nodes.length > 0 && content_nodes.map((node, i) => <ContentNodeItem key={i} {...node} treeparam={param} onToggleModal={this.onToggleModal} /> )}
+                { logic_nodes.length > 0 && logic_nodes.map((node, i) => <LogicNodeItem key={i} {...node} treeparam={param} onToggleModal={this.onToggleModal} /> )}
               </Row>
+              </InfiniteScroll>
             </Col>
           </Row>
         </Container>
@@ -187,8 +129,10 @@ class NodeList extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ fetchNodes, deleteNode }, dispatch)
-const mapStateToProps = state => state.nodes
+const mapDispatchToProps = (dispatch) => bindActionCreators({ fetchNodes, deleteNode, filterNodes }, dispatch)
+const mapStateToProps = state => ({
+  ...state.node, tree: { logic_nodes: getFilteredLogicNodes(state), content_nodes: getFilteredContentNodes(state) }
+})
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(NodeList))

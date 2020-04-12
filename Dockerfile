@@ -10,11 +10,7 @@ WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
 # install app dependencies
-RUN ["npm", "install", "-f, --silence"]
-
-# Create New user & group
-RUN groupadd -r react && useradd -r -g react react
-USER react
+RUN ["npm", "install", "--silence"]
 
 EXPOSE 3000
 

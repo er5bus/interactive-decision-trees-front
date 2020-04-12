@@ -1,23 +1,21 @@
 import React from 'react'
 import {  Route, Switch, Redirect } from "react-router-dom"
 
-import TreeList from "../containers/tree/TreeList"
-import TreeNew from "../containers/tree/TreeNew"
-import TreeEdit from "../containers/tree/TreeEdit"
-
-import TreeNodeList from "../containers/node/NodeList"
-
-import TreeContentNewNode from "../containers/content_node/NewNode"
-import TreeContentEditNode from "../containers/content_node/EditNode"
-import TreeContentViewNode from "../containers/content_node/ViewNode"
-
-import TreeLogicNewNode from "../containers/logic_node/NewNode"
-import TreeLogicEditNode from "../containers/logic_node/EditNode"
-import TreeLogicViewNode from "../containers/logic_node/ViewNode"
-
-
-
 import { ROUTES } from "./../constants"
+
+const TreeList = React.lazy( () => import("../containers/tree/TreeList"))
+const TreeNew = React.lazy( () => import("../containers/tree/TreeNew"))
+const TreeEdit = React.lazy( () => import("../containers/tree/TreeEdit"))
+
+const TreeNodeList = React.lazy( () => import("../containers/node/NodeList"))
+
+const TreeContentNewNode = React.lazy( () => import("../containers/node/content_node/NewNode"))
+const TreeContentEditNode = React.lazy( () => import("../containers/node/content_node/EditNode"))
+const TreeContentViewNode = React.lazy( () => import("../containers/node/content_node/ViewNode"))
+
+const TreeLogicNewNode = React.lazy( () => import("../containers/node/logic_node/NewNode"))
+const TreeLogicEditNode = React.lazy( () =>  import("../containers/node/logic_node/EditNode"))
+
 
 export default () => (
   <Switch>
@@ -33,7 +31,6 @@ export default () => (
 
     <Route exact path={ ROUTES.USER.MAIN_PATH + ROUTES.USER.TREE_NEW_LOGIC_NODE } component={TreeLogicNewNode} />
     <Route exact path={ ROUTES.USER.MAIN_PATH + ROUTES.USER.TREE_EDIT_LOGIC_NODE } component={TreeLogicEditNode} />/>
-    <Route exact path={ ROUTES.USER.MAIN_PATH + ROUTES.USER.TREE_VIEW_LOGIC_NODE } component={TreeLogicViewNode} />
 
     <Redirect from="*" to={ ROUTES.USER.MAIN_PATH + ROUTES.USER.TREE_INDEX } />
   </Switch>

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { useTranslation } from "react-i18next"
 
 import { FormGroup } from "reactstrap"
@@ -8,11 +8,11 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 
 export default ({ label, placeholder, input, meta: { touched, error, warning } }) => {
 
-  const textRef = React.useRef()
+  const [ textValue, setTextValue ] = React.useState(null)
   const { t } = useTranslation()
 
   const onChange = (event, editor) => {
-    textRef.current.value = editor.getData()
+    setTextValue(editor.getData())
   }
 
   return (
@@ -23,7 +23,7 @@ export default ({ label, placeholder, input, meta: { touched, error, warning } }
         data={ placeholder }
         onChange={ onChange }
       />
-      <textarea ref={textRef} {...input} className="display-none"></textarea>
+      <input type="hidden" {...input} defaultValue={textValue} />
       <div className="danger-msg">
         {touched && ((error && <span>{t(error)}</span>) || (warning && <span>{t(warning)}</span>))}
       </div>

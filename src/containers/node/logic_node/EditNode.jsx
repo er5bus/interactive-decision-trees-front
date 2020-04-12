@@ -6,31 +6,27 @@ import { withTranslation } from "react-i18next"
 
 // reactstrap components
 import { Card, Row, CardBody, Col, Container } from "reactstrap"
-import Alert from "./../../components/Alert"
 
-import { createNode, clearNodeForm, fetchAllScores, fetchAllNodes } from "./actions"
+import { editLogicNode as editNode, fetchLogicNode as fetchNode, fetchAllScores, fetchAllNodes } from "./../actions"
 
 import LogicNodeForm from "./Form"
 
-import nodeIcon from "./../../assets/img/nodes.svg"
+import NodeListLink from "./../../../components/NodeListLink"
+import nodeIcon from "./../../../assets/img/nodes.svg"
 
 
 class LogicNodeNew extends React.Component {
 
-  constructor(props){
-    super(props)
-  }
-
   componentWillMount() {
     const { params } = this.props.match
-    this.props.clearNodeForm(params)
+    this.props.fetchNode(params)
     this.props.fetchAllScores(params)
     this.props.fetchAllNodes(params)
   }
 
   onSubmit = (values) => {
-    const { treeparam } = this.props.match.params
-    this.props.createNode(treeparam, values)
+    const { params } = this.props.match
+    this.props.editNode(params, values)
   }
 
   render() {
@@ -43,22 +39,22 @@ class LogicNodeNew extends React.Component {
               <Col lg="12" className="text-center">
                 <h1 className="display-3 text-white">
                   <img className="icon-lg" src={nodeIcon} alt="Graph icon" />
-                  {" "}{t("Create New Logic Node")}
+                  {" "}{t("Create Edit Logic Node")}
                 </h1>
                 <p className="lead text-white">
                   { t("Jump to a node based upon the value of a variable.") }
                 </p>
+                <NodeListLink {...this.props.match.params} />
               </Col>
             </Row>
           </div>
         </Container>
 
         <Row className="justify-content-center">
-          { error &&  <Col lg="12"><Alert.Error object={error} /></Col> }
           <Col lg="12" md="12">
             <Card className="shadow">
               <CardBody className="px-lg-5 py-lg-5">
-                <LogicNodeForm scores={scores} nodes={nodes} onSubmit={this.onSubmit} />
+                <LogicNodeForm scores={scores} nodes={nodes} errors={error} onSubmit={this.onSubmit} />
               </CardBody>
             </Card>
           </Col>
@@ -69,7 +65,7 @@ class LogicNodeNew extends React.Component {
 }
 
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ createNode, clearNodeForm, fetchAllScores, fetchAllNodes }, dispatch)
-const mapStateToProps = state => state.logicNode
+const mapDispatchToProps = (dispatch) => bindActionCreators({ editNode, fetchNode, fetchAllScores, fetchAllNodes }, dispatch)
+const mapStateToProps = state => state.node
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(LogicNodeNew))

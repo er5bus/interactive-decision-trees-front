@@ -1,5 +1,5 @@
 import React from "react"
-import { Field, Form, FieldArray, reduxForm } from "redux-form"
+import { Field, FieldArray, reduxForm } from "redux-form"
 import { Button } from "reactstrap"
 import { useTranslation } from "react-i18next"
 import { connect } from "react-redux"
@@ -8,12 +8,13 @@ import { Row, Col } from "reactstrap"
 
 import { required, maxLength, minLength } from "./../../utils/validations"
 
+import Form from "./../../components/Form"
 import InputField from "./../../components/InputField"
 import InputListField from "./../../components/InputListField"
-import InputCheckboxField from "./../../components/InputRadioCheckboxField"
 import InputTextareaField from "./../../components/InputTextareaField"
 
 const minLength2 = minLength(2)
+const minLength4 = minLength(4)
 const maxLength200 = maxLength(200)
 const maxLength500 = maxLength(500)
 
@@ -52,7 +53,7 @@ const renderScore = ({ fields, t }) =>  {
               placeholder={t("Describe the score")}
               type="text"
               row={3}
-              validate={[ required, minLength2, maxLength200 ]}
+              validate={[ required, minLength4, maxLength200 ]}
             />
           </Col>
           <Col lg="1" md="2">
@@ -66,14 +67,14 @@ const renderScore = ({ fields, t }) =>  {
   )
 }
 
+
 let TreeForm = (props) => {
 
   const { t } = useTranslation()
-  const { handleSubmit } = props
-
+  const { handleSubmit, errors = {} } = props
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} errors={errors}>
       <Field
         name="tree_name"
         component={InputField}
@@ -116,6 +117,7 @@ let TreeForm = (props) => {
 
 TreeForm = reduxForm({
   form: 'tree',
+  touchOnBlur: false
 })(TreeForm)
 
 export default connect(

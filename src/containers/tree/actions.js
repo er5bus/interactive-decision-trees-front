@@ -2,7 +2,14 @@ import { ACTIONS, ENDPOINT } from "./constants"
 import { CALL_API, HTTP_METHODS } from "./../../constants"
 
 
-export const fetchTrees = () => 
+export const filterTrees = (searchTerm) =>
+  ({
+    type: ACTIONS.FILTER_TREES,
+    payload: { searchTerm }
+  })
+
+
+export const fetchTrees = (pageNum) => 
   ({
     type: CALL_API,
     meta: {
@@ -13,6 +20,7 @@ export const fetchTrees = () =>
       },
       endpoint: ENDPOINT.TREES,
       method: HTTP_METHODS.GET,
+      params: { page: pageNum },
       jwt: true
     }
   })
@@ -37,6 +45,10 @@ export const createTree = (payload) =>
         success: ACTIONS.CREATE_TREE_SUCCEDED,
         fail: ACTIONS.CREATE_TREE_FAILED 
       },
+      messages: {
+        success: "Your tree has been created successfuly",
+        fail: "Something went wrong please try again"
+      },
       endpoint: ENDPOINT.TREES,
       method: HTTP_METHODS.POST,
       jwt: true
@@ -54,6 +66,10 @@ export const editTree = (param, payload) =>
         success: ACTIONS.EDIT_TREE_SUCCEDED,
         fail: ACTIONS.EDIT_TREE_FAILED
       },
+      messages: {
+        success: "Your tree has been updated successfuly",
+        fail: "Something went wrong please try again"
+      },
       endpoint: ENDPOINT.TREE.replace(":param", param),
       method: HTTP_METHODS.PUT,
       jwt: true
@@ -69,6 +85,10 @@ export const deleteTree = (param) =>
         init: ACTIONS.DELETE_TREE_INIT,
         success: ACTIONS.DELETE_TREE_SUCCEDED,
         fail: ACTIONS.DELETE_TREE_FAILED
+      },
+      messages: {
+        success: "Your tree has been deleted successfuly",
+        fail: "Something went wrong please try again"
       },
       endpoint: ENDPOINT.TREE.replace(":param", param),
       extraData: { uid: param },

@@ -1,25 +1,20 @@
 import React from "react"
-import { Field, Form, FieldArray, reduxForm } from "redux-form"
+import { Field, FieldArray, reduxForm } from "redux-form"
 import { Button } from "reactstrap"
 import { useTranslation } from "react-i18next"
 import { connect } from "react-redux"
 
 import { Row, Col } from "reactstrap"
 
-import { required, maxLength, minLength } from "./../../utils/validations"
+import { required, maxLength, minLength } from "./../../../utils/validations"
 
-import InputField from "./../../components/InputField"
-import InputListField from "./../../components/InputListField"
-import InputCheckboxField from "./../../components/InputRadioCheckboxField"
-import InputTextareaField from "./../../components/InputTextareaField"
-import EditorField from "./../../components/EditorField"
-import SelectField from "./../../components/SelectField"
+import Form from "./../../../components/Form"
+import InputField from "./../../../components/InputField"
+import SelectField from "./../../../components/SelectField"
 
 
 const minLength2 = minLength(2)
 const maxLength200 = maxLength(200)
-const maxLength500 = maxLength(500)
-const maxLength1500 = maxLength(1500)
 
 
 const renderRule = ({ fields, scores = [], nodes = [] , t }) =>  {
@@ -100,10 +95,10 @@ const renderRule = ({ fields, scores = [], nodes = [] , t }) =>  {
 let LogicNodeForm = (props) => {
 
   const { t } = useTranslation()
-  const { handleSubmit, scores = [], nodes = [] } = props
+  const { handleSubmit, scores = [], nodes = [], errors } = props
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} errors={errors}>
       <Field
         name="node_name"
         component={InputField}
@@ -141,6 +136,6 @@ LogicNodeForm = reduxForm({
 
 export default connect(
   state => ({
-    initialValues: state.logicNode.item // pull initial values from account reducer
+    initialValues: state.node.item // pull initial values from account reducer
   })
 )(LogicNodeForm)

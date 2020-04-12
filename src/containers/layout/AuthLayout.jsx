@@ -7,16 +7,23 @@ import { withTranslation } from "react-i18next"
 import AuthenticationRoutes from "./../../routes/authentication"
 import { ROUTES } from "./../../constants"
 
+import Notifications from 'react-notification-system-redux'
+
 
 class AuthLayout extends React.Component {
 
+  constructor(props){
+    super(props)
+  }
+
   render () {
-    const { t, authenticated } = this.props
+    const { t, authenticated, notifications = null } = this.props
 
     return authenticated
       ? <Redirect to={ROUTES.USER.MAIN_PATH} />
       : (
         <>
+          { notifications && <Notifications notifications={notifications} />}
           <div className="main-content">
             <div className="section-cover section-shaped my-0">
               <div className="shape shape-style-1 shape-default alpha-4">
@@ -62,6 +69,6 @@ class AuthLayout extends React.Component {
   }
 }
 
-const mapStateToProps = state => state.session
+const mapStateToProps = state => ({ ...state.session, notifications: state.notifications })
 
 export default connect(mapStateToProps)(withTranslation()(AuthLayout))

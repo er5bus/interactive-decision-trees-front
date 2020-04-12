@@ -1,7 +1,6 @@
 import thunk from 'redux-thunk'
 import { combineReducers, createStore, applyMiddleware } from 'redux'
-import { reducer as formReducer } from 'redux-form'
-import { sessionReducer } from 'redux-react-session'
+
 
 
 // middleware redux-thunk
@@ -12,18 +11,18 @@ import { deleteSession, saveSession } from "./middleware/session"
 import authReducer from "./containers/authentication/reducer"
 import treeReducer from "./containers/tree/reducer"
 import nodeReducer from "./containers/node/reducer"
-import contentNodeReducer from "./containers/content_node/reducer"
-import logicNodeReducer from "./containers/logic_node/reducer"
 
+import { reducer as formReducer } from 'redux-form'
+import { sessionReducer } from 'redux-react-session'
+import {reducer as notificationReducer} from 'react-notification-system-redux'
 
 const rootReducer = combineReducers({
   auth: authReducer,
   session: sessionReducer,
   form: formReducer,
   tree: treeReducer,
-  nodes: nodeReducer,
-  contentNode: contentNodeReducer,
-  logicNode: logicNodeReducer
+  node: nodeReducer,
+  notifications: notificationReducer
 })
 
 export default ( preloadedState = {} ) => {

@@ -1,19 +1,26 @@
 import React from "react"
 import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
-import {Badge, Button, Card, CardBody, CardImg, Container,Row, Col} from "reactstrap"
+import { Badge, Button, Card, CardBody, Container,Row, Col, Spinner } from "reactstrap"
 import { Link } from "react-router-dom"
 import { withTranslation } from 'react-i18next'
 
 import ConfirmModal from "./../../components/ConfirmModal"
 import CardNotFound from "./../../components/CardNotFound"
+import FilterNavbar from "./../../components/FilterNavbar"
+
+import TreeItem from "./TreeItem"
 
 import graphIcon from "./../../assets/img/graph.svg"
 
 import { ROUTES } from "./../../constants"
-import { fetchTrees, deleteTree } from "./actions"
 
-import Moment from 'react-moment'
+import { fetchTrees, filterTrees, deleteTree } from "./actions"
+import { getFilteredTrees } from "./selector"
+
+import InfiniteScroll from 'react-infinite-scroller'
+
+//import Moment from 'react-moment'
 
 
 class TreeList extends React.Component {
@@ -22,16 +29,22 @@ class TreeList extends React.Component {
     super(props)
     this.state = {
       showModal: false,
-      uid: null
+      uid: null,
     }
-  }
-
-  componentWillMount() {
-    this.props.fetchTrees()
   }
 
   onToggleModal = (uid) => {
     this.setState({ showModal: !this.state.showModal, uid })
+  }
+
+  onFetchTrees = (pageNumber) => {
+    if (!this.props.isLoading){
+      this.props.fetchTrees(pageNumber)
+    }
+  }
+
+  onSearch = (e) => {
+    this.props.filterTrees(e.target.value.trim())
   }
 
   onDeleteTree = () => {
@@ -39,9 +52,9 @@ class TreeList extends React.Component {
   }
 
   render() {
-    const { t, items } = this.props
+    const { t, items, hasMore } = this.props
     return (
-      <>
+      <div>
         <Container className="py-lg-md d-flex pb-5">
           <div className="col px-0">
             <Row>
@@ -78,64 +91,33 @@ class TreeList extends React.Component {
             buttonText={ t("Delete this tree") }
           />
           }
-          <Row className="justify-content-center">
+          <Row>
+            <Col className="pb-5" lg="12">
+              <FilterNavbar onSearch={this.onSearch} />
+            </Col>
             <Col lg="12">
-              <Row className="row-grid">
-                { !items.length && <CardNotFound /> }
-                { items.map((tree, i) =>
-                <Col key={i} lg="4" className="pb-5">
-                  <Card className="card-lift--hover shadow border-0">
-                    <CardBody className="py-5">
-                      <div className="icon icon-shape icon-shape-primary rounded-circle mb-4">
-                        <i className="fas fa-sitemap" />
-                      </div>
-                      <h6 className="text-primary text-uppercase">
-                        { tree.tree_name }
-                      </h6>
-                      <p className="description mt-3">
-                        { tree.description }
-                      </p>
-                      <div>
-                        <Badge color="primary" pill>{ tree.display_style }</Badge>
-                      </div>
-                      <Button
-                        className="btn-sm mt-4"
-                        color="primary"
-                        to={ ROUTES.USER.MAIN_PATH + ROUTES.USER.TREE_VIEW.replace(":param", tree.uid) }
-                        tag={Link}
-                      >
-                        <i className="fas fa-eye" /> { t("View") }
-                      </Button>
-                      <Button
-                        className="btn-sm mt-4"
-                        color="warning"
-                        to={ ROUTES.USER.MAIN_PATH + ROUTES.USER.TREE_EDIT.replace(":param", tree.uid) }
-                        tag={Link}
-                      >
-                        <i className="fa fa-pencil-alt" /> { t("Edit") }
-                      </Button>
-                      <Button
-                        className="btn-sm mt-4"
-                        color="danger"
-                        onClick={() => this.onToggleModal(tree.uid) }
-                      >
-                        <i className="fas fa-trash" /> { t("Delete") }
-                      </Button>
-                    </CardBody>
-                  </Card>
-                </Col>
-                )}
-              </Row>
+              <InfiniteScroll
+                pageStart={0}
+                loadMore={this.onFetchTrees}
+                hasMore={hasMore}
+                loader={<Spinner className="pt-2" key={0} color="primary" />}
+              >
+                <Row className="row-grid">
+                  { !items.length && <CardNotFound /> }
+                  { items.map((tree, i) => <TreeItem key={i} {...tree} onToggleModal={this.onToggleModal} />)}
+                </Row>
+              </InfiniteScroll>
             </Col>
           </Row>
         </Container>
-      </>
+      </div>
     )
   }
 }
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ fetchTrees, deleteTree }, dispatch)
-const mapStateToProps = state => state.tree
-
+const mapDispatchToProps = (dispatch) => bindActionCreators({ fetchTrees, deleteTree, filterTrees }, dispatch)
+const mapStateToProps = state => ({
+  ...state.tree, items: getFilteredTrees(state)
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(TreeList))

@@ -1,19 +1,18 @@
 import React from "react"
-import { Field, Form, FieldArray, reduxForm } from "redux-form"
-import { Button } from "reactstrap"
+import { Field, FieldArray, reduxForm } from "redux-form"
+import { Button, Spinner } from "reactstrap"
 import { useTranslation } from "react-i18next"
 import { connect } from "react-redux"
 
 import { Row, Col } from "reactstrap"
 
-import { required, maxLength, minLength } from "./../../utils/validations"
+import { required, maxLength, minLength } from "./../../../utils/validations"
 
-import InputField from "./../../components/InputField"
-import InputListField from "./../../components/InputListField"
-import InputCheckboxField from "./../../components/InputRadioCheckboxField"
-import InputTextareaField from "./../../components/InputTextareaField"
-import EditorField from "./../../components/EditorField"
-import SelectField from "./../../components/SelectField"
+import Form from "./../../../components/Form"
+import InputField from "./../../../components/InputField"
+import InputTextareaField from "./../../../components/InputTextareaField"
+import EditorField from "./../../../components/EditorField"
+import SelectField from "./../../../components/SelectField"
 
 
 const minLength2 = minLength(2)
@@ -122,11 +121,11 @@ const renderAction = ({ fields, scores, nodes, t }) =>  {
 let ContentNodeForm = (props) => {
 
   const { t } = useTranslation()
-  const { handleSubmit, scores, nodes } = props
+  const { handleSubmit, scores, nodes, isLoading=false, errors } = props
 
-
+  console.log(isLoading)
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} errors={errors}>
       <Field
         name="node_name"
         component={InputField}
@@ -158,6 +157,7 @@ let ContentNodeForm = (props) => {
       <FieldArray name="actions" scores={scores} nodes={nodes} component={renderAction} t={t} />
       <div className="text-center">
         <Button className="mt-4" color="primary" type="submit">
+          { isLoading && <Spinner color="light" /> }
           {t("Save node")}
         </Button>
       </div>
@@ -171,6 +171,6 @@ ContentNodeForm = reduxForm({
 
 export default connect(
   state => ({
-    initialValues: state.contentNode.item // pull initial values from account reducer
+    initialValues: state.node.item // pull initial values from account reducer
   })
 )(ContentNodeForm)

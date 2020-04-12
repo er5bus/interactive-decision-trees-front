@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+  decision_trees:
+    build:
+      context: .
+      dockerfile: Dockerfile-build
+    env_file:
+      - ./.env
+    ports:
+      - "80:80"

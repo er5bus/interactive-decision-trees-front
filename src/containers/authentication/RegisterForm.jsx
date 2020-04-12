@@ -1,10 +1,11 @@
 import React from "react"
-import { Field, Form, reduxForm } from "redux-form"
+import { Field, reduxForm } from "redux-form"
 import { Button } from "reactstrap"
 import { useTranslation } from "react-i18next"
 
 import { required, email, maxLength, minLength } from "./../../utils/validations"
 
+import Form from "./../../components/Form"
 import InputField from "./../../components/InputField"
 import InputRadioField from "./../../components/InputRadioCheckboxField"
 
@@ -14,10 +15,10 @@ const maxLength30 = maxLength(30)
 const RegisterForm = (props) => {
 
   const { t } = useTranslation()
-  const { handleSubmit } = props
+  const { handleSubmit, errors } = props
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} errors={errors}>
       <Field
         name="full_name"
         component={InputField}

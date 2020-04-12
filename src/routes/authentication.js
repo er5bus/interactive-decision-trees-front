@@ -1,10 +1,10 @@
 import React from 'react'
 import {  Route, Switch, Redirect } from "react-router-dom"
 
-import Register from "../containers/authentication/Register"
-import Login from "../containers/authentication/Login"
-
 import { ROUTES } from "./../constants"
+
+const Register = React.lazy( () =>  import("../containers/authentication/Register"))
+const Login = React.lazy( () => import("../containers/authentication/Login"))
 
 export default () => (
   <Switch>

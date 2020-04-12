@@ -532,10 +532,21 @@
   background-position: center center;
 }
 
+.section-cover-lg {
+  height: 40rem;
+  background-size: cover;
+  background-position: center center;
+}
+
 @include media-breakpoint-down(md) {
-  .section-cover {
+  .section-cover, .section-cover-lg {
     height: 20rem;
   }
+}
+
+.section-content-lg {
+  margin-top: -30rem !important;
+  padding-bottom: 5rem;
 }
 
 .section-content {

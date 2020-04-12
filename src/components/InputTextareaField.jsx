@@ -3,8 +3,6 @@ import { useTranslation } from "react-i18next"
 
 import {
   FormGroup,
-  InputGroupAddon,
-  InputGroupText,
   InputGroup
 } from "reactstrap"
 

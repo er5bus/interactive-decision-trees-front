@@ -4,7 +4,6 @@ import { Link } from "react-router-dom"
 import { ROUTES } from "./../constants"
 
 import {
-  Button,
   UncontrolledCollapse,
   DropdownMenu,
   DropdownItem,
@@ -19,7 +18,6 @@ import {
   Container,
   Row,
   Col,
-  UncontrolledTooltip
 } from "reactstrap"
 
 import LogoutModal from "./../containers/authentication/Logout"
@@ -108,16 +106,16 @@ const UserNavbar = ({ userName }) => {
                   <DropdownMenu className="dropdown-menu-arrow" right>
                     <DropdownItem className="noti-title" header tag="div">
                     </DropdownItem>
-                    <DropdownItem to="/admin/user-profile" tag={Link}>
+                    <DropdownItem disabled={true} to="/admin/user-profile" tag={Link}>
                       <i className="ni ni-single-02" />
                       <span>{ t("Profile") }</span>
                     </DropdownItem>
-                    <DropdownItem to="/admin/user-profile" tag={Link}>
+                    <DropdownItem disabled={true} to="/admin/user-profile" tag={Link}>
                       <i className="ni ni-settings-gear-65" />
                       <span>{ t("Settings") }</span>
                     </DropdownItem>
                     <DropdownItem divider />
-                    <DropdownItem href="#pablo" onClick={onToggleModal}>
+                    <DropdownItem onClick={onToggleModal}>
                       <i className="ni ni-user-run" />
                       <span>{ t("Logout") }</span>
                     </DropdownItem>

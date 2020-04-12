@@ -2,14 +2,12 @@
 
 set -e
 
-echo -e "Current ENV is $APP_ENV \n******\n"
+echo -e "Current NODE_ENV is $NODE_ENV \n******\n"
 
-if [[ $APP_ENV = 'dev' ]]; then
+if [[ $NODE_ENV = 'development' ]]; then
   exec npm start
-elif [[ $APP_ENV = 'test' ]]; then
-  exec npm run test
-elif [[ $APP_ENV = 'prod' ]]; then
-  exec npm run build
+elif [[ $NODE_ENV = 'production' ]]; then
+  exec npm install -g http-server && npm run build && cd /app/build && hs -p 3000
 else
-  echo -e "Not valid ENV $APP_ENV\n*******\nAvailable envs [dev, test, prod]"
+  echo -e "Not valid ENV $NODE_ENV\n*******\nAvailable envs [development, production]"
 fi
