@@ -1,8 +1,6 @@
 import React from 'react'
 import {  Route, Switch, Redirect } from "react-router-dom"
 
-import { AnimateOnChange } from 'react-animation'
-
 import { ROUTES } from "./../constants"
 
 const TreeList = React.lazy( () => import("../containers/tree/TreeList"))
