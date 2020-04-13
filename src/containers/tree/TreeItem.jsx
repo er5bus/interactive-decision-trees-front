@@ -48,7 +48,7 @@ export default ({ onToggleModal =f=>f, tree_name, description, scores, uid }) =>
           <Button
             className="btn-sm mt-4"
             color="danger"
-            onClick={() => this.onToggleModal(uid) }
+            onClick={() => onToggleModal(uid) }
           >
             <i className="fas fa-trash" /> { t("Delete") }
           </Button>

@@ -32,7 +32,7 @@ export default ({ node_name, uid, onToggleModal, treeparam }) => {
           <Button
             className="btn-sm mt-4"
             color="danger"
-            onClick={() => this.onToggleModal(uid, NODE_TYPE.LOGIC_NODE) }
+            onClick={() => onToggleModal(uid, NODE_TYPE.LOGIC_NODE) }
           >
             <i className="fas fa-trash" /> { t("Delete") }
           </Button>

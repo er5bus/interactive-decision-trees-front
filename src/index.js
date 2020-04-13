@@ -3,6 +3,7 @@ import ReactDOM from "react-dom"
 import { Provider } from 'react-redux'
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom"
 import { sessionService } from 'redux-react-session'
+import { AnimateOnChange } from 'react-animation'
 
 
 // load style

@@ -33,6 +33,10 @@ class TreeList extends React.Component {
     }
   }
 
+  componentWillMount(){
+    this.props.fetchTrees(1)
+  }
+
   onToggleModal = (uid) => {
     this.setState({ showModal: !this.state.showModal, uid })
   }
@@ -97,7 +101,7 @@ class TreeList extends React.Component {
             </Col>
             <Col lg="12">
               <InfiniteScroll
-                pageStart={0}
+                pageStart={1}
                 loadMore={this.onFetchTrees}
                 hasMore={hasMore}
                 loader={<Spinner className="pt-2" key={0} color="primary" />}

@@ -7,6 +7,7 @@ export default (state = { tree: {}, item: null, hasMore: true, isLoading: false,
   
   switch (type) {
     case ACTIONS.FETCH_NODES_INIT : {
+      state.tree = payload.page === 1 ? {} : state.tree
       return { ...state, isLoading: true, hasMore: false, error: null }
     }
     case ACTIONS.FETCH_NODES_SUCCEDED : {

@@ -34,6 +34,10 @@ class NodeList extends React.Component {
     }
   }
 
+  componentWillMount(){
+    this.props.fetchNodes({ ...this.props.match.params, pageNumber: 1 })
+  }
+
   onFetchNodes = async (pageNumber) => {
     if (!this.props.isLoading){
       this.props.fetchNodes({ ...this.props.match.params, pageNumber })  
@@ -110,7 +114,7 @@ class NodeList extends React.Component {
             </Col>
             <Col lg="12">
               <InfiniteScroll
-                pageStart={0}
+                pageStart={1}
                 loadMore={this.onFetchNodes}
                 hasMore={hasMore}
                 loader={<Col  key="spinner" className="pt-4 pb-4" lg="12"><Spinner className="pt-2" color="primary" /></Col>}

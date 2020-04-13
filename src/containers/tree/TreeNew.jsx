@@ -28,7 +28,7 @@ class TreeNew extends React.Component {
   render() {
     const { error, t, item } = this.props
     if (item && item.param){
-      return <Redirect to={ ROUTES.USER.MAIN_PATH + ROUTES.USER.TREE_EDIT.replace(":param", item.param) } />
+      return <Redirect to={ ROUTES.USER.MAIN_PATH + ROUTES.USER.TREE_VIEW.replace(":param", item.param) } />
     }else {
       return (
         <>

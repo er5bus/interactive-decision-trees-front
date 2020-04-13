@@ -35,7 +35,7 @@ class ContentNodeNew extends React.Component {
     const { error, scores, item, isLoading, nodes, t } = this.props
     const { treeparam } = this.props.match.params
     if (item && item.nodeparam){
-      return <Redirect to={ ROUTES.USER.MAIN_PATH + ROUTES.USER.TREE_EDIT_CONTENT_NODE.replace(":treeparam", treeparam).replace(":nodeparam", item.nodeparam) } />
+      return <Redirect to={ ROUTES.USER.MAIN_PATH + ROUTES.USER.TREE_VIEW.replace(":param", treeparam) } />
     }else {
       return (
         <>

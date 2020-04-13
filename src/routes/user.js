@@ -1,6 +1,8 @@
 import React from 'react'
 import {  Route, Switch, Redirect } from "react-router-dom"
 
+import { AnimateOnChange } from 'react-animation'
+
 import { ROUTES } from "./../constants"
 
 const TreeList = React.lazy( () => import("../containers/tree/TreeList"))
@@ -30,7 +32,7 @@ export default () => (
     <Route exact path={ ROUTES.USER.MAIN_PATH + ROUTES.USER.TREE_VIEW_CONTENT_NODE } component={TreeContentViewNode} />
 
     <Route exact path={ ROUTES.USER.MAIN_PATH + ROUTES.USER.TREE_NEW_LOGIC_NODE } component={TreeLogicNewNode} />
-    <Route exact path={ ROUTES.USER.MAIN_PATH + ROUTES.USER.TREE_EDIT_LOGIC_NODE } component={TreeLogicEditNode} />/>
+    <Route exact path={ ROUTES.USER.MAIN_PATH + ROUTES.USER.TREE_EDIT_LOGIC_NODE } component={TreeLogicEditNode} />
 
     <Redirect from="*" to={ ROUTES.USER.MAIN_PATH + ROUTES.USER.TREE_INDEX } />
   </Switch>

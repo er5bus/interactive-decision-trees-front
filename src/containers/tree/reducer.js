@@ -19,6 +19,7 @@ export default (state = { items: [], item: {}, isLoading: false, searchTerm: "",
     }
 
     case ACTIONS.FETCH_TREES_INIT : {
+      state.items = payload.page === 1 ? [] : state.items
       return { ...state, isLoading: true, hasMore: false, error: null }
     }
     case ACTIONS.FETCH_TREES_SUCCEDED : {

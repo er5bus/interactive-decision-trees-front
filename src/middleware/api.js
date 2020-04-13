@@ -9,7 +9,7 @@ const api = store => next => async action => {
     return next(action)
   }
 
-  const { actions, messages = {}, endpoint, method, jwt, params, extraData={} } = action.meta
+  const { actions, messages = {}, endpoint, method, jwt, params = {}, extraData={} } = action.meta
   const { user : { access_token: accessToken=null  } } = store.getState().session
 
   const dispatch = (action, payload = {}) => {
@@ -30,7 +30,7 @@ const api = store => next => async action => {
   }
 
   if (actions.init){
-    dispatch(actions.init)
+    dispatch(actions.init, params)
   }
 
   let headers = {}

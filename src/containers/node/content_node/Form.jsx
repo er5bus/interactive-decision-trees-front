@@ -13,6 +13,7 @@ import InputField from "./../../../components/InputField"
 import InputTextareaField from "./../../../components/InputTextareaField"
 import EditorField from "./../../../components/EditorField"
 import SelectField from "./../../../components/SelectField"
+import InputCheckboxField from "./../../../components/InputRadioCheckboxField"
 
 
 const minLength2 = minLength(2)
@@ -153,6 +154,13 @@ let ContentNodeForm = (props) => {
         placeholder={t("Enter a question or prompt")}
         type="text"
         validate={[ required, minLength2, maxLength500 ]}
+      />
+      <Field
+        name="first_node"
+        component={InputCheckboxField}
+        label={ t("Set as the first node") }
+        value={true}
+        type="checkbox"
       />
       <FieldArray name="actions" scores={scores} nodes={nodes} component={renderAction} t={t} />
       <div className="text-center">
