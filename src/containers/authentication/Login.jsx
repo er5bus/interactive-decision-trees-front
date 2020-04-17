@@ -23,7 +23,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const { error } = this.props
+    const { error, isLoading } = this.props
     return (
       <>
         { error
@@ -39,7 +39,7 @@ class Login extends React.Component {
               <div className="text-center">
                 <img className="icon-xxl mb-4" alt="" src={userIcon} />
               </div>
-              <LoginForm onSubmit={this.onSubmit} />
+              <LoginForm onSubmit={this.onSubmit} isLoading={isLoading} />
             </CardBody>
           </Card>
         </Col>

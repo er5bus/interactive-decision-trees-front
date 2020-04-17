@@ -5,7 +5,7 @@ import { connect } from "react-redux"
 import { withTranslation } from "react-i18next"
 
 // reactstrap components
-import { Card, Row, CardBody, Col, Container } from "reactstrap"
+import { Card, Row, CardBody, Spinner, Col, Container } from "reactstrap"
 
 import { editLogicNode as editNode, fetchLogicNode as fetchNode, fetchAllScores, fetchAllNodes } from "./../actions"
 
@@ -30,7 +30,7 @@ class LogicNodeNew extends React.Component {
   }
 
   render() {
-    const { error, scores, nodes, t } = this.props
+    const { error, scores, nodes, t, isLoading } = this.props
     return (
       <>
         <Container className="py-lg-md d-flex pb-5">
@@ -54,7 +54,7 @@ class LogicNodeNew extends React.Component {
           <Col lg="12" md="12">
             <Card className="shadow">
               <CardBody className="px-lg-5 py-lg-5">
-                <LogicNodeForm scores={scores} nodes={nodes} errors={error} onSubmit={this.onSubmit} />
+                <LogicNodeForm scores={scores} isLoading={isLoading} nodes={nodes} errors={error} onSubmit={this.onSubmit} />
               </CardBody>
             </Card>
           </Col>

@@ -73,7 +73,6 @@ class NodeList extends React.Component {
                 <p className="lead text-white">
                   { t("Create, Update and Manage your nodes") }
                 </p>
-                <Col  key="spinner" className="pt-4 pb-4" lg="12"><Spinner className="pt-2" color="primary" /></Col>
                 <div className="btn-wrapper">
                   <Link
                     className="btn-icon mb-3 mb-sm-0 btn btn-info"

@@ -4,7 +4,7 @@ import { Button } from "reactstrap"
 import { useTranslation } from "react-i18next"
 import { connect } from "react-redux"
 
-import { Row, Col } from "reactstrap"
+import { Row, Col, Spinner } from "reactstrap"
 
 import { required, maxLength, minLength } from "./../../utils/validations"
 
@@ -12,6 +12,8 @@ import Form from "./../../components/Form"
 import InputField from "./../../components/InputField"
 import InputListField from "./../../components/InputListField"
 import InputTextareaField from "./../../components/InputTextareaField"
+import SelectField from "./../../components/SelectField"
+
 
 const minLength2 = minLength(2)
 const minLength4 = minLength(4)
@@ -71,7 +73,7 @@ const renderScore = ({ fields, t }) =>  {
 let TreeForm = (props) => {
 
   const { t } = useTranslation()
-  const { handleSubmit, errors = {} } = props
+  const { handleSubmit, errors = {}, nodes = [], isLoading } = props
 
   return (
     <Form onSubmit={handleSubmit} errors={errors}>
@@ -105,9 +107,20 @@ let TreeForm = (props) => {
         type="radio"
         validate={[required]}
       />
+      <div className="mt-4">
+        <Field
+          name="first_node.id"
+          component={SelectField}
+          label={t("Choose your start node")}
+          placeholder={ t("New node you will create later") }
+          choices={ nodes }
+          validate={[ required ]}
+        />
+      </div>
       <FieldArray name="scores" component={renderScore} t={t} />
       <div className="text-center">
         <Button className="mt-4" color="primary" type="submit">
+          { isLoading && <Spinner color="white" /> }
           {t("Save tree")}
         </Button>
       </div>

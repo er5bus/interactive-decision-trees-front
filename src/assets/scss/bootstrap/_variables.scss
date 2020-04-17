@@ -3,6 +3,16 @@
 // Variables should follow the `$component-state-property-size` formula for
 // consistent naming. Ex: $nav-link-disabled-color and $modal-content-box-shadow-xs.
 
+// Spinners
+
+$spinner-width:           1rem !default;
+$spinner-height:          $spinner-width !default;
+$spinner-border-width:    .25em !default;
+$spinner-animation-speed: .75s !default;
+
+$spinner-width-sm:        1rem !default;
+$spinner-height-sm:       $spinner-width-sm !default;
+$spinner-border-width-sm: .2em !default;
 
 //
 // Color system

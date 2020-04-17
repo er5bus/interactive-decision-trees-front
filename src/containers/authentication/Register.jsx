@@ -22,7 +22,7 @@ class Register extends React.Component {
   }
 
   render() {
-    const { error } = this.props
+    const { error, isLoading } = this.props
     return (
       <>
         <Col lg="6" md="8">
@@ -31,7 +31,7 @@ class Register extends React.Component {
               <div className="text-center">
                 <img className="icon-xxl mb-4" alt="" src={userIcon} />
               </div>
-              <RegisterForm onSubmit={this.onSubmit} errors={error || {}} />
+              <RegisterForm onSubmit={this.onSubmit} isLoading={isLoading} errors={error || {}} />
             </CardBody>
           </Card>
         </Col>

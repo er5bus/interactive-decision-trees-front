@@ -32,7 +32,7 @@ class LogicNodeNew extends React.Component {
   }
 
   render() {
-    const { error, scores, item, nodes, t } = this.props
+    const { error, scores, item, nodes, isLoading, t } = this.props
     const { treeparam } = this.props.match.params
     if (item && item.nodeparam){
       return <Redirect to={ ROUTES.USER.MAIN_PATH + ROUTES.USER.TREE_VIEW.replace(":param", treeparam) } />
@@ -60,7 +60,7 @@ class LogicNodeNew extends React.Component {
             <Col lg="12" md="12">
               <Card className="shadow">
                 <CardBody className="px-lg-5 py-lg-5">
-                  <LogicNodeForm scores={scores} errors={error} nodes={nodes} onSubmit={this.onSubmit} />
+                  <LogicNodeForm scores={scores} errors={error} isLoading={isLoading} nodes={nodes} onSubmit={this.onSubmit} />
                 </CardBody>
               </Card>
             </Col>

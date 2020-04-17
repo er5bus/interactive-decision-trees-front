@@ -2,6 +2,22 @@ import { ACTIONS, ENDPOINT } from "./constants"
 import { CALL_API, HTTP_METHODS } from "./../../constants"
 
 
+export const fetchAllNodes = ({ param }) =>
+  ({
+    type: CALL_API,
+    meta: {
+      actions: {
+        init: ACTIONS.FETCH_ALL_NODES_INIT,
+        success: ACTIONS.FETCH_ALL_NODES_SUCCEDED,
+        fail: ACTIONS.FETCH_ALL_NODES_FAILED
+      },
+      endpoint: ENDPOINT.TREE_ALL_NODES.replace(":param", param),
+      method: HTTP_METHODS.GET,
+      jwt: true
+    }
+  })
+
+
 export const filterTrees = (searchTerm) =>
   ({
     type: ACTIONS.FILTER_TREES,

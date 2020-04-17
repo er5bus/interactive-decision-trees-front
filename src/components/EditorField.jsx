@@ -12,7 +12,7 @@ export default ({ label, placeholder, input, meta: { touched, error, warning } }
   const { t } = useTranslation()
 
   const onChange = (event, editor) => {
-    setTextValue(editor.getData())
+    input.onChange(editor.getData())
   }
 
   return (
@@ -20,10 +20,11 @@ export default ({ label, placeholder, input, meta: { touched, error, warning } }
       { label && <label className="control-label">{label}</label>}
       <CKEditor
         editor={ ClassicEditor }
-        data={ placeholder }
+        data={ input.value }
         onChange={ onChange }
+        placeholder = { placeholder }
       />
-      <input type="hidden" {...input} defaultValue={textValue} />
+      <input type="hidden" {...input} />
       <div className="danger-msg">
         {touched && ((error && <span>{t(error)}</span>) || (warning && <span>{t(warning)}</span>))}
       </div>

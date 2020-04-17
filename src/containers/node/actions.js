@@ -118,6 +118,22 @@ export const fetchLogicNode = ({ treeparam, nodeparam }) => fetchNode({ treepara
 export const fetchContentNode = ({ treeparam, nodeparam }) => fetchNode({ treeparam, nodeparam }, ENDPOINT.CONTENT_NODE)
 
 
+export const viewNode = ({ treeparam, nodeparam }) =>
+  ({
+    type: CALL_API,
+    meta: {
+      actions: {
+        init: ACTIONS.FETCH_NODE_INIT,
+        success: ACTIONS.FETCH_NODE_SUCCEDED,
+        fail: ACTIONS.FETCH_NODE_FAILED
+      },
+      endpoint: ENDPOINT.NODE.replace(":treeparam", treeparam).replace(":nodeparam", nodeparam),
+      method: HTTP_METHODS.GET,
+      jwt: true
+    }
+  })
+
+
 const deleteNodeBase = ({ treeparam, nodeparam }, endpoint, nodeType) =>
   ({
     type: CALL_API,
