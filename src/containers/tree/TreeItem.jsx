@@ -9,7 +9,7 @@ import CardNotFound from "./../../components/CardNotFound"
 import { ROUTES } from "./../../constants"
 
 
-export default ({ onToggleModal =f=>f, tree_name, description, scores, uid }) => {
+export default ({ onToggleModal =f=>f, first_node = null, tree_name, description, scores, uid }) => {
 
   const { t } = useTranslation()
 
@@ -37,6 +37,17 @@ export default ({ onToggleModal =f=>f, tree_name, description, scores, uid }) =>
           >
             <i className="fas fa-eye" /> { t("View") }
           </Button>
+          {
+            first_node && first_node.uid &&
+            <Button
+              className="btn-sm mt-4"
+              color="primary"
+              to={ ROUTES.USER.MAIN_PATH + ROUTES.USER.TREE_VIEW_CONTENT_NODE.replace(":treeparam", uid).replace(":nodeparam", first_node.uid) }
+              tag={Link}
+            >
+              <i className="fas fa-eye" /> { t("overview") }
+            </Button>
+          }
           <Button
             className="btn-sm mt-4"
             color="warning"

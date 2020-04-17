@@ -34,7 +34,7 @@ export const ACTIONS = {
 
 export const ENDPOINT = {
   NODES: "/api/tree/:treeparam/nodes",
-  NODE: "/api/tree/:treeparam/node/:param",
+  NODE: "/api/tree/:treeparam/node/:nodeparam",
   LOGIC_NODES: "/api/tree/:treeparam/node/logic",
   LOGIC_NODE: "/api/tree/:treeparam/node/logic/:nodeparam",
   CONTENT_NODES: "/api/tree/:treeparam/node/content",

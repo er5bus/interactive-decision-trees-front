@@ -4,7 +4,6 @@ import { Provider } from 'react-redux'
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom"
 import { sessionService } from 'redux-react-session'
 
-
 // load style
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import "./assets/scss/main.scss"

@@ -1,7 +1,7 @@
 import { ACTIONS } from "./constants"
 
 
-export default (state = { items: [], item: {}, isLoading: false, searchTerm: "", hasMore: true, error: null, success: null }, action) => {
+export default (state = { items: [], item: {}, nodes: [], isLoading: false, searchTerm: "", hasMore: true, error: null, success: null }, action) => {
   const { payload, type } = action
   switch (type) {
     case ACTIONS.CLEAR_TREE_FORM : {
@@ -16,6 +16,27 @@ export default (state = { items: [], item: {}, isLoading: false, searchTerm: "",
     }
     case ACTIONS.CREATE_TREE_FAILED : {
       return { ...state, error: payload, isLoading: false }
+    }
+
+    case ACTIONS.EDIT_TREE_INIT : {
+      return { ...state, isLoading: true, error: null }
+    }
+    case ACTIONS.EDIT_TREE_SUCCEDED : {
+      return { ...state, item: payload, isLoading: false, error: null }
+    }
+    case ACTIONS.EDIT_TREE_FAILED : {
+      return { ...state, error: payload, isLoading: false }
+    }
+
+    case ACTIONS.FETCH_ALL_NODES_INIT: {
+      return { ...state, isLoading: true, scores: [] }
+    }
+    case ACTIONS.FETCH_ALL_NODES_SUCCEDED: {
+      const nodes = payload.items.filter((item) => item.type === "ContentNode")
+      return { ...state, isLoading: false, nodes  }
+    }
+    case ACTIONS.FETCH_ALL_NODES_FAILED: {
+      return { ...state, isLoading: false, error: null }
     }
 
     case ACTIONS.FETCH_TREES_INIT : {

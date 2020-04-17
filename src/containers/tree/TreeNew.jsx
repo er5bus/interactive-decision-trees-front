@@ -26,7 +26,7 @@ class TreeNew extends React.Component {
   }
 
   render() {
-    const { error, t, item } = this.props
+    const { error, t, item, isLoading } = this.props
     if (item && item.param){
       return <Redirect to={ ROUTES.USER.MAIN_PATH + ROUTES.USER.TREE_VIEW.replace(":param", item.param) } />
     }else {
@@ -52,7 +52,7 @@ class TreeNew extends React.Component {
             <Col lg="12" md="12">
               <Card className="shadow">
                 <CardBody className="px-lg-5 py-lg-5">
-                  <TreeForm onSubmit={this.onSubmit} errors={error || {}} />
+                  <TreeForm onSubmit={this.onSubmit} isLoading={isLoading} errors={error || {}} />
                 </CardBody>
               </Card>
             </Col>

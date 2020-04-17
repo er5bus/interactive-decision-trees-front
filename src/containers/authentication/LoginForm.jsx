@@ -1,6 +1,6 @@
 import React from "react"
 import { Field, reduxForm } from "redux-form"
-import { Button } from "reactstrap"
+import { Button, Spinner } from "reactstrap"
 import { useTranslation } from "react-i18next"
 
 import { required, email, maxLength, minLength } from "./../../utils/validations"
@@ -15,7 +15,7 @@ const maxLength30 = maxLength(30)
 const LoginForm = (props) => {
 
   const { t } = useTranslation()
-  const { handleSubmit } = props
+  const { handleSubmit, isLoading } = props
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -46,6 +46,7 @@ const LoginForm = (props) => {
       />
       <div className="text-center">
         <Button className="mt-4" color="primary" type="submit">
+          { isLoading && <Spinner color="white" /> }
           {t("Sign in")}
         </Button>
       </div>

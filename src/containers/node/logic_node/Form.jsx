@@ -1,6 +1,6 @@
 import React from "react"
 import { Field, FieldArray, reduxForm } from "redux-form"
-import { Button } from "reactstrap"
+import { Button, Spinner } from "reactstrap"
 import { useTranslation } from "react-i18next"
 import { connect } from "react-redux"
 
@@ -95,7 +95,7 @@ const renderRule = ({ fields, scores = [], nodes = [] , t }) =>  {
 let LogicNodeForm = (props) => {
 
   const { t } = useTranslation()
-  const { handleSubmit, scores = [], nodes = [], errors } = props
+  const { handleSubmit, scores = [], isLoading, nodes = [], errors } = props
 
   return (
     <Form onSubmit={handleSubmit} errors={errors}>
@@ -123,6 +123,7 @@ let LogicNodeForm = (props) => {
       </div>
       <div className="text-center">
         <Button className="mt-4" color="primary" type="submit">
+          { isLoading && <Spinner color="white" /> }
           {t("Save node")}
         </Button>
       </div>
