@@ -22,7 +22,7 @@ class TreeEdit extends React.Component {
   }
 
   onSubmit = (values) => {
-    const { item, nodes } = this.props
+    const { item } = this.props
     this.props.editTree(item.uid, values)
   }
 

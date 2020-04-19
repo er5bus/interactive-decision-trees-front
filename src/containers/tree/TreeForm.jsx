@@ -114,7 +114,6 @@ let TreeForm = (props) => {
           label={t("Choose your start node")}
           placeholder={ t("New node you will create later") }
           choices={ nodes }
-          validate={[ required ]}
         />
       </div>
       <FieldArray name="scores" component={renderScore} t={t} />

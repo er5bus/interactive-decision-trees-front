@@ -13,10 +13,6 @@ import { register } from "./actions"
 
 class Register extends React.Component {
 
-  constructor(props){
-    super(props)
-  }
-
   onSubmit = (values) => {
     this.props.register(values)
   }

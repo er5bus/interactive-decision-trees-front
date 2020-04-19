@@ -5,7 +5,7 @@ import { connect } from "react-redux"
 import { withTranslation } from "react-i18next"
 
 // reactstrap components
-import { Card, Row, CardBody, Spinner, Col, Container } from "reactstrap"
+import { Card, Row, CardBody, Col, Container } from "reactstrap"
 
 import { editLogicNode as editNode, fetchLogicNode as fetchNode, fetchAllScores, fetchAllNodes } from "./../actions"
 

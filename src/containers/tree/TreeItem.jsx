@@ -1,10 +1,7 @@
 import React from 'react'
-import { connect } from "react-redux"
 import { Link } from "react-router-dom"
 import { useTranslation } from 'react-i18next'
 import {Badge, Button, Card, CardBody, Col} from "reactstrap"
-
-import CardNotFound from "./../../components/CardNotFound"
 
 import { ROUTES } from "./../../constants"
 
@@ -27,7 +24,7 @@ export default ({ onToggleModal =f=>f, first_node = null, tree_name, description
             { description }
           </p>
           <div>
-            { scores && scores.map((score, i) => <Badge key={i} color="primary" pill>{ score.name }</Badge>) }
+            { scores && scores.map((score, i) => <Badge key={i} color="primary mr-2" pill>{ score.name }</Badge>) }
           </div>
           <Button
             className="btn-sm mt-4"

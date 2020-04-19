@@ -1,7 +1,7 @@
 import React from "react"
 import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
-import { Link, Redirect } from "react-router-dom"
+import { Link } from "react-router-dom"
 
 import { withTranslation } from "react-i18next"
 
@@ -12,10 +12,8 @@ import { Card, Row, CardBody, Spinner, Col, Container, CardHeader, Button, Table
 
 import { viewNode, fetchAllScores } from "./../actions"
 
-import ContentNodeForm from "./Form"
-
 import NodeListLink from "./../../../components/NodeListLink"
-import Loader from "./../../../components/Loader"
+import LoaderSpinner from "./../../../components/Spinner"
 
 import nodeIcon from "./../../../assets/img/graph.svg"
 import emptyIcon from "./../../../assets/img/empty.png"
@@ -107,7 +105,7 @@ class ViewContentNode extends React.Component {
   }
 
   render() {
-    const { error, scores, item, isLoading, match : { params : { treeparam } }, t } = this.props
+    const { scores, item, isLoading, match : { params : { treeparam } }, t } = this.props
     return (
       <>
         <Container className="py-lg-md d-flex pb-5">
@@ -145,13 +143,18 @@ class ViewContentNode extends React.Component {
                 </thead>
                 <tbody>
                   {
-                    scores && scores.map((score, i) =>
+                    scores && scores.length ? scores.map((score, i) =>
                       <tr key={i}>
                         <td>{ score.label }</td>
                         <td>{ score.description }</td>
                         <td>{ this.state.scores[score.value] || 0 }</td>
                       </tr>
                     )
+                    : <tr>
+                      <td colSpan="3">
+                        {  t("No Score found") }
+                      </td>
+                      </tr>
                   }
                 </tbody>
               </Table>
@@ -166,7 +169,8 @@ class ViewContentNode extends React.Component {
                 <h3 className="mb-0">{ t('Node Content') }</h3>
               </CardHeader>
               <CardBody className="px-lg-5 py-lg-5">
-                { (item && item.type === "ContentNode")
+                { isLoading ? <LoaderSpinner />
+                : (item && item.type === "ContentNode")
                   ? <>
                     <h1 className="pb-2">{ item.node_name }</h1>
                     <p className="pb-2" dangerouslySetInnerHTML={{ __html: item.content_area }} />

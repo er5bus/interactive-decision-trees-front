@@ -13,10 +13,6 @@ import { ROUTES } from "./../../constants"
 
 class UserLayout extends React.Component {
 
-  constructor(props){
-    super(props)
-  }
-
   render() {
 
     const { user: { full_name  }, authenticated, notifications = null } = this.props

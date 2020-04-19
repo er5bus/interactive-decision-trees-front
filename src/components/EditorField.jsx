@@ -8,7 +8,6 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 
 export default ({ label, placeholder, input, meta: { touched, error, warning } }) => {
 
-  const [ textValue, setTextValue ] = React.useState(null)
   const { t } = useTranslation()
 
   const onChange = (event, editor) => {

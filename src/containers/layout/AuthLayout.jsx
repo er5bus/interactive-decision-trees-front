@@ -12,10 +12,6 @@ import Notifications from 'react-notification-system-redux'
 
 class AuthLayout extends React.Component {
 
-  constructor(props){
-    super(props)
-  }
-
   render () {
     const { t, authenticated, notifications = null } = this.props
 

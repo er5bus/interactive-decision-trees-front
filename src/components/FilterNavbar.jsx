@@ -1,6 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Navbar, Nav, NavItem, FormGroup, Input, Container, InputGroup, InputGroupAddon, InputGroupText, NavbarBrand } from "reactstrap"
+//import { Navbar, Nav, NavItem, FormGroup, Input, Container, NavbarBrand, InputGroup, InputGroupAddon, InputGroupText} from "reactstrap"
+import { Row, Col, Input, InputGroup, InputGroupAddon, InputGroupText} from "reactstrap"
 
 
 export default ({ onSearch }) => {
@@ -8,7 +9,9 @@ export default ({ onSearch }) => {
   const { t } = useTranslation()
 
   return (
-    <Navbar
+    <Row>
+      <Col lg="4">
+        {/*<Navbar
       className="navbar-horizontal navbar-dark bg-white shadow border-radius"
       expand="lg"
     >
@@ -17,18 +20,20 @@ export default ({ onSearch }) => {
           <i className="fas fa-filter"></i>
         </NavbarBrand>
         <Nav className="ml-lg-auto" navbar>
-          <NavItem>
-            <InputGroup>
-              <InputGroupAddon addonType="prepend">
-                <InputGroupText>
-                  <i className="ni ni-zoom-split-in" />
-                </InputGroupText>
-              </InputGroupAddon>
-              <Input placeholder={ t("Search") } type="text" onChange={onSearch} />
-            </InputGroup>
-          </NavItem>
+          <NavItem>*/}
+        <InputGroup className="input-group-alternative">
+          <InputGroupAddon addonType="prepend">
+            <InputGroupText>
+              <i className="ni ni-zoom-split-in" />
+            </InputGroupText>
+          </InputGroupAddon>
+          <Input placeholder={ t("Search") } type="text" onChange={onSearch} />
+        </InputGroup>
+        {/*</NavItem>
         </Nav>
       </Container>
-    </Navbar>
+    </Navbar>*/}
+      </Col>
+    </Row>
   )
 }

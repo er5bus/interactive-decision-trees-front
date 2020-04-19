@@ -1,7 +1,6 @@
 import { CALL_API } from "./../constants"
 import makeCall from "./../utils/api"
 import notif from 'react-notification-system-redux'
-import { useHistory } from "react-router-dom"
 
 
 const api = store => next => async action => {

@@ -13,7 +13,6 @@ import InputField from "./../../../components/InputField"
 import InputTextareaField from "./../../../components/InputTextareaField"
 import EditorField from "./../../../components/EditorField"
 import SelectField from "./../../../components/SelectField"
-import InputCheckboxField from "./../../../components/InputRadioCheckboxField"
 
 
 const minLength2 = minLength(2)

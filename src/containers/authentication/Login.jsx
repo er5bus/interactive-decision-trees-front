@@ -14,10 +14,6 @@ import LoginForm from "./LoginForm"
 
 class Login extends React.Component {
 
-  constructor(props){
-    super(props)
-  }
-
   onSubmit = (values) => {
     this.props.login(values)
   }
