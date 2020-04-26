@@ -8,9 +8,10 @@ import api from "./middleware/api"
 import { deleteSession, saveSession } from "./middleware/session"
 
 // reducers
-import authReducer from "./containers/authentication/reducer"
-import treeReducer from "./containers/tree/reducer"
-import nodeReducer from "./containers/node/reducer"
+import authReducer from "./modules/authentication/reducers"
+import treeReducer from "./modules/tree/reducers"
+import nodeReducer from "./modules/node/reducers"
+import tagReducer from "./modules/tag/reducers"
 
 import { reducer as formReducer } from 'redux-form'
 import { sessionReducer } from 'redux-react-session'
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   form: formReducer,
   tree: treeReducer,
   node: nodeReducer,
+  tag: tagReducer,
   notifications: notificationReducer
 })
 

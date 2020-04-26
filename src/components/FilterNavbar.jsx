@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { Row, Col, Input, InputGroup, InputGroupAddon, InputGroupText} from "reactstrap"
 
 
-export default ({ onSearch }) => {
+export default ({ onSearch, value }) => {
 
   const { t } = useTranslation()
 
@@ -27,7 +27,7 @@ export default ({ onSearch }) => {
               <i className="ni ni-zoom-split-in" />
             </InputGroupText>
           </InputGroupAddon>
-          <Input placeholder={ t("Search") } type="text" onChange={onSearch} />
+          <Input placeholder={ t("Search") } type="text" onChange={onSearch} defaultValue={ value } />
         </InputGroup>
         {/*</NavItem>
         </Nav>

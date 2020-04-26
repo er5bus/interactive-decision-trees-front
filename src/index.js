@@ -14,16 +14,16 @@ import configureStore from "./configureStore"
 // loader
 import Loader from "./components/Loader"
 
-import { INIT_STATE, ROUTES } from "./constants"
+import routes from "./routes"
 
 // load translation
 import './i18n'
 
 
-const AuthLayout = React.lazy( () => import("./containers/layout/AuthLayout"))
-const  UserLayout = React.lazy( () =>  import("./containers/layout/UserLayout"))
+const AnonymousLayout = React.lazy( () => import("./layouts/AnonymousLayout"))
+const  UserLayout = React.lazy( () =>  import("./layouts/UserLayout"))
 
-const store = configureStore(INIT_STATE)
+const store = configureStore()
 
 // Init the session service
 sessionService.initSessionService(store, {refreshOnCheckAuth: true})
@@ -33,9 +33,9 @@ sessionService.initSessionService(store, {refreshOnCheckAuth: true})
         <BrowserRouter>
           <React.Suspense fallback={<Loader />}>
             <Switch>
-              <Route onEnter={sessionService.checkAuth} path={ROUTES.AUTH.MAIN_PATH} component={AuthLayout} />
-              <Route path={ROUTES.USER.MAIN_PATH} component={UserLayout} />
-              <Redirect from="*" to={ ROUTES.AUTH.MAIN_PATH } />
+              <Route onEnter={sessionService.checkAuth} path={ routes.anonymous.path } component={AnonymousLayout} />
+              <Route path={ routes.user.path } component={UserLayout} />
+              <Redirect from="*" to={ routes.anonymous.path } />
             </Switch>
           </React.Suspense>
         </BrowserRouter>

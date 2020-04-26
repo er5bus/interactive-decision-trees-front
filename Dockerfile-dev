@@ -6,11 +6,11 @@ LABEL MAINTAINER="Rami sfari <rami2sfari@gmail.com>"
 COPY . /app/
 WORKDIR /app
 
+# install app dependencies
+RUN ["yarn"]
+
 # add `/usr/src/app/node_modules/.bin` to $PATH
 ENV PATH /app/node_modules/.bin:$PATH
-
-# install app dependencies
-RUN yarn
 
 EXPOSE 3000
 

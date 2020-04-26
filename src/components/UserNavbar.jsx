@@ -1,7 +1,8 @@
 import React from "react"
 import { Link } from "react-router-dom"
 
-import { ROUTES } from "./../constants"
+import anonymousRoutes from './../routes/anonymous'
+import userRoutes from './../routes/user'
 
 import {
   UncontrolledCollapse,
@@ -20,14 +21,15 @@ import {
   Col,
 } from "reactstrap"
 
-import LogoutModal from "./../containers/authentication/Logout"
 
 import { useTranslation } from "react-i18next"
 
 import userIcon from "./../assets/img/user.png"
 import treeIcon from "./../assets/img/tree.svg"
+import tagIcon from "./../assets/img/tag.svg"
 import graphIcon from "./../assets/img/graph.svg"
 
+const LogoutModal = anonymousRoutes.routes.logout.component
 
 const UserNavbar = ({ userName }) => {
 
@@ -49,7 +51,7 @@ const UserNavbar = ({ userName }) => {
           id="navbar-main"
         >
           <Container>
-            <NavbarBrand className="mr-lg-5" to={ ROUTES.USER.MAIN_PATH } tag={Link}>
+            <NavbarBrand className="mr-lg-5" to={ userRoutes.path } tag={Link}>
               <img
                 alt="..."
                 src={treeIcon}
@@ -62,7 +64,7 @@ const UserNavbar = ({ userName }) => {
               <div className="navbar-collapse-header">
                 <Row>
                   <Col className="collapse-brand" xs="6">
-                    <Link to={ ROUTES.USER.MAIN_PATH }>
+                    <Link to={ userRoutes.path }>
                       <img
                         alt="..."
                         src={treeIcon}
@@ -79,9 +81,15 @@ const UserNavbar = ({ userName }) => {
               </div>
               <Nav className="navbar-nav-hover align-items-lg-center" navbar>
                 <NavItem>
-                  <NavLink to={ROUTES.USER.MAIN_PATH + ROUTES.USER.TREE_INDEX} tag={Link}>
+                  <NavLink to={ userRoutes.path + userRoutes.routes.treeList.path } tag={Link}>
                     <img src={graphIcon} alt="..." className="icon-sm mr-1" />
                     <span className="nav-link-inner--text mb-0 text-sm font-weight-bold">{ t("My Trees") }</span>
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink to={ userRoutes.path + userRoutes.routes.tagList.path } tag={Link}>
+                    <img src={tagIcon} alt="..." className="icon-sm mr-1" />
+                    <span className="nav-link-inner--text mb-0 text-sm font-weight-bold">{ t("My Tags") }</span>
                   </NavLink>
                 </NavItem>
               </Nav>
