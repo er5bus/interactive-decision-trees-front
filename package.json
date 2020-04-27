@@ -17,6 +17,8 @@
     "react-notification-system": "^0.3.0",
     "react-notification-system-redux": "^2.0.1",
     "moment": "^2.24.0",
+    "chroma-js": "^2.1.0",
+    "react-color": "^2.18.0",
     "moment-timezone": "^0.5.28",
     "react-moment": "^0.9.7",
     "axios": "^0.18.0",
