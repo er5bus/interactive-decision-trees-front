@@ -21,30 +21,40 @@ const multiChangeHandler = (func, input) => (values) => {
 const colourStyles = {
   control: styles => ({ ...styles, backgroundColor: 'white' }),
   option: (styles, { data, isDisabled, isFocused, isSelected }) => {
-    const color = chroma(data.color);
-    return {
-      ...styles,
-      backgroundColor: isDisabled
+    if (data.color){
+      const color =  chroma(data.color)
+      return {
+        ...styles,
+        backgroundColor: isDisabled
         ? null
         : isSelected
         ? data.color
         : isFocused
         ? color.alpha(0.1).css()
         : null,
-      color: isDisabled
+        color: isDisabled
         ? '#ccc'
         : isSelected
         ? chroma.contrast(color, 'white') > 2
-          ? 'white'
-          : 'black'
+        ? 'white'
+        : 'black'
         : data.color,
-      cursor: isDisabled ? 'not-allowed' : 'default',
+        cursor: isDisabled ? 'not-allowed' : 'default',
 
-      ':active': {
-        ...styles[':active'],
-        backgroundColor: !isDisabled && (isSelected ? data.color : color.alpha(0.3).css()),
-      },
-    };
+        ':active': {
+          ...styles[':active'],
+          backgroundColor: !isDisabled && (isSelected ? data.color : color.alpha(0.3).css()),
+        },
+      }
+    }else {
+      return styles
+    }
+  },
+  singleValue: (styles) => {
+    return {
+      ...styles,
+      color: '#8898aa'
+    }
   },
   multiValue: (styles, { data }) => {
     const color = chroma(data.color);
@@ -92,7 +102,7 @@ export default ({input, label, placeholder, multi = false, choices = [], meta: {
         {...inputAttr}
         isMulti={multi}
         value={transformedValue}
-        className={`input-group-alternative ${touched && error && "has-danger"}`}
+        className={`input-group-alternative form-control-select ${touched && error && "has-danger"}`}
         classNamePrefix="react-select"
         options={choices}
         onChange={multi ? multiChangeHandler(input.onChange, input) : singleChangeHandler(input.onChange, input)}

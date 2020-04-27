@@ -24,6 +24,9 @@
   }
 }
 
+.form-control-select {
+  font-size: $input-btn-font-size;
+}
 
 // Textarea
 
@@ -108,4 +111,8 @@ textarea[resize="horizontal"] {
 .color-picker__picker {
   position: absolute;
   margin: 5pt 0;
+}
+
+.filter-tags {
+  cursor: pointer;
 }

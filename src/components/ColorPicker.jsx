@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { TwitterPicker } from 'react-color'
 import { Button, Col, Row } from "reactstrap"
-import { withTranslation, useTranslation } from "react-i18next"
+import { withTranslation } from "react-i18next"
 
 
 class ColorPicker extends PureComponent {

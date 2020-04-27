@@ -51,6 +51,10 @@ class TreeList extends React.Component {
     this.props.filterTrees(e.target.value.trim())
   }
 
+  onFilterByTag = (value) => {
+    this.props.filterTrees(value)
+  }
+
   onDeleteTree = () => {
     this.props.deleteTree(this.state.uid)
   }
@@ -109,7 +113,7 @@ class TreeList extends React.Component {
               >
                 <Row className="row-grid">
                   { !items.length && <CardNotFound /> }
-                  { items.map((tree, i) => <TreeItem key={i} {...tree} onToggleModal={this.onToggleModal} />)}
+                  { items.map((tree, i) => <TreeItem key={i} {...tree} onFilterByTag={this.onFilterByTag} onToggleModal={this.onToggleModal} />)}
                 </Row>
               </InfiniteScroll>
             </Col>

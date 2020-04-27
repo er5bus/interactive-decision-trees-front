@@ -11,6 +11,7 @@ export const getFilteredTrees = createSelector(
     (
       tree.tree_name.match(new RegExp(searchTerm, 'i')) ||
       tree.description.match(new RegExp(searchTerm, 'i')) ||
+      tree.tree_tags.some((tag) => tag.name.match(new RegExp(searchTerm, 'i')) || tag.description.match(new RegExp(searchTerm, 'i')) ) ||
       tree.uid.match(new RegExp(searchTerm, 'i'))
     )
   )
