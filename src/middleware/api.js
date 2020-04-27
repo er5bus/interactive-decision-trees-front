@@ -20,7 +20,7 @@ const api = store => next => async action => {
     title,
     message,
     position: 'tr',
-    autoDismiss: 0,
+    autoDismiss: 5,
   })
 
   if (jwt && !accessToken){

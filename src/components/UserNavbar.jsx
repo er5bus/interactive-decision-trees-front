@@ -51,7 +51,7 @@ const UserNavbar = ({ userName }) => {
           id="navbar-main"
         >
           <Container>
-            <NavbarBrand className="mr-lg-5" to={ userRoutes.path } tag={Link}>
+            <NavbarBrand className="mr-lg-5 d-none" to={ userRoutes.path } tag={Link}>
               <img
                 alt="..."
                 src={treeIcon}

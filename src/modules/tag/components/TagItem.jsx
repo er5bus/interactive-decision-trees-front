@@ -6,7 +6,7 @@ import { Button, Card, CardBody, Col} from "reactstrap"
 import userRoutes from './../../../routes/user'
 
 
-export default ({ onToggleModal =f=>f, name, description, uid }) => {
+export default ({ onToggleModal =f=>f, name, description, color, uid }) => {
 
   const { t } = useTranslation()
 
@@ -14,7 +14,7 @@ export default ({ onToggleModal =f=>f, name, description, uid }) => {
     <Col lg="4" className="pb-5">
       <Card className="card-lift--hover shadow border-0">
         <CardBody className="py-5">
-          <div className="icon icon-shape icon-shape-primary rounded-circle mb-4">
+          <div className="icon icon-shape icon-shape-white rounded-circle mb-4" style={{ backgroundColor: color }}>
             <i className="fas fa-tag" />
           </div>
           <h6 className="text-primary text-uppercase">

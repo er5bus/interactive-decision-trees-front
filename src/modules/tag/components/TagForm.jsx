@@ -10,6 +10,7 @@ import { required, maxLength, minLength } from "./../../../utils/validations"
 
 import Form from "./../../../components/Form"
 import InputField from "./../../../components/InputField"
+import ColorPickerField from "./../../../components/ColorPicker"
 import InputTextareaField from "./../../../components/InputTextareaField"
 
 
@@ -38,11 +39,17 @@ let TagForm = (props) => {
         name="description"
         component={InputTextareaField}
         className="form-control"
-        icon="ni ni-email-83"
         label={t("Description")}
         placeholder={t("Describe your tag")}
         type="text"
         validate={[ required, minLength2, maxLength500 ]}
+      />
+      <Field
+        name="color"
+        component={ColorPickerField}
+        className="form-control"
+        label={t("Pick a Color for the tag")}
+        validate={[ required ]}
       />
       <div className="text-center">
         <Button className="mt-4" color="primary" type="submit">

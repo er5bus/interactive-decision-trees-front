@@ -30,12 +30,12 @@ export default ({ onToggleModal =f=>f, first_node = null, tree_tags, tree_name, 
             }
           </div>
           <div className="pt-2">
-            <h6 className="text-info text-uppercase d-inline-block mr-2"> { t("Tags") } :</h6>
+            <h6 className="text-primary text-uppercase d-inline-block mr-2"> { t("Tags") } :</h6>
             { tree_tags.length ? tree_tags.map((tag, i) => 
               <Link to={ userRoutes.path + userRoutes.routes.tagEdit.path.replace(':param', tag.uid ) }>
-                <Badge key={i} color="info mr-2 mb-2" pill>{ tag.name }</Badge>
+                <Badge key={i} style={{ backgroundColor: tag.color }} color="neutral mr-2 mb-2" pill>{ tag.name }</Badge>
               </Link>
-            ) :  <Badge color="info mr-2 mb-2" pill>{ t("No tags") }</Badge>
+            ) :  <Badge color="primary mr-2 mb-2" pill>{ t("No tags") }</Badge>
             }
           </div>
           <Button
