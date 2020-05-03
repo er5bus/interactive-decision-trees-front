@@ -6,7 +6,7 @@ import { Card, CardBody, Col } from "reactstrap"
 import emptyIcon from "./../assets/img/empty.png"
 
 
-export default () => {
+const CardNotFound = () => {
   const { t } = useTranslation()
 
   return (
@@ -27,3 +27,6 @@ export default () => {
     </Col>
   )
 }
+
+
+export default CardNotFound

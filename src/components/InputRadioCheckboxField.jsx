@@ -1,9 +1,10 @@
 import React from "react"
+import PropTypes from 'prop-types'
 import { useTranslation } from "react-i18next"
 import { Row, Col } from "reactstrap"
 
 
-export default ({input, label, type, meta: { touched, error, warning }}) => {
+const InputRadioCheckboxField = ({input, label, type, meta: { touched, error, warning }}) => {
 
   const { t } = useTranslation()
 
@@ -36,3 +37,17 @@ export default ({input, label, type, meta: { touched, error, warning }}) => {
     </Row>
   )
 }
+
+
+InputRadioCheckboxField.propTypes = {
+  input: PropTypes.object,
+  label: PropTypes.string,
+  type: PropTypes.string,
+  meta: PropTypes.shape({
+    touched: PropTypes.bool,
+    error: PropTypes.string,
+    warning: PropTypes.string
+  })
+}
+
+export default InputRadioCheckboxField

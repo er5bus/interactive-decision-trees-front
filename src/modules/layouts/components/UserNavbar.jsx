@@ -1,8 +1,9 @@
 import React from "react"
+import PropTypes from 'prop-types'
 import { Link } from "react-router-dom"
 
-import anonymousRoutes from './../routes/anonymous'
-import userRoutes from './../routes/user'
+import anonymousRoutes from './../../../routes/anonymous'
+import userRoutes from './../../../routes/user'
 
 import {
   UncontrolledCollapse,
@@ -24,10 +25,10 @@ import {
 
 import { useTranslation } from "react-i18next"
 
-import userIcon from "./../assets/img/user.png"
-import treeIcon from "./../assets/img/tree.svg"
-import tagIcon from "./../assets/img/tag.svg"
-import graphIcon from "./../assets/img/graph.svg"
+import userIcon from "./../../../assets/img/user.png"
+import treeIcon from "./../../../assets/img/tree.svg"
+import tagIcon from "./../../../assets/img/tag.svg"
+import graphIcon from "./../../../assets/img/graph.svg"
 
 const LogoutModal = anonymousRoutes.routes.logout.component
 
@@ -64,7 +65,7 @@ const UserNavbar = ({ userName }) => {
               <div className="navbar-collapse-header">
                 <Row>
                   <Col className="collapse-brand" xs="6">
-                    <Link to={ userRoutes.path }>
+                    <Link replace to={ userRoutes.path }>
                       <img
                         alt="..."
                         src={treeIcon}
@@ -81,13 +82,13 @@ const UserNavbar = ({ userName }) => {
               </div>
               <Nav className="navbar-nav-hover align-items-lg-center" navbar>
                 <NavItem>
-                  <NavLink to={ userRoutes.path + userRoutes.routes.treeList.path } tag={Link}>
+                  <NavLink replace to={ userRoutes.path + userRoutes.routes.treeList.path } tag={Link}>
                     <img src={graphIcon} alt="..." className="icon-sm mr-1" />
                     <span className="nav-link-inner--text mb-0 text-sm font-weight-bold">{ t("My Trees") }</span>
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink to={ userRoutes.path + userRoutes.routes.tagList.path } tag={Link}>
+                  <NavLink replace to={ userRoutes.path + userRoutes.routes.tagList.path } tag={Link}>
                     <img src={tagIcon} alt="..." className="icon-sm mr-1" />
                     <span className="nav-link-inner--text mb-0 text-sm font-weight-bold">{ t("My Tags") }</span>
                   </NavLink>
@@ -136,6 +137,10 @@ const UserNavbar = ({ userName }) => {
       </header>
     </>
   );
+}
+
+UserNavbar.prototypes = {
+  userName: PropTypes.string
 }
 
 export default UserNavbar

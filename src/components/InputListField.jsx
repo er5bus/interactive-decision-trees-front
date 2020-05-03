@@ -1,11 +1,13 @@
 import React from "react"
+import PropTypes from 'prop-types'
+
 import { Row, Col } from "reactstrap"
 
 import { Field } from "redux-form"
 import InputRadioCheckboxField from "./InputRadioCheckboxField"
 
 
-export default ({name, type, validate, choices = {}, label}) => {
+const InputListField = ({name, type, validate, choices = {}, label}) => {
 
   const renderChoices = () => Object.entries(choices).map(([value, key], i) => (
     <Field
@@ -32,3 +34,19 @@ export default ({name, type, validate, choices = {}, label}) => {
     </Row>
   )
 }
+
+InputListField.propTypes = {
+  name: PropTypes.string,
+  validate: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.array
+  ]),
+  type: PropTypes.string,
+  choices: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array
+  ]),
+  label: PropTypes.string,
+}
+
+export default InputListField

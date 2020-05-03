@@ -1,7 +1,7 @@
 import React from "react"
 import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
-import { Container,Row, Col, Spinner } from "reactstrap"
+import { Container,Row, Col } from "reactstrap"
 import { Link } from "react-router-dom"
 import { withTranslation } from 'react-i18next'
 
@@ -11,15 +11,17 @@ import FilterNavbar from "./../../../components/FilterNavbar"
 
 import ContentNodeItem from "./../components/ContentNodeItem"
 import LogicNodeItem from "./../components/LogicNodeItem"
+import NodeLoader from "./../components/NodeLoader"
 
 import nodeIcon from "./../../../assets/img/nodes.svg"
 
-import { fetchNodes, filterNodes, deleteNode } from "./../actions"
-import {  getFilteredLogicNodes, getFilteredContentNodes } from "./../selector"
+import { fetchNodes, fetchTree, filterNodes, deleteNode } from "./../actions"
+import { NODE_TYPE } from './../constants'
+import { getFilteredNodes } from "./../selector"
 
 import userRoutes from './../../../routes/user'
 
-import InfiniteScroll from 'react-infinite-scroller'
+import InfiniteScroll from './../../../components/InfiniteScroll'
 
 //import Moment from 'react-moment'
 
@@ -34,13 +36,14 @@ class NodeList extends React.Component {
     }
   }
 
-  componentWillMount(){
-    this.props.fetchNodes({ ...this.props.match.params, pageNumber: 1 })
+  componentDidMount() {
+    const { params } = this.props.match
+    this.props.fetchTree(params)
   }
 
   onFetchNodes = async (pageNumber) => {
     if (!this.props.isLoading){
-      this.props.fetchNodes({ ...this.props.match.params, pageNumber })  
+      this.props.fetchNodes({ ...this.props.match.params, pageNumber })
     }
   }
 
@@ -59,13 +62,13 @@ class NodeList extends React.Component {
   }
 
   render() {
-    const { t, match: { params: { param } }, searchTerm, tree: {  logic_nodes=[], content_nodes=[] }, hasMore } = this.props
+    const { t, tree, match: { params: { param } }, searchTerm, isLoading, items, hasMore } = this.props
     return (
       <>
         <Container className="py-lg-md d-flex pb-5">
           <div className="col px-0">
             <Row>
-              <Col lg="6">
+              <Col lg="8">
                 <h1 className="display-3 text-white">
                   <img className="icon-lg" src={nodeIcon} alt="Node icon" />
                   {t(" My Nodes")}
@@ -92,6 +95,18 @@ class NodeList extends React.Component {
                     </span>
                     <span className="btn-inner--text">{t('New logic node')}</span>
                   </Link>
+                  {
+                    tree && tree.first_node && tree.first_node.uid &&
+                      <Link
+                        className="btn-icon mb-3 mb-sm-0 btn btn-info"
+                        to={ userRoutes.path + userRoutes.routes.nodeOverview.path.replace(":treeparam", param).replace(":nodeparam", tree.first_node.uid) }
+                      >
+                        <span className="btn-inner--icon mr-1">
+                          <i className="fas fa-sitemap" />
+                        </span>
+                        <span className="btn-inner--text">{t('Tree Overview')}</span>
+                      </Link>
+                  }
                 </div>
               </Col>
             </Row>
@@ -112,18 +127,30 @@ class NodeList extends React.Component {
               <FilterNavbar onSearch={this.onSearch} value={searchTerm} />
             </Col>
             <Col lg="12">
-              <InfiniteScroll
-                pageStart={1}
-                loadMore={this.onFetchNodes}
-                hasMore={hasMore}
-                loader={<Col  key="spinner" className="pt-4 pb-4" lg="12"><Spinner className="pt-2" color="primary" /></Col>}
-              >
-              <Row key={0} className="row-grid">
-                { ( content_nodes.length === 0 && logic_nodes.length === 0) && <CardNotFound /> }
-                { content_nodes.length > 0 && content_nodes.map((node, i) => <ContentNodeItem key={i} {...node} treeparam={param} onToggleModal={this.onToggleModal} /> )}
-                { logic_nodes.length > 0 && logic_nodes.map((node, i) => <LogicNodeItem key={i} {...node} treeparam={param} onToggleModal={this.onToggleModal} /> )}
+              <Row className="row-grid">
+                { tree ? <InfiniteScroll
+                  loadMore={this.onFetchNodes}
+                  hasMore={hasMore}
+                  clearStore={tree.uid !== param}
+                  storeEmpty={items.length === 0}
+                  isLoading={isLoading}
+                  loader={<NodeLoader />}
+                >
+                  { !isLoading && items && items.length === 0 && <CardNotFound /> }
+                  { items && items.length > 0 && items.map((node, i) => {
+                    if (node.node_type === NODE_TYPE.CONTENT_NODE){
+                      return <ContentNodeItem key={i} {...node} treeparam={param} onToggleModal={this.onToggleModal} />
+                    }
+                    if (node.node_type === NODE_TYPE.LOGIC_NODE){
+                      return <LogicNodeItem key={i} {...node} treeparam={param} onToggleModal={this.onToggleModal} />
+                    }
+                    return <></>
+                  })
+                  }
+                </InfiniteScroll>
+                : <NodeLoader />
+                }
               </Row>
-              </InfiniteScroll>
             </Col>
           </Row>
         </Container>
@@ -132,9 +159,9 @@ class NodeList extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ fetchNodes, deleteNode, filterNodes }, dispatch)
+const mapDispatchToProps = (dispatch) => bindActionCreators({ fetchTree, fetchNodes, deleteNode, filterNodes }, dispatch)
 const mapStateToProps = state => ({
-  ...state.node, tree: { logic_nodes: getFilteredLogicNodes(state), content_nodes: getFilteredContentNodes(state) }
+  ...state.node, items: getFilteredNodes(state)
 })
 
 

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { useTranslation } from "react-i18next"
 
 import { FormGroup } from "reactstrap"
@@ -6,7 +7,7 @@ import { FormGroup } from "reactstrap"
 import CKEditor from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 
-export default ({ label, placeholder, input, meta: { touched, error, warning } }) => {
+const EditorField = ({ label, placeholder, input, meta: { touched, error, warning } }) => {
 
   const { t } = useTranslation()
 
@@ -30,3 +31,16 @@ export default ({ label, placeholder, input, meta: { touched, error, warning } }
     </FormGroup>
   )
 }
+
+EditorField.propTypes = {
+  input: PropTypes.object,
+  placeholder: PropTypes.string,
+  label: PropTypes.string,
+  meta: PropTypes.shape({
+    touched: PropTypes.bool,
+    error: PropTypes.string,
+    warning: PropTypes.string
+  })
+}
+
+export default EditorField

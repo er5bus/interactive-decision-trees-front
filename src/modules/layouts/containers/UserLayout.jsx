@@ -3,8 +3,8 @@ import { connect } from "react-redux"
 import { Container } from "reactstrap"
 import { Redirect, Switch, Route } from "react-router-dom"
 
-import userRoutes from "./../routes/user"
-import anonymousRoutes from "./../routes/anonymous"
+import userRoutes from "./../../../routes/user"
+import anonymousRoutes from "./../../../routes/anonymous"
 
 import UserNavbar from "./../components/UserNavbar"
 import Notifications from 'react-notification-system-redux'
@@ -62,12 +62,11 @@ class UserLayout extends React.Component {
                       userRoutes.routes[routeName].path && 
                       <Route 
                         key={i} 
-                        exact path={ userRoutes.path + userRoutes.routes[routeName].path} 
+                        path={ userRoutes.path + userRoutes.routes[routeName].path} 
                         component={ userRoutes.routes[routeName].component} 
                       />
                     )
                   }
-
                   <Redirect from="*" to={ userRoutes.path + userRoutes.routes.treeList.path } />
                 </Switch>
             </Container>

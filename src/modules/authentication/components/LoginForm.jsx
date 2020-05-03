@@ -1,5 +1,6 @@
 import React from "react"
-import { Field, reduxForm } from "redux-form"
+import PropTypes from 'prop-types'
+import { Field, reduxForm, stopSubmit, clearSubmitErrors } from "redux-form"
 import { Button, Spinner } from "reactstrap"
 import { useTranslation } from "react-i18next"
 
@@ -16,6 +17,14 @@ const LoginForm = (props) => {
 
   const { t } = useTranslation()
   const { handleSubmit, isLoading } = props
+
+  React.useEffect(() => {
+    if (props.errors && props.errors.error && props.errors.error.match("bad-request")){
+      props.dispatch(stopSubmit("login", props.errors.message))
+    }else {
+      props.dispatch(clearSubmitErrors("login"))
+    }
+  }, [props])
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -52,6 +61,11 @@ const LoginForm = (props) => {
       </div>
     </Form>
   )
+}
+
+LoginForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool
 }
 
 export default reduxForm({

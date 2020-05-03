@@ -4,6 +4,9 @@ import { ACTIONS } from "./../constants"
 export default (state = { currentUser: null, accessToken: null, isLoading: false, error: null }, action) => {
   const { payload, type } = action
   switch (type) {
+    case ACTIONS.CLEAR_ERRORS : {
+      return { ...state, error: null }
+    }
     case ACTIONS.ACCOUNT_LOGIN_INIT : {
       return { ...state, isLoading: true, currentUser: null, accessToken: null, error: null }
     }

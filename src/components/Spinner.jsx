@@ -1,7 +1,7 @@
 import React from 'react'
 
 
-export default () => (
+const Spinner = () => (
   <div className="spinner-wrapper">
     <div className="cssload-loader">
       <div className="cssload-inner cssload-one"></div>
@@ -10,3 +10,6 @@ export default () => (
     </div>
   </div>
 )
+
+
+export default Spinner

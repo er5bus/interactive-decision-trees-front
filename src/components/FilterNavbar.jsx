@@ -1,10 +1,11 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 //import { Navbar, Nav, NavItem, FormGroup, Input, Container, NavbarBrand, InputGroup, InputGroupAddon, InputGroupText} from "reactstrap"
 import { Row, Col, Input, InputGroup, InputGroupAddon, InputGroupText} from "reactstrap"
 
 
-export default ({ onSearch, value }) => {
+const FilterNavbar = ({ onSearch, value }) => {
 
   const { t } = useTranslation()
 
@@ -37,3 +38,11 @@ export default ({ onSearch, value }) => {
     </Row>
   )
 }
+
+
+FilterNavbar.propTypes = {
+  onSearch: PropTypes.func,
+  value: PropTypes.string
+}
+
+export default FilterNavbar

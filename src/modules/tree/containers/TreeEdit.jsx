@@ -16,7 +16,7 @@ import graphIcon from "./../../../assets/img/graph.svg"
 
 class TreeEdit extends React.Component {
 
-  componentWillMount(){
+  UNSAFE_componentWillMount(){
     this.props.fetchAllTags()
     this.props.fetchTree(this.props.match.params)
     this.props.fetchAllNodes(this.props.match.params)

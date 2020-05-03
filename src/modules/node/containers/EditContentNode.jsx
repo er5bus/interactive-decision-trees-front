@@ -12,6 +12,8 @@ import { editContentNode as editNode, fetchContentNode as fetchNode, fetchAllSco
 import ContentNodeForm from "./../components/ContentNodeForm"
 import NodeListLink from "./../components/NodeListLink"
 
+import userRoutes from "./../../../routes/user"
+
 import nodeIcon from "./../../../assets/img/nodes.svg"
 
 
@@ -28,6 +30,13 @@ class EditContentNode extends React.Component {
     const { params } = this.props.match
     console.log(values)
     this.props.editNode(params, values)
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot){
+    const { treeparam } = this.props.match.params
+    if (this.props.success){
+      this.props.history.push(userRoutes.path + userRoutes.routes.nodeList.path.replace(":param", treeparam))
+    }
   }
 
   render() {

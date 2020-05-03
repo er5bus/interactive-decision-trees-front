@@ -1,7 +1,7 @@
 import React from "react"
 import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
-import { Container,Row, Col, Spinner } from "reactstrap"
+import { Container,Row, Col } from "reactstrap"
 import { Link } from "react-router-dom"
 import { withTranslation } from 'react-i18next'
 
@@ -10,15 +10,16 @@ import userRoutes from './../../../routes/user'
 import ConfirmModal from "./../../../components/ConfirmModal"
 import CardNotFound from "./../../../components/CardNotFound"
 import FilterNavbar from "./../../../components/FilterNavbar"
+import InfiniteScroll from './../../../components/InfiniteScroll'
 
 import TagItem from "./../components/TagItem"
+import TagLoader from "./../components/TagLoader"
 
 import tagIcon from "./../../../assets/img/tag.svg"
 
 import { fetchTags, filterTags, deleteTag } from "./../actions"
 import { getFilteredTags } from "./../selector"
 
-import InfiniteScroll from 'react-infinite-scroller'
 
 //import Moment from 'react-moment'
 
@@ -31,10 +32,6 @@ class TagList extends React.Component {
       showModal: false,
       uid: null,
     }
-  }
-
-  componentWillMount(){
-    this.props.fetchTags(1)
   }
 
   onToggleModal = (uid) => {
@@ -56,7 +53,7 @@ class TagList extends React.Component {
   }
 
   render() {
-    const { t, items, hasMore, searchTerm } = this.props
+    const { t, items, hasMore, searchTerm, isLoading } = this.props
     return (
       <div>
         <Container className="py-lg-md d-flex pb-5">
@@ -100,17 +97,18 @@ class TagList extends React.Component {
               <FilterNavbar onSearch={this.onSearch} value={ searchTerm } />
             </Col>
             <Col lg="12">
-              <InfiniteScroll
-                pageStart={1}
-                loadMore={this.onFetchTags}
-                hasMore={hasMore}
-                loader={<Spinner className="pt-2" key={0} color="primary" />}
-              >
-                <Row className="row-grid">
-                  { !items.length && <CardNotFound /> }
+              <Row className="row-grid">
+                <InfiniteScroll
+                  loadMore={this.onFetchTags}
+                  hasMore={hasMore}
+                  storeEmpty={items.length === 0}
+                  isLoading={isLoading}
+                  loader={<TagLoader />}
+                >
+                  { !isLoading && !items.length && <CardNotFound /> }
                   { items.map((tag, i) => <TagItem key={i} {...tag} onToggleModal={this.onToggleModal} />)}
-                </Row>
-              </InfiniteScroll>
+                </InfiniteScroll>
+              </Row>
             </Col>
           </Row>
         </Container>

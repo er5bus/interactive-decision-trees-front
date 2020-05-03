@@ -20,8 +20,8 @@ import routes from "./routes"
 import './i18n'
 
 
-const AnonymousLayout = React.lazy( () => import("./layouts/AnonymousLayout"))
-const  UserLayout = React.lazy( () =>  import("./layouts/UserLayout"))
+const AnonymousLayout = React.lazy( () => import("./modules/layouts/containers/AnonymousLayout"))
+const  UserLayout = React.lazy( () =>  import("./modules/layouts/containers/UserLayout"))
 
 const store = configureStore()
 

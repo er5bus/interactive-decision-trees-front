@@ -1,7 +1,6 @@
 import React from "react"
 import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
-import { Redirect } from "react-router-dom"
 import { withTranslation } from "react-i18next"
 
 // reactstrap components
@@ -18,7 +17,7 @@ import graphIcon from "./../../../assets/img/graph.svg"
 
 class TreeNew extends React.Component {
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.props.fetchAllTags()
     this.props.clearTreeForm()
   }
@@ -27,11 +26,15 @@ class TreeNew extends React.Component {
     this.props.createTree(values)
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot){
+    const { item } = this.props
+    if (item && item.uid){
+      this.props.history.push(userRoutes.path + userRoutes.routes.nodeList.path.replace(":param", item.uid))
+    }
+  }
+
   render() {
-    const { error, t, item, tags, isLoading } = this.props
-    if (item && item.param){
-      return <Redirect to={ userRoutes.path + userRoutes.routes.nodeList.path.replace(":param", item.param) } />
-    }else {
+    const { error, t, tags, isLoading } = this.props
       return (
         <>
           <Container className="py-lg-md d-flex pb-5">
@@ -49,7 +52,6 @@ class TreeNew extends React.Component {
               </Row>
             </div>
           </Container>
-
           <Row className="justify-content-center">
             <Col lg="12" md="12">
               <Card className="shadow">
@@ -61,7 +63,6 @@ class TreeNew extends React.Component {
           </Row>
         </>
       )
-    }
   }
 }
 

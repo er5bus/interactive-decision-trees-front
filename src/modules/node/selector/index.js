@@ -1,28 +1,26 @@
 import { createSelector } from 'reselect'
+import { NODE_TYPE } from './../constants'
 
 
-const getLogicNodes = state =>  state.node.tree.logic_nodes || []
-const getContentNodes = state => state.node.tree.content_nodes || []
-const getSearchTerm = state => state.node.searchTerm
+const getNodes = state =>  state.node.items || []
+const getSearchTerm = state => state.node.searchTerm || ""
 
 
-export const getFilteredLogicNodes = createSelector(
-  [getLogicNodes, getSearchTerm],
-  (nodes, searchTerm) => nodes.filter(node =>
-    (
-      node.node_name.match(new RegExp(searchTerm, 'i')) ||
-      node.uid.match(new RegExp(searchTerm, 'i'))
-    )
-  )
-)
+export const getFilteredNodes = createSelector(
+  [getNodes, getSearchTerm], (nodes, searchTerm) => nodes.filter((node) => {
+    if (node.node_type === NODE_TYPE.LOGIC_NODE) {
+      return (
+        node.node_name.match(new RegExp(searchTerm, 'i')) ||
+        node.uid.match(new RegExp(searchTerm, 'i'))
+      )
+    }else if ( node.node_type === NODE_TYPE.CONTENT_NODE) {
+      return (
+        node.node_name.match(new RegExp(searchTerm, 'i')) ||
+        node.question.match(new RegExp(searchTerm, 'i')) ||
+        node.uid.match(new RegExp(searchTerm, 'i'))
+      )
+    }
 
-export const getFilteredContentNodes = createSelector(
-  [getContentNodes, getSearchTerm],
-  (nodes, searchTerm) => nodes.filter(node =>
-    (
-      node.node_name.match(new RegExp(searchTerm, 'i')) ||
-      node.question.match(new RegExp(searchTerm, 'i')) ||
-      node.uid.match(new RegExp(searchTerm, 'i'))
-    )
-  )
+    return node
+  })
 )

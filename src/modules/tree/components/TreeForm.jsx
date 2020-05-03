@@ -1,5 +1,5 @@
 import React from "react"
-import { Field, FieldArray, reduxForm } from "redux-form"
+import { Field, FieldArray, reduxForm, stopSubmit, clearSubmitErrors } from "redux-form"
 import { Button } from "reactstrap"
 import { useTranslation } from "react-i18next"
 import { connect } from "react-redux"
@@ -72,10 +72,18 @@ const renderScore = ({ fields, t }) =>  {
 let TreeForm = (props) => {
 
   const { t } = useTranslation()
-  const { handleSubmit, errors = {}, nodes = [], tags = [], isLoading } = props
+  const { handleSubmit, nodes = [], tags = [], isLoading, reset } = props
+
+  React.useEffect(() => {
+    if (props.errors && props.errors.error && props.errors.error.match("bad-request")){
+      props.dispatch(stopSubmit("tree", props.errors.message))
+    }else {
+      props.dispatch(clearSubmitErrors("tree"))
+    }
+  }, [props])
 
   return (
-    <Form onSubmit={handleSubmit} errors={errors}>
+    <Form onSubmit={handleSubmit}>
       <Field
         name="tree_name"
         component={InputField}
@@ -122,14 +130,17 @@ let TreeForm = (props) => {
           multi={true}
           label={t("Choose tags for this tree")}
           placeholder={ t("Select Tags") }
-          choices={ tags }
+          choices={ Object.keys(tags).map((id) => ({ value: id, label: tags[id].name, color: tags[id].color }) ) }
         />
       </div>
       <FieldArray name="scores" component={renderScore} t={t} />
-      <div className="text-center">
-        <Button className="mt-4" color="primary" type="submit">
-          { isLoading && <Spinner color="white" /> }
+      <div className="text-center mt-5 border-top">
+        <Button className="mt-4 pl-5 pr-5" color="primary" type="submit">
+          { isLoading ? <Spinner color="white mr-2" /> : <i className="fas fa-save mr-2"></i> }
           {t("Save tree")}
+        </Button>
+        <Button className="mt-4 pl-5 pr-5" color="warning" onClick={reset}>
+          <i className="fas fa-trash mr-2"></i> {t("Clear values")}
         </Button>
       </div>
     </Form>
@@ -141,8 +152,7 @@ TreeForm = reduxForm({
   touchOnBlur: false
 })(TreeForm)
 
+
 export default connect(
-  state => ({
-    initialValues: state.tree.item // pull initial values from account reducer
-  })
+  state => ({ initialValues: state.tree.item })
 )(TreeForm)

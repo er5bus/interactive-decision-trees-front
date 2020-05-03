@@ -114,6 +114,22 @@ const fetchNode = ({ treeparam, nodeparam }, endpoint) =>
   })
 
 
+export const fetchTree = ({param}) =>
+  ({
+    type: CALL_API,
+    meta: {
+      actions: {
+        init: ACTIONS.FETCH_CURRENT_TREE_INIT,
+        success: ACTIONS.FETCH_CURRENT_TREE_SUCCEDED,
+        fail: ACTIONS.FETCH_CURRENT_TREE_FAILED
+      },
+      endpoint: ENDPOINT.TREE.replace(":param", param),
+      method: HTTP_METHODS.GET,
+      jwt: true
+    }
+  })
+
+
 export const fetchLogicNode = ({ treeparam, nodeparam }) => fetchNode({ treeparam, nodeparam }, ENDPOINT.LOGIC_NODE)
 export const fetchContentNode = ({ treeparam, nodeparam }) => fetchNode({ treeparam, nodeparam }, ENDPOINT.CONTENT_NODE)
 

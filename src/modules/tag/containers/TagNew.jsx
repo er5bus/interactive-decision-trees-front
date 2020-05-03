@@ -12,6 +12,7 @@ import { Card, Row, CardBody, Col, Container } from "reactstrap"
 import { createTag, clearTagForm } from "./../actions"
 
 import TagForm from "./../components/TagForm"
+
 import tagIcon from "./../../../assets/img/tag.svg"
 
 
@@ -47,7 +48,6 @@ class TagNew extends React.Component {
               </Row>
             </div>
           </Container>
-
           <Row className="justify-content-center">
             <Col lg="12" md="12">
               <Card className="shadow">

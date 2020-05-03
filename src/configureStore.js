@@ -1,5 +1,5 @@
 import thunk from 'redux-thunk'
-import { combineReducers, createStore, applyMiddleware } from 'redux'
+import { combineReducers, createStore, applyMiddleware, compose } from 'redux'
 
 
 
@@ -29,10 +29,12 @@ const rootReducer = combineReducers({
 
 export default ( preloadedState = {} ) => {
 
+  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
   const store = createStore(
     rootReducer,
     preloadedState,
-    applyMiddleware(thunk, api, deleteSession, saveSession)
+    composeEnhancers(applyMiddleware(thunk, api, deleteSession, saveSession))
   )
 
   return store

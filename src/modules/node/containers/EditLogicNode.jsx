@@ -12,6 +12,8 @@ import { editLogicNode as editNode, fetchLogicNode as fetchNode, fetchAllScores,
 import LogicNodeForm from "./../components/LogicNodeForm"
 import NodeListLink from "./../components/NodeListLink"
 
+import userRoutes from "./../../../routes/user"
+
 import nodeIcon from "./../../../assets/img/nodes.svg"
 
 
@@ -27,6 +29,13 @@ class LogicNodeNew extends React.Component {
   onSubmit = (values) => {
     const { params } = this.props.match
     this.props.editNode(params, values)
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot){
+    const { treeparam } = this.props.match.params
+    if (this.props.success){
+      this.props.history.push(userRoutes.path + userRoutes.routes.nodeList.path.replace(":param", treeparam))
+    }
   }
 
   render() {

@@ -1,5 +1,5 @@
 import React from "react"
-import { Field, FieldArray, reduxForm } from "redux-form"
+import { Field, FieldArray, reduxForm, stopSubmit, clearSubmitErrors } from "redux-form"
 import { Button, Spinner } from "reactstrap"
 import { useTranslation } from "react-i18next"
 import { connect } from "react-redux"
@@ -95,10 +95,18 @@ const renderRule = ({ fields, scores = [], nodes = [] , t }) =>  {
 let LogicNodeForm = (props) => {
 
   const { t } = useTranslation()
-  const { handleSubmit, scores = [], isLoading, nodes = [], errors } = props
+  const { handleSubmit, scores = [], isLoading, nodes = [], reset } = props
+
+  React.useEffect(() => {
+    if (props.errors && props.errors.error && props.errors.error.match("bad-request")){
+      props.dispatch(stopSubmit("logic_node", props.errors && props.errors.message))
+    }else {
+      props.dispatch(clearSubmitErrors("logic_node"))
+    }
+  }, [props])
 
   return (
-    <Form onSubmit={handleSubmit} errors={errors}>
+    <Form onSubmit={handleSubmit}>
       <Field
         name="node_name"
         component={InputField}
@@ -121,10 +129,13 @@ let LogicNodeForm = (props) => {
           validate={[ required ]}
         />
       </div>
-      <div className="text-center">
-        <Button className="mt-4" color="primary" type="submit">
-          { isLoading && <Spinner color="white" /> }
-          {t("Save node")}
+      <div className="text-center mt-5 border-top">
+        <Button className="mt-4 pl-5 pr-5" color="primary" type="submit">
+          { isLoading ? <Spinner color="white mr-2" /> : <i className="fas fa-save mr-2"></i> }
+          {t("Save logic node")}
+        </Button>
+        <Button className="mt-4 pl-5 pr-5" color="warning" onClick={reset}>
+          <i className="fas fa-trash mr-2"></i> {t("Clear values")}
         </Button>
       </div>
     </Form>

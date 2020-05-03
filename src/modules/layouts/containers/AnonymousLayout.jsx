@@ -4,8 +4,8 @@ import { Container, Row, Col } from "reactstrap"
 import { NavLink, Redirect, Switch, Route } from "react-router-dom"
 import { withTranslation } from "react-i18next"
 
-import anonymousRoutes from './../routes/anonymous'
-import userRoutes from './../routes/user'
+import anonymousRoutes from './../../../routes/anonymous'
+import userRoutes from './../../../routes/user'
 
 import Notifications from 'react-notification-system-redux'
 
@@ -14,8 +14,6 @@ class AnonymousLayout extends React.Component {
 
   render () {
     const { t, authenticated, notifications = null } = this.props
-
-    console.log(Object.keys(anonymousRoutes.routes))
 
     return authenticated
       ? <Redirect to={userRoutes.path} />
@@ -53,7 +51,6 @@ class AnonymousLayout extends React.Component {
                       />
                     )
                   }
-
                   <Redirect from="*" to={ anonymousRoutes.path + anonymousRoutes.routes.login.path } />
                 </Switch>
               </Row>

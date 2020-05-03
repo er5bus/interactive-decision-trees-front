@@ -95,6 +95,10 @@ textarea[resize="horizontal"] {
   border: 0 !important;
 }
 
+.react-select__value-container--is-multi {
+  flex-wrap: nowrap !important; 
+}
+
 
 .color-picker__color {
   position: absolute;

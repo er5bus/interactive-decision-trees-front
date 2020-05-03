@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 import { TwitterPicker } from 'react-color'
 import { Button, Col, Row } from "reactstrap"
 import { withTranslation } from "react-i18next"
@@ -14,6 +15,11 @@ class ColorPicker extends PureComponent {
 
     this.toggleColor = this.toggleColor.bind(this)
     this.handleChangeComplete = this.handleChangeComplete.bind(this)
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot){
+    const { input } = this.props
+    this.setState({ color: input.value })
   }
 
   toggleColor(e) {
@@ -32,7 +38,6 @@ class ColorPicker extends PureComponent {
 
   render() {
     const { input, label, t, meta: { touched, error, warning } } = this.props
-    this.setState({ color: input.value })
     return (
       <Row className="pb-2">
         <Col lg="5">
@@ -54,6 +59,16 @@ class ColorPicker extends PureComponent {
       </Row>
     )
   }
+}
+
+ColorPicker.propTypes = {
+  input: PropTypes.object,
+  label: PropTypes.string,
+  meta: PropTypes.shape({
+    touched: PropTypes.bool,
+    error: PropTypes.string,
+    warning: PropTypes.string
+  })
 }
 
 export default withTranslation()(ColorPicker)

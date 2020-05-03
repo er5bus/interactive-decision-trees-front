@@ -1,9 +1,10 @@
 import React from "react"
+import PropTypes from 'prop-types'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap"
 import { useTranslation } from "react-i18next"
 
 
-export default ({ title, content, onToggle, onClick, buttonText }) => {
+const ConfirmModal = ({ title, content, onToggle, onClick, buttonText }) => {
 
   const { t } = useTranslation()
 
@@ -23,3 +24,13 @@ export default ({ title, content, onToggle, onClick, buttonText }) => {
     </div>
   )
 }
+
+ConfirmModal.propTypes = {
+  title: PropTypes.string, 
+  content: PropTypes.string, 
+  onToggle: PropTypes.func, 
+  onClick: PropTypes.func, 
+  buttonText: PropTypes.string
+}
+
+export default ConfirmModal

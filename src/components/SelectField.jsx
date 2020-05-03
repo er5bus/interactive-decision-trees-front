@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { useTranslation } from "react-i18next"
 
 import chroma from 'chroma-js'
@@ -15,7 +16,7 @@ const singleChangeHandler = (func, input) => (choice) => {
 }
 
 const multiChangeHandler = (func, input) => (values) => {
-  func(values.map(value => value.value))
+  func(values && values.map(value => value.value))
 }
 
 const colourStyles = {
@@ -89,7 +90,8 @@ const transformValue = (value, options, multi) => {
   return multi ? filteredOptions : filteredOptions[0]
 }
 
-export default ({input, label, placeholder, multi = false, choices = [], meta: { touched, error, warning }}) => {
+
+const SelectField = ({input, label, placeholder, multi = false, choices = [], meta: { touched, error, warning }}) => {
 
   const { t } = useTranslation()
   const { value, ...inputAttr } = input
@@ -97,7 +99,7 @@ export default ({input, label, placeholder, multi = false, choices = [], meta: {
 
   return (
     <FormGroup className="mb-3">
-      <Label>{ label }</Label>
+      { label && <Label>{ label }</Label>}
       <Select
         {...inputAttr}
         isMulti={multi}
@@ -116,3 +118,20 @@ export default ({input, label, placeholder, multi = false, choices = [], meta: {
     </FormGroup>
   )
 }
+
+
+SelectField.propTypes = {
+  input: PropTypes.object,
+  label: PropTypes.string,
+  className: PropTypes.string,
+  multi: PropTypes.bool,
+  choices: PropTypes.array,
+  placeholder: PropTypes.string,
+  meta: PropTypes.shape({
+    touched: PropTypes.bool,
+    error: PropTypes.string,
+    warning: PropTypes.string
+  })
+}
+
+export default SelectField

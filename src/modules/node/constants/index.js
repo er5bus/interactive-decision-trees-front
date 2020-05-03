@@ -29,10 +29,15 @@ export const ACTIONS = {
   EDIT_NODE_SUCCEDED: "EDIT_NODE_SUCCEDED",
   EDIT_NODE_FAILED: "EDIT_NODE_FAILED",
 
+  FETCH_CURRENT_TREE_INIT: "FETCH_CURRENT_TREE_INIT",
+  FETCH_CURRENT_TREE_SUCCEDED: "FETCH_CURRENT_TREE_SUCCEDED",
+  FETCH_CURRENT_TREE_FAILED: "FETCH_CURRENT_TREE_FAILED",
+
   FILTER_NODES: "FILTER_NODES"
 }
 
 export const ENDPOINT = {
+  TREE: "/api/tree/:param",
   NODES: "/api/tree/:treeparam/nodes",
   NODE: "/api/tree/:treeparam/node/:nodeparam",
   LOGIC_NODES: "/api/tree/:treeparam/node/logic",
@@ -45,4 +50,4 @@ export const ENDPOINT = {
 }
 
 
-export const NODE_TYPE = { CONTENT_NODE: "CONTENT_NODE", LOGIC_NODE: "LOGIC_NODE" }
+export const NODE_TYPE = { CONTENT_NODE: "ContentNode", LOGIC_NODE: "LogicNode" }

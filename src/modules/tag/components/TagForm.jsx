@@ -1,5 +1,5 @@
 import React from "react"
-import { Field, reduxForm } from "redux-form"
+import { Field, reduxForm, stopSubmit, clearSubmitErrors } from "redux-form"
 import { Button } from "reactstrap"
 import { useTranslation } from "react-i18next"
 import { connect } from "react-redux"
@@ -22,10 +22,18 @@ const maxLength500 = maxLength(500)
 let TagForm = (props) => {
 
   const { t } = useTranslation()
-  const { handleSubmit, errors = {}, isLoading } = props
+  const { handleSubmit, isLoading, reset } = props
+
+  React.useEffect(() => {
+    if (props.errors && props.errors.error && props.errors.error.match("bad-request")){
+      props.dispatch(stopSubmit("tag", props.errors && props.errors.message))
+    }else {
+      props.dispatch(clearSubmitErrors("tag"))
+    }
+  }, [props])
 
   return (
-    <Form onSubmit={handleSubmit} errors={errors}>
+    <Form onSubmit={handleSubmit}>
       <Field
         name="name"
         component={InputField}
@@ -51,15 +59,19 @@ let TagForm = (props) => {
         label={t("Pick a Color for the tag")}
         validate={[ required ]}
       />
-      <div className="text-center">
-        <Button className="mt-4" color="primary" type="submit">
-          { isLoading && <Spinner color="white" /> }
+      <div className="text-center mt-5 border-top">
+        <Button className="mt-4 pl-5 pr-5" color="primary" type="submit">
+          { isLoading ? <Spinner color="white mr-2" /> : <i className="fas fa-save mr-2"></i> }
           {t("Save tag")}
+        </Button>
+        <Button className="mt-4 pl-5 pr-5" color="warning" onClick={reset}>
+          <i className="fas fa-trash mr-2"></i> {t("Clear values")}
         </Button>
       </div>
     </Form>
   )
 }
+
 
 TagForm = reduxForm({
   form: 'tag',

@@ -33,10 +33,10 @@ export const fetchAllNodes = ({ param }) =>
   })
 
 
-export const filterTrees = (searchTerm) =>
+export const filterTrees = (payload) =>
   ({
     type: ACTIONS.FILTER_TREES,
-    payload: { searchTerm }
+    payload
   })
 
 

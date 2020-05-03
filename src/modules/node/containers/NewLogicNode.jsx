@@ -1,7 +1,6 @@
 import React from "react"
 import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
-import { Redirect } from "react-router-dom"
 
 import { withTranslation } from "react-i18next"
 
@@ -31,43 +30,45 @@ class LogicNodeNew extends React.Component {
     this.props.createNode(treeparam, values)
   }
 
-  render() {
-    const { error, scores, item, nodes, isLoading, t } = this.props
+  componentDidUpdate(prevProps, prevState, snapshot){
     const { treeparam } = this.props.match.params
-    if (item && item.nodeparam){
-      return <Redirect to={ userRoutes.path + userRoutes.routes.nodeList.path.replace(":param", treeparam) } />
-    }else {
-      return (
-        <>
-          <Container className="py-lg-md d-flex pb-5">
-            <div className="col px-0">
-              <Row>
-                <Col lg="12" className="text-center">
-                  <h1 className="display-3 text-white">
-                    <img className="icon-lg" src={nodeIcon} alt="Graph icon" />
-                    {" "}{t("Create New Logic Node")}
-                  </h1>
-                  <p className="lead text-white">
-                    { t("Jump to a node based upon the value of a variable.") }
-                  </p>
-                  <NodeListLink {...this.props.match.params} />
-                </Col>
-              </Row>
-            </div>
-          </Container>
-
-          <Row className="justify-content-center">
-            <Col lg="12" md="12">
-              <Card className="shadow">
-                <CardBody className="px-lg-5 py-lg-5">
-                  <LogicNodeForm scores={scores} errors={error} isLoading={isLoading} nodes={nodes} onSubmit={this.onSubmit} />
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </>
-      )
+    if (this.props.success){
+      this.props.history.replace(userRoutes.path + userRoutes.routes.nodeList.path.replace(":param", treeparam))
     }
+  }
+
+  render() {
+    const { error, scores, nodes, isLoading, t } = this.props
+    return (
+      <>
+        <Container className="py-lg-md d-flex pb-5">
+          <div className="col px-0">
+            <Row>
+              <Col lg="12" className="text-center">
+                <h1 className="display-3 text-white">
+                  <img className="icon-lg" src={nodeIcon} alt="Graph icon" />
+                  {" "}{t("Create New Logic Node")}
+                </h1>
+                <p className="lead text-white">
+                  { t("Jump to a node based upon the value of a variable.") }
+                </p>
+                <NodeListLink {...this.props.match.params} />
+              </Col>
+            </Row>
+          </div>
+        </Container>
+
+        <Row className="justify-content-center">
+          <Col lg="12" md="12">
+            <Card className="shadow">
+              <CardBody className="px-lg-5 py-lg-5">
+                <LogicNodeForm scores={scores} errors={error} isLoading={isLoading} nodes={nodes} onSubmit={this.onSubmit} />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </>
+    )
   }
 }
 

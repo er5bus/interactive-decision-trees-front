@@ -1,5 +1,6 @@
 import React from "react"
-import { Field, reduxForm } from "redux-form"
+import PropTypes from 'prop-types'
+import { Field, reduxForm, stopSubmit, clearSubmitErrors } from "redux-form"
 import { Button, Spinner } from "reactstrap"
 import { useTranslation } from "react-i18next"
 
@@ -15,10 +16,18 @@ const maxLength30 = maxLength(30)
 const RegisterForm = (props) => {
 
   const { t } = useTranslation()
-  const { handleSubmit, errors, isLoading } = props
+  const { handleSubmit, isLoading } = props
+
+  React.useEffect(() => {
+    if (props.errors && props.errors.error && props.errors.error.match("bad-request")){
+      props.dispatch(stopSubmit("register", props.errors.message))
+    }else {
+      props.dispatch(clearSubmitErrors("register"))
+    }
+  }, [props])
 
   return (
-    <Form onSubmit={handleSubmit} errors={errors}>
+    <Form onSubmit={handleSubmit}>
       <Field
         name="full_name"
         component={InputField}
@@ -62,6 +71,11 @@ const RegisterForm = (props) => {
       </div>
     </Form>
   )
+}
+
+RegisterForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool
 }
 
 export default reduxForm({

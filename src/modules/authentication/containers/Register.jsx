@@ -9,9 +9,13 @@ import userIcon from "./../../../assets/img/user.svg"
 
 import RegisterForm from "./../components/RegisterForm"
 
-import { register } from "./../actions"
+import { register, clearError } from "./../actions"
 
 class Register extends React.Component {
+
+  componentDidMount(){
+    this.props.clearError()
+  }
 
   onSubmit = (values) => {
     this.props.register(values)
@@ -36,7 +40,7 @@ class Register extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ register }, dispatch)
+const mapDispatchToProps = (dispatch) => bindActionCreators({ register, clearError }, dispatch)
 const mapStateToProps = state => state.auth
 
 export default connect(mapStateToProps, mapDispatchToProps)(Register)

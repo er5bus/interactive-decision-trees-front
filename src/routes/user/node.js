@@ -9,6 +9,7 @@ const NodeLogicNew = React.lazy( () => import("../../modules/node/containers/New
 const NodeLogicEdit = React.lazy( () =>  import("../../modules/node/containers/EditLogicNode"))
 
 const NodeView = React.lazy( () => import("../../modules/node/containers/ViewNode"))
+const NodeOverview = React.lazy( () => import("../../modules/node/containers/OverviewNode"))
 
 export const nodeList = {
   path: "/tree/:param/nodes",
@@ -38,4 +39,9 @@ export const nodeLogicEdit = {
 export const nodeView = {
   path: "/tree/:treeparam/view/:nodeparam/node",
   component: NodeView
+}
+
+export const nodeOverview = {
+  path: "/tree/:treeparam/overview/:nodeparam/node",
+  component: NodeOverview
 }

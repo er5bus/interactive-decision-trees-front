@@ -1,7 +1,19 @@
 import { ACTIONS } from "./../constants"
 
+const initState = { 
+  items: [], 
+  item: {}, 
+  nodes: [], 
+  tags: [], 
+  tagList: null, 
+  isLoading: false, 
+  filters: {}, 
+  hasMore: true, 
+  error: null, 
+  success: false 
+}
 
-export default (state = { items: [], item: {}, nodes: [], tags: [], isLoading: false, searchTerm: "", hasMore: true, error: null }, action) => {
+export default (state = initState, action) => {
   const { payload, type } = action
   switch (type) {
     case ACTIONS.CLEAR_TREE_FORM : {
@@ -11,8 +23,7 @@ export default (state = { items: [], item: {}, nodes: [], tags: [], isLoading: f
       return { ...state, isLoading: true, error: null }
     }
     case ACTIONS.CREATE_TREE_SUCCEDED : {
-      const { uid: param } = payload
-      return { ...state, item: { param }, isLoading: false, error: null }
+      return { ...state, item: payload, success: true, items: state.items.concat(payload), isLoading: false, error: null }
     }
     case ACTIONS.CREATE_TREE_FAILED : {
       return { ...state, error: payload, isLoading: false }
@@ -22,7 +33,7 @@ export default (state = { items: [], item: {}, nodes: [], tags: [], isLoading: f
       return { ...state, isLoading: true, error: null }
     }
     case ACTIONS.EDIT_TREE_SUCCEDED : {
-      return { ...state, item: payload, isLoading: false, error: null }
+      return { ...state, item: payload, items: state.items.map((item) => item.id === payload.id ? payload : item), success: true, isLoading: false, error: null }
     }
     case ACTIONS.EDIT_TREE_FAILED : {
       return { ...state, error: payload, isLoading: false }
@@ -40,11 +51,14 @@ export default (state = { items: [], item: {}, nodes: [], tags: [], isLoading: f
     }
 
     case ACTIONS.FETCH_ALL_TAGS_INIT: {
-      return { ...state, isLoading: true, tags: [] }
+      return { ...state, isLoading: true, tags: {} }
     }
     case ACTIONS.FETCH_ALL_TAGS_SUCCEDED: {
-      const tags = payload.items
-      return { ...state, isLoading: false, tags  }
+      const tags = payload.items.reduce(((acc, item) => {
+        acc[item.id] = item 
+        return acc
+      }), {})
+      return { ...state, isLoading: false, tags, error: null }
     }
     case ACTIONS.FETCH_ALL_TAGS_FAILED: {
       return { ...state, isLoading: false, error: null }
@@ -82,7 +96,7 @@ export default (state = { items: [], item: {}, nodes: [], tags: [], isLoading: f
     }
 
     case ACTIONS.FILTER_TREES: {
-      return { ...state, searchTerm: payload.searchTerm }
+      return { ...state, filters: payload }
     }
     
     default: {

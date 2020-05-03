@@ -11,7 +11,7 @@ export const treeList = {
 }
 
 export const treeNew = {
-  path: "/tree/new",
+  path: "/tree-new",
   component: TreeNew
 }
 

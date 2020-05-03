@@ -1,7 +1,7 @@
 import { ACTIONS } from "./../constants"
 
 
-export default (state = { items: [], item: {}, isLoading: false, searchTerm: "", hasMore: true, success: null }, action) => {
+export default (state = { items: [], item: {}, isLoading: false, searchTerm: "", hasMore: true, error: null }, action) => {
   const { payload, type } = action
   switch (type) {
     case ACTIONS.CLEAR_TAG_FORM : {
@@ -12,7 +12,7 @@ export default (state = { items: [], item: {}, isLoading: false, searchTerm: "",
     }
     case ACTIONS.CREATE_TAG_SUCCEDED : {
       const { uid: param } = payload
-      return { ...state, item: { param }, isLoading: false, error: null }
+      return { ...state, item: { param }, items: state.items.concat(payload), isLoading: false, error: null }
     }
     case ACTIONS.CREATE_TAG_FAILED : {
       return { ...state, error: payload, isLoading: false }
@@ -22,7 +22,7 @@ export default (state = { items: [], item: {}, isLoading: false, searchTerm: "",
       return { ...state, isLoading: true, error: null }
     }
     case ACTIONS.EDIT_TAG_SUCCEDED : {
-      return { ...state, item: payload, isLoading: false, error: null }
+      return { ...state, item: payload, items: state.items.map((item) => item.id === payload.id ? payload : item ), isLoading: false, error: null }
     }
     case ACTIONS.EDIT_TAG_FAILED : {
       return { ...state, error: payload, isLoading: false }

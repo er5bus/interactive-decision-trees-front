@@ -5,7 +5,7 @@ import {Badge, Button, Card, CardBody, Col} from "reactstrap"
 
 import userRoutes from "./../../../routes/user"
 
-export default ({ onToggleModal=f=>f, onFilterByTag=f=>f, first_node = null, tree_tags, tree_name, description, scores, uid }) => {
+export default ({ onToggleModal=f=>f, onFilterByTag=f=>f, tagList, first_node = null, tags, tree_name, description, scores, uid }) => {
 
   const { t } = useTranslation()
 
@@ -31,9 +31,9 @@ export default ({ onToggleModal=f=>f, onFilterByTag=f=>f, first_node = null, tre
           </div>
           <div className="pt-2">
             <h6 className="text-primary text-uppercase d-inline-block mr-2"> { t("Tags") } :</h6>
-            { tree_tags.length ? tree_tags.map((tag, i) =>
-            <span className="filter-tags" onClick={ () => onFilterByTag(tag.name) }>
-              <Badge key={i} style={{ backgroundColor: tag.color }} color="neutral mr-2 mb-2" pill>{ tag.name }</Badge>
+            { tags.length ? tags.map((tag_id, i) =>
+            <span key={i} className="filter-tags" onClick={ () => onFilterByTag(tag_id) }>
+              <Badge style={{ backgroundColor: tagList[tag_id] && tagList[tag_id].color }} color="neutral mr-2 mb-2" pill>{ tagList[tag_id] && tagList[tag_id].name }</Badge>
             </span>
             ) :  <Badge color="primary mr-2 mb-2" pill>{ t("No tags") }</Badge>
             }
@@ -51,7 +51,7 @@ export default ({ onToggleModal=f=>f, onFilterByTag=f=>f, first_node = null, tre
               <Button
                 className="btn-sm mt-4"
                 color="info"
-                to={ userRoutes.path + userRoutes.routes.nodeView.path.replace(":treeparam", uid).replace(":nodeparam", first_node.uid) }
+                to={ userRoutes.path + userRoutes.routes.nodeOverview.path.replace(":treeparam", uid).replace(":nodeparam", first_node.uid) }
                 tag={Link}
               >
                 <i className="fas fa-eye" /> { t("overview") }

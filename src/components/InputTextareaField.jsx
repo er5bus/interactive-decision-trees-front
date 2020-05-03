@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { useTranslation } from "react-i18next"
 
 import {
@@ -6,7 +7,7 @@ import {
   InputGroup
 } from "reactstrap"
 
-export default ({input, label, placeholder, className="from-control", row=4, meta: { touched, error, warning }}) => {
+const InputTextareaField = ({input, label, placeholder, className="from-control", row=4, meta: { touched, error, warning }}) => {
   
   const { t } = useTranslation()
 
@@ -22,3 +23,20 @@ export default ({input, label, placeholder, className="from-control", row=4, met
     </FormGroup>
   )
 }
+
+InputTextareaField.propTypes = {
+  input: PropTypes.object,
+  label: PropTypes.string,
+  className: PropTypes.string,
+  type: PropTypes.string,
+  icon: PropTypes.string,
+  placeholder: PropTypes.string,
+  meta: PropTypes.shape({
+    touched: PropTypes.bool,
+    error: PropTypes.string,
+    warning: PropTypes.string
+  })
+}
+
+
+export default InputTextareaField

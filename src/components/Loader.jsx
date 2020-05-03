@@ -1,7 +1,7 @@
 import React from 'react'
 
 
-export default () => (
+const Loader = () => (
   <div className="loader-wrapper">
     <div className="cssload-loader">
       <div className="cssload-inner cssload-one"></div>
@@ -10,3 +10,5 @@ export default () => (
     </div>
   </div>
 )
+
+export default Loader
