@@ -8,7 +8,7 @@ import emptyIcon from "./../../../assets/img/empty.png"
 import NodeDetailsLoader from './NodeDetailLoader'
 
 
-const NodeDetails = ({ item, isLoading, treeparam, nodeViewPath, mainPath }) => {
+const NodeDetails = ({ item, isLoading, treeparam, nodeViewPath, mainPath, calculateScore=f=>f }) => {
 
   const { t } = useTranslation()
 
@@ -32,6 +32,7 @@ const NodeDetails = ({ item, isLoading, treeparam, nodeViewPath, mainPath }) => 
                       className="btn mt-4 mr-2"
                       color="primary"
                       disabled={ !Boolean(action.point_to.uid) }
+                      onClick={() => calculateScore(item, action) }
                       to={ nodeViewPath ? (mainPath + nodeViewPath.replace(":treeparam", treeparam).replace(":nodeparam", action.point_to.uid)) : "#" }
                       tag={Link}
                     >
@@ -41,6 +42,7 @@ const NodeDetails = ({ item, isLoading, treeparam, nodeViewPath, mainPath }) => 
                   : <Link
                     key={ action.point_to.uid + i}
                     className="panel-link mb-2"
+                    onClick={() => calculateScore(item, action) }
                     disabled={ !Boolean(action.point_to.uid) }
                     to={  nodeViewPath ? (mainPath + nodeViewPath.replace(":treeparam", treeparam).replace(":nodeparam", action.point_to.uid)) : "#" }
                   >

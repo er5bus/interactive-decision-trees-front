@@ -82,9 +82,17 @@ class OverviewNode extends React.Component {
     const { match : { params: prevParams }, item } = prevProps
 
     if (params.nodeparam && prevParams.nodeparam && params.nodeparam !== prevParams.nodeparam){
-      if (item && item.type === NODE_TYPE.CONTENT_NODE && item.actions){
+      this.props.viewNode(params)
+    }
+    if (newItem && newItem.type === NODE_TYPE.LOGIC_NODE){
+      this.checkLogicNode(newItem)
+    }
+  }
+
+  calculateScore = (item, selectedAction) => {
+    if (item && item.type === NODE_TYPE.CONTENT_NODE && item.actions){
         item.actions.forEach((action) => {
-          if (action.point_to.uid === params.nodeparam){
+          if (action.id === selectedAction.id){
             let scores = this.state.scores
             action.values.forEach((actionValue) => {
               scores[actionValue.score.id] = parseInt(actionValue.value, 10) + parseInt(scores[actionValue.score.id] || 0, 10)
@@ -93,12 +101,6 @@ class OverviewNode extends React.Component {
           }
         })
       }
-      this.props.viewNode(params)
-    }
-    if (newItem && newItem.type === NODE_TYPE.LOGIC_NODE){
-      this.checkLogicNode(newItem)
-    }
-
   }
 
   render() {
@@ -126,7 +128,7 @@ class OverviewNode extends React.Component {
             <NodeScore scores={ scores } result={ this.state.scores } />
           </Col>
           <Col lg="12">
-            <NodeDetails item={item} isLoading={isLoading} treeparam={treeparam} nodeViewPath={ userRoutes.routes.nodeOverview.path } mainPath={ userRoutes.path }  />
+            <NodeDetails item={item} calculateScore={ this.calculateScore } isLoading={isLoading} treeparam={treeparam} nodeViewPath={ userRoutes.routes.nodeOverview.path } mainPath={ userRoutes.path }  />
           </Col>
         </Row>
       </>

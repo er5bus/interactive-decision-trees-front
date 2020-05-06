@@ -7,12 +7,11 @@ export default (state = { items: [], tree: null, item: null, hasMore: true, isLo
   
   switch (type) {
     case ACTIONS.FETCH_NODES_INIT : {
-      state.tree = payload.page === 1 ? {} : state.tree
       return { ...state, isLoading: true, hasMore: false, error: null }
     }
     case ACTIONS.FETCH_NODES_SUCCEDED : {
       const { items, has_more: hasMore } = payload
-      return { ...state, items, hasMore, isLoading: false, error: null }
+      return { ...state, items: [ ...state.items, ...items ], hasMore, isLoading: false, error: null }
     }
     case ACTIONS.FETCH_NODES_FAILED : {
       return { ...state, isLoading: false, error: payload }

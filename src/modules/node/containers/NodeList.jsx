@@ -95,8 +95,9 @@ class NodeList extends React.Component {
                     </span>
                     <span className="btn-inner--text">{t('New logic node')}</span>
                   </Link>
+                  { console.log(tree && tree.first_node) }
                   {
-                    tree && tree.first_node && tree.first_node.uid &&
+                    tree && tree.first_node &&
                       <Link
                         className="btn-icon mb-3 mb-sm-0 btn btn-info"
                         to={ userRoutes.path + userRoutes.routes.nodeOverview.path.replace(":treeparam", param).replace(":nodeparam", tree.first_node.uid) }
