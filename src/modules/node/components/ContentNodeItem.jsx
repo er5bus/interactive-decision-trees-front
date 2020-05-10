@@ -7,19 +7,24 @@ import { Link } from "react-router-dom"
 import { NODE_TYPE } from "./../constants"
 import userRoutes from './../../../routes/user'
 
-export default ({ node_name, question, actions, uid, onToggleModal, treeparam }) => {
+export default ({ node_name, question, actions, isTheFirstNode, uid, onToggleDeleteModal, onToggleUpdateModal, treeparam }) => {
 
   const { t } = useTranslation()
   return (
     <Col lg="4" className="pb-5">
       <Card className="card-lift--hover shadow">
         <CardBody className="py-5">
-          <div className="icon icon-shape icon-shape-primary rounded-circle mb-4">
+          <div className="icon icon-shape icon-shape-primary rounded-circle shadow mb-4 mr-2">
             <i className="far fa-file-word" />
           </div>
-          <h6 className="text-primary text-uppercase">
-            { node_name }{ " (" }{ t("Content Node") }{")"}
-          </h6>
+          <div>
+            <h6 className="text-primary text-uppercase">
+              { node_name }{ " (" }{ t("Content Node") }{") "}
+              <span className="icon-sm ml-2">
+              { isTheFirstNode ? <i className="fas fa-star"></i> : <i className="far fa-star"></i> }
+              </span>
+            </h6>
+          </div>
           <p className="description mt-3">
             { question }
           </p>
@@ -51,9 +56,18 @@ export default ({ node_name, question, actions, uid, onToggleModal, treeparam })
           <Button
             className="btn-sm mt-4"
             color="danger"
-            onClick={() => onToggleModal(uid, NODE_TYPE.CONTENT_NODE ) }
+            disabled={ isTheFirstNode }
+            onClick={() => onToggleDeleteModal(uid, NODE_TYPE.CONTENT_NODE ) }
           >
             <i className="fas fa-trash" /> { t("Delete") }
+          </Button>
+          <Button
+            className="btn-sm mt-4"
+            color="info"
+            disabled={ isTheFirstNode }
+            onClick={() => onToggleUpdateModal(uid ) }
+          >
+            <i className="fas fa-cog" /> { t("Set as the first node") }
           </Button>
         </CardBody>
       </Card>

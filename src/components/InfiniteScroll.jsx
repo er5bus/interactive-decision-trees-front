@@ -6,18 +6,13 @@ class InfiniteScroll extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      pageNumber: 0
+      clearStore: false
     }
   }
 
   componentDidMount(){
-    const { clearStore = false, storeEmpty = false } = this.props
-    let { pageNumber } = this.state
-    if ( clearStore || storeEmpty ) {
-      pageNumber += 1
-      this.setState({ pageNumber }, this.loadItems(pageNumber))
-    }
     window.addEventListener('scroll', this.handleScroll)
+    this.handleScroll()
   }
 
   componentWillUnmount(){
@@ -25,19 +20,22 @@ class InfiniteScroll extends React.PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot){
+    const { clearStore } = this.props
+    if (clearStore && !this.state.clearStore){
+      this.loadItems(clearStore)
+      this.setState({ clearStore })
+    }
     this.handleScroll()
   }
 
   handleScroll = () => {
     const { hasMore, isLoading, threshold = 200 } = this.props
-    let { pageNumber } = this.state
     const node = document.documentElement || document.body.parentNode || document.body;
     const scrollTop = window.pageYOffset !== undefined ? window.pageYOffset : node.scrollTop;
     const offset = this.calculateOffset(node, scrollTop)
 
     if ( offset <= Number(threshold) && hasMore && !isLoading) {
-      pageNumber += 1
-      this.setState({ pageNumber }, this.loadItems(pageNumber))
+      this.loadItems()
     }
   }
   
@@ -51,18 +49,18 @@ class InfiniteScroll extends React.PureComponent {
     return node.offsetTop + this.calculateTopPosition(node.offsetParent)
   }
 
-  loadItems = (pageNumber) => {
-    const { loadMore } = this.props
-    loadMore.apply(null, [ pageNumber ])
+  loadItems = (clearStore = false) => {
+    const { loadMore, pageNumber } = this.props
+    loadMore.apply(null, [ !clearStore ? pageNumber + 1 : 1 ])
   }
 
   render(){
 
-    const { loader, isLoading= true, children } = this.props
+    const { loader, pageNumber, isLoading= true, children } = this.props
 
     return (
       <>
-        { children }
+        { pageNumber > 0 && children }
         { isLoading &&  loader }
       </>
     )

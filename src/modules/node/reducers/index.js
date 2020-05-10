@@ -10,8 +10,8 @@ export default (state = { items: [], tree: null, item: null, hasMore: true, isLo
       return { ...state, isLoading: true, hasMore: false, error: null }
     }
     case ACTIONS.FETCH_NODES_SUCCEDED : {
-      const { items, has_more: hasMore } = payload
-      return { ...state, items: [ ...state.items, ...items ], hasMore, isLoading: false, error: null }
+      const { items, has_more: hasMore, page } = payload
+      return { ...state, items: page === 1 ? items : [ ...state.items, ...items ], hasMore, isLoading: false, page, error: null }
     }
     case ACTIONS.FETCH_NODES_FAILED : {
       return { ...state, isLoading: false, error: payload }
@@ -25,6 +25,16 @@ export default (state = { items: [], tree: null, item: null, hasMore: true, isLo
     }
     case ACTIONS.DELETE_NODE_FAILED : {
       return { ...state, isLoading: false, error: null }
+    }
+
+    case ACTIONS.SET_FIRST_NODE_INIT : {
+      return { ...state, isLoading: true, error: null, success: false }
+    }
+    case ACTIONS.SET_FIRST_NODE_SUCCEDED : {
+      return { ...state, tree: { ...state.tree, first_node: payload }, isLoading: false, error: null }
+    }
+    case ACTIONS.SET_FIRST_NODE_FAILED : {
+      return { ...state, isLoading: false, error: payload }
     }
 
     case ACTIONS.FETCH_ALL_SCORES_INIT: {

@@ -35,7 +35,10 @@ class TreeList extends React.Component {
   }
   
   UNSAFE_componentWillMount(){
-    this.props.fetchAllTags()
+    const { tags } = this.props
+    if (tags.length === 0){
+      this.props.fetchAllTags()
+    }
   }
 
   onToggleModal = (uid) => {
@@ -62,7 +65,7 @@ class TreeList extends React.Component {
   }
 
   render() {
-    const { t, items, tags, filters, hasMore, isLoading } = this.props
+    const { t, items, page, tags, filters, hasMore, isLoading } = this.props
     return (
       <div>
         <Container className="py-lg-md d-flex pb-5">
@@ -107,7 +110,7 @@ class TreeList extends React.Component {
               <InfiniteScroll
                 loadMore={this.onFetchTrees}
                 hasMore={hasMore}
-                storeEmpty={items.length === 0}
+                pageNumber={page}
                 isLoading={isLoading}
                 loader={<TreeLoader />}
               >

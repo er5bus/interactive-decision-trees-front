@@ -1,5 +1,5 @@
 import React from "react"
-import { Field, FieldArray, reduxForm, stopSubmit, clearSubmitErrors } from "redux-form"
+import { Field, FieldArray, reduxForm, stopSubmit, clearSubmitErrors, change } from "redux-form"
 import { Button, Spinner } from "reactstrap"
 import { useTranslation } from "react-i18next"
 import { connect } from "react-redux"
@@ -66,12 +66,16 @@ const renderValues = ({ fields, scores, t }) =>  {
   )
 }
 
-const renderAction = ({ fields, scores, nodes, t }) =>  {
+const renderAction = ({ fields, setOrder, scores, nodes, t }) =>  {
+
+  setOrder(fields)
 
   return (
     <>
       <div className="mt-4">
-        <Button onClick={() => fields.push({})} color="primary" type="button">
+        <Button onClick={async () => {
+          fields.push({})
+        }} color="primary" type="button">
           <i className="fas fa-plus-circle" />
           { t(" Add actions") }
         </Button>
@@ -79,13 +83,20 @@ const renderAction = ({ fields, scores, nodes, t }) =>  {
       { fields.map((action, index) => (
         <Row key={index} className="mt-4">
           <Col lg="1" md="2">
-            <Button className="form-controle-button" onClick={() => fields.remove(index)} color="danger" type="button">
+            <Button className="form-controle-button" onClick={async () => {
+              fields.remove(index)
+            }} color="danger" type="button">
               <i className="fas fa-trash" />
             </Button>
           </Col>
           <Col lg="11" md="10">
             <Row>
-              <Col lg="5" md="5">
+              <Field
+                name={`${action}.order`}
+                type="hidden"
+                component="input"
+              />
+              <Col lg="6" md="6">
                 <Field
                   name={`${action}.name`}
                   component={InputField}
@@ -96,7 +107,7 @@ const renderAction = ({ fields, scores, nodes, t }) =>  {
                   validate={[ required, minLength2, maxLength200 ]}
                 />
               </Col>
-              <Col lg="6" md="5">
+              <Col lg="6" md="6">
                 <Field
                   name={`${action}.point_to.id`}
                   component={SelectField}
@@ -121,7 +132,7 @@ const renderAction = ({ fields, scores, nodes, t }) =>  {
 let ContentNodeForm = (props) => {
 
   const { t } = useTranslation()
-  const { handleSubmit, scores, nodes, isLoading=false, reset } = props
+  const { handleSubmit, scores, nodes, isLoading=false, dispatch, reset } = props
 
   React.useEffect(() => {
     if (props.errors && props.errors.error && props.errors.error.match("bad-request")){
@@ -130,6 +141,12 @@ let ContentNodeForm = (props) => {
       props.dispatch(clearSubmitErrors("content_node"))
     }
   }, [props])
+
+  const setOrder = (fields) => {
+    fields.forEach((action, index) => {
+      props.dispatch(change("content_node", `${action}.order`, index ))
+    })
+  }
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -160,8 +177,8 @@ let ContentNodeForm = (props) => {
         placeholder={t("Enter a question or prompt")}
         type="text"
         validate={[ required, minLength2, maxLength500 ]}
-      />       
-      <FieldArray name="actions" scores={scores} nodes={nodes} component={renderAction} t={t} />
+      />
+      <FieldArray name="actions" scores={scores} nodes={nodes} setOrder={setOrder} component={renderAction} t={t} />
       <div className="text-center mt-5 border-top">
         <Button className="mt-4 pl-5 pr-5" color="primary" type="submit">
           { isLoading ? <Spinner color="white mr-2" /> : <i className="fas fa-save mr-2"></i> }

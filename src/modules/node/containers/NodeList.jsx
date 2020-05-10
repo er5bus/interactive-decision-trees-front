@@ -15,7 +15,7 @@ import NodeLoader from "./../components/NodeLoader"
 
 import nodeIcon from "./../../../assets/img/nodes.svg"
 
-import { fetchNodes, fetchTree, filterNodes, deleteNode } from "./../actions"
+import { fetchNodes, fetchTree, filterNodes, deleteNode, setFirstNode } from "./../actions"
 import { NODE_TYPE } from './../constants'
 import { getFilteredNodes } from "./../selector"
 
@@ -30,15 +30,21 @@ class NodeList extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      showModal: false,
+      showDeleteModal: false,
+      showUpdateModal: false,
+      clearStore: false,
       uid: null,
       type: null,
     }
   }
 
   componentDidMount() {
-    const { params } = this.props.match
-    this.props.fetchTree(params)
+    const { match: { params }, tree } = this.props
+    const clearStore = (!tree || !params.param.match(tree.uid))
+    this.setState({ ...this.state, clearStore })
+    if (clearStore){
+      this.props.fetchTree(params)
+    }
   }
 
   onFetchNodes = async (pageNumber) => {
@@ -47,9 +53,8 @@ class NodeList extends React.Component {
     }
   }
 
-  onToggleModal = (uid, type) => {
-    this.setState({ showModal: !this.state.showModal, uid, type })
-  }
+  onToggleDeleteModal = (uid, type) => this.setState({ showDeleteModal: !this.state.showDeleteModal, uid, type })
+  onToggleUpdateModal = (uid) => this.setState({ showUpdateModal: !this.state.showUpdateModal, uid })
 
   onDeleteNode = () => {
     const { param: treeparam } = this.props.match.params
@@ -57,12 +62,19 @@ class NodeList extends React.Component {
     this.props.deleteNode({ treeparam, nodeparam, nodeType })
   }
 
+  onSetFirstNode = () => {
+    const { param: treeparam } = this.props.match.params
+    const { uid: nodeparam } = this.state
+    this.props.setFirstNode({ treeparam, nodeparam })
+  }
+
   onSearch = (e) => {
     this.props.filterNodes(e.target.value.trim())
   }
 
   render() {
-    const { t, tree, match: { params: { param } }, searchTerm, isLoading, items, hasMore } = this.props
+    const { t, tree, page, match: { params: { param } }, searchTerm, isLoading, items, hasMore } = this.props
+    const { showDeleteModal, showUpdateModal, action } = this.state
     return (
       <>
         <Container className="py-lg-md d-flex pb-5">
@@ -95,9 +107,8 @@ class NodeList extends React.Component {
                     </span>
                     <span className="btn-inner--text">{t('New logic node')}</span>
                   </Link>
-                  { console.log(tree && tree.first_node) }
                   {
-                    tree && tree.first_node &&
+                    tree && tree.first_node && tree.first_node.uid &&
                       <Link
                         className="btn-icon mb-3 mb-sm-0 btn btn-info"
                         to={ userRoutes.path + userRoutes.routes.nodeOverview.path.replace(":treeparam", param).replace(":nodeparam", tree.first_node.uid) }
@@ -114,43 +125,53 @@ class NodeList extends React.Component {
           </div>
         </Container>
         <Container>
-          { this.state.showModal && <ConfirmModal
-            open={ this.state.showModal }
+          <ConfirmModal
+            isOpen={ showDeleteModal }
             title={ t("Confirmation") }
             content={ t("Are you sure you want to delete this node ?") }
             onClick={ this.onDeleteNode }
-            onToggle={ this.onToggleModal }
+            onToggle={ this.onToggleDeleteModal }
             buttonText={ t("Delete this node") }
           />
-          }
+          <ConfirmModal
+            isOpen={ showUpdateModal }
+            title={ t("Confirmation") }
+            content={ t("Are you sure you want to set this node as the start node ?") }
+            onClick={ this.onSetFirstNode }
+            onToggle={ this.onToggleUpdateModal }
+            buttonText={ t("Set as First node node") }
+          />
           <Row>
             <Col lg="12" className="pb-5">
               <FilterNavbar onSearch={this.onSearch} value={searchTerm} />
             </Col>
             <Col lg="12">
               <Row className="row-grid">
-                { tree ? <InfiniteScroll
+                <InfiniteScroll
                   loadMore={this.onFetchNodes}
                   hasMore={hasMore}
-                  clearStore={tree.uid !== param}
-                  storeEmpty={items.length === 0}
+                  pageNumber={page}
+                  clearStore={ this.state.clearStore }
                   isLoading={isLoading}
                   loader={<NodeLoader />}
                 >
                   { !isLoading && items && items.length === 0 && <CardNotFound /> }
                   { items && items.length > 0 && items.map((node, i) => {
                     if (node.node_type === NODE_TYPE.CONTENT_NODE){
-                      return <ContentNodeItem key={i} {...node} treeparam={param} onToggleModal={this.onToggleModal} />
+                      return <ContentNodeItem key={i} {...node} 
+                        isTheFirstNode={ tree && tree.first_node && tree.first_node.uid === node.uid }
+                        treeparam={param} 
+                        onToggleDeleteModal={this.onToggleDeleteModal} 
+                        onToggleUpdateModal={this.onToggleUpdateModal}
+                      />
                     }
                     if (node.node_type === NODE_TYPE.LOGIC_NODE){
-                      return <LogicNodeItem key={i} {...node} treeparam={param} onToggleModal={this.onToggleModal} />
+                      return <LogicNodeItem key={i} {...node} treeparam={param} onToggleModal={this.onToggleDeleteModal} />
                     }
                     return <></>
                   })
                   }
                 </InfiniteScroll>
-                : <NodeLoader />
-                }
               </Row>
             </Col>
           </Row>
@@ -160,7 +181,7 @@ class NodeList extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ fetchTree, fetchNodes, deleteNode, filterNodes }, dispatch)
+const mapDispatchToProps = (dispatch) => bindActionCreators({ fetchTree, setFirstNode, fetchNodes, deleteNode, filterNodes }, dispatch)
 const mapStateToProps = state => ({
   ...state.node, items: getFilteredNodes(state)
 })

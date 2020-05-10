@@ -1,5 +1,5 @@
 import React from "react"
-import { Field, FieldArray, reduxForm, stopSubmit, clearSubmitErrors } from "redux-form"
+import { Field, FieldArray, reduxForm, stopSubmit, clearSubmitErrors, change } from "redux-form"
 import { Button, Spinner } from "reactstrap"
 import { useTranslation } from "react-i18next"
 import { connect } from "react-redux"
@@ -17,7 +17,10 @@ const minLength2 = minLength(2)
 const maxLength200 = maxLength(200)
 
 
-const renderRule = ({ fields, scores = [], nodes = [] , t }) =>  {
+const renderRule = ({ fields, scores = [], setOrder, nodes = [] , t }) =>  {
+
+  setOrder(fields)
+
   return (
     <>
       <div className="mt-4">
@@ -32,6 +35,11 @@ const renderRule = ({ fields, scores = [], nodes = [] , t }) =>  {
           <Col lg="11" md="10">
             <Row>
               <Col lg="3" md="2">
+                <Field
+                  name={`${rule}.order`}
+                  type="hidden"
+                  component="input"
+                />
                 <Field
                   name={`${rule}.score.id`}
                   component={SelectField}
@@ -105,6 +113,12 @@ let LogicNodeForm = (props) => {
     }
   }, [props])
 
+  const setOrder = (fields) => {
+    fields.forEach((action, index) => {
+      props.dispatch(change("logic_node", `${action}.order`, index ))
+    })
+  }
+
   return (
     <Form onSubmit={handleSubmit}>
       <Field
@@ -117,7 +131,7 @@ let LogicNodeForm = (props) => {
         validate={[ required, minLength2, maxLength200 ]}
       />
 
-      <FieldArray name="rules" scores={scores} nodes={nodes} component={renderRule} t={t} />
+      <FieldArray name="rules" scores={scores} setOrder={setOrder} nodes={nodes} component={renderRule} t={t} />
 
       <div className="mt-4">
         <Field

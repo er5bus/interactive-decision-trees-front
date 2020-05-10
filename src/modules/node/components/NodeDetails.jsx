@@ -24,10 +24,10 @@ const NodeDetails = ({ item, isLoading, treeparam, nodeViewPath, mainPath, calcu
             <h1 className="pb-2">{ item.node_name }</h1>
             <p className="pb-2" dangerouslySetInnerHTML={{ __html: item.content_area }} />
             <div>
-              <h3 className="pb-4 text-primary">{ item.question && item.question } ?</h3>
+              <h3 className="pb-4 text-primary">{ item.question && item.question }</h3>
               { item.actions.map((action, i) =>
                 (item.display_style === "BUTTON"
-                  ? <div key={ action.point_to.uid + i}>
+                  ? <div key={ action.id }>
                     <Button
                       className="btn mt-4 mr-2"
                       color="primary"
@@ -40,7 +40,7 @@ const NodeDetails = ({ item, isLoading, treeparam, nodeViewPath, mainPath, calcu
                     </Button>
                   </div>
                   : <Link
-                    key={ action.point_to.uid + i}
+                    key={ action.id }
                     className="panel-link mb-2"
                     onClick={() => calculateScore(item, action) }
                     disabled={ !Boolean(action.point_to.uid) }

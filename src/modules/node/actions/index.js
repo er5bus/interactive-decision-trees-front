@@ -14,7 +14,6 @@ export const fetchAllScores = ({ treeparam }) =>
     type: CALL_API,
     meta: {
       actions: {
-        init: ACTIONS.FETCH_ALL_SCORES_INIT,
         success: ACTIONS.FETCH_ALL_SCORES_SUCCEDED,
         fail: ACTIONS.FETCH_ALL_SCORES_FAILED
       },
@@ -35,6 +34,22 @@ export const fetchAllNodes = ({ treeparam }) =>
         fail: ACTIONS.FETCH_ALL_NODES_FAILED
       },
       endpoint: ENDPOINT.TREE_ALL_NODES.replace(":treeparam", treeparam),
+      method: HTTP_METHODS.GET,
+      jwt: true
+    }
+  })
+
+
+export const fetchAllTrees = () =>
+  ({
+    type: CALL_API,
+    meta: {
+      actions: {
+        init: ACTIONS.FETCH_ALL_TREES_INIT,
+        success: ACTIONS.FETCH_ALL_TREES_SUCCEDED,
+        fail: ACTIONS.FETCH_ALL_TREES_FAILED
+      },
+      endpoint: ENDPOINT.ALL_TREES,
       method: HTTP_METHODS.GET,
       jwt: true
     }
@@ -63,6 +78,26 @@ const createNode = (treeparam, payload, endpoint) =>
         fail: "Something went wrong please try again"
       },
       endpoint: endpoint.replace(":treeparam", treeparam),
+      method: HTTP_METHODS.POST,
+      jwt: true
+    }
+  })
+
+
+export const setFirstNode = ({ treeparam, nodeparam }) =>
+  ({
+    type: CALL_API,
+    meta: {
+      actions: {
+        init: ACTIONS.SET_FIRST_NODE_INIT,
+        success: ACTIONS.SET_FIRST_NODE_SUCCEDED,
+        fail: ACTIONS.SET_FIRST_NODE_FAILED
+      },
+      messages: {
+        success: "Your node has been updated successfuly",
+        fail: "Something went wrong please try again"
+      },
+      endpoint: ENDPOINT.FIRST_NODE.replace(":treeparam", treeparam).replace(":nodeparam", nodeparam),
       method: HTTP_METHODS.POST,
       jwt: true
     }
@@ -119,7 +154,6 @@ export const fetchTree = ({param}) =>
     type: CALL_API,
     meta: {
       actions: {
-        init: ACTIONS.FETCH_CURRENT_TREE_INIT,
         success: ACTIONS.FETCH_CURRENT_TREE_SUCCEDED,
         fail: ACTIONS.FETCH_CURRENT_TREE_FAILED
       },

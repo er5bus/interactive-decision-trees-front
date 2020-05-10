@@ -53,7 +53,7 @@ class TagList extends React.Component {
   }
 
   render() {
-    const { t, items, hasMore, searchTerm, isLoading } = this.props
+    const { t, items, page, hasMore, searchTerm, isLoading } = this.props
     return (
       <div>
         <Container className="py-lg-md d-flex pb-5">
@@ -100,9 +100,9 @@ class TagList extends React.Component {
               <Row className="row-grid">
                 <InfiniteScroll
                   loadMore={this.onFetchTags}
-                  hasMore={hasMore}
-                  storeEmpty={items.length === 0}
+                  pageNumber={ page }
                   isLoading={isLoading}
+                  hasMore={ hasMore }
                   loader={<TagLoader />}
                 >
                   { !isLoading && !items.length && <CardNotFound /> }

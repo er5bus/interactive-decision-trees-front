@@ -8,7 +8,7 @@ import { required, email, maxLength, minLength } from "./../../../utils/validati
 
 import Form from "./../../../components/Form"
 import InputField from "./../../../components/InputField"
-import InputRadioField from "./../../../components/InputRadioCheckboxField"
+import InputCheckboxField from "./../../../components/InputRadioCheckboxField"
 
 const minLength4 = minLength(4)
 const maxLength30 = maxLength(30)
@@ -48,7 +48,7 @@ const LoginForm = (props) => {
       />
       <Field
         name="remember_me"
-        component={InputRadioField}
+        component={InputCheckboxField}
         label={ t("Remember me") }
         value={true}
         type="checkbox"

@@ -7,7 +7,6 @@ export const fetchAllTags = () =>
     type: CALL_API,
     meta: {
       actions: {
-        init: ACTIONS.FETCH_ALL_TAGS_INIT,
         success: ACTIONS.FETCH_ALL_TAGS_SUCCEDED,
         fail: ACTIONS.FETCH_ALL_TAGS_FAILED
       },
@@ -22,7 +21,6 @@ export const fetchAllNodes = ({ param }) =>
     type: CALL_API,
     meta: {
       actions: {
-        init: ACTIONS.FETCH_ALL_NODES_INIT,
         success: ACTIONS.FETCH_ALL_NODES_SUCCEDED,
         fail: ACTIONS.FETCH_ALL_NODES_FAILED
       },
