@@ -1,6 +1,6 @@
 import React from "react"
 import { Field, FieldArray, reduxForm, stopSubmit, clearSubmitErrors } from "redux-form"
-import { Button, Spinner } from "reactstrap"
+import { Button, Spinner, DropdownMenu } from "reactstrap"
 import { useTranslation } from "react-i18next"
 import { connect } from "react-redux"
 
@@ -21,7 +21,7 @@ const maxLength500 = maxLength(500)
 const maxLength1500 = maxLength(1500)
 
 
-const renderValues = ({ fields, scores, t }) =>  {
+const renderValues = ({ fields, allScores, t }) =>  {
 
   return (
     <>
@@ -44,7 +44,7 @@ const renderValues = ({ fields, scores, t }) =>  {
               name={`${value}.score.id`}
               component={SelectField}
               label={t("Scores")}
-              choices={ scores }
+              choices={ allScores }
               placeholder={t("Select A Score")}
               validate={[ required ]}
             />
@@ -66,7 +66,11 @@ const renderValues = ({ fields, scores, t }) =>  {
   )
 }
 
-const renderAction = ({ fields, scores, nodes, t }) =>  {
+const renderAction = ({ fields, setPointTo, pointTo, allScores, allNodes, allTrees, t }) =>  {
+
+  const onChangePointTo = (value) => {
+    setPointTo(value)
+  }
 
   return (
     <>
@@ -85,7 +89,7 @@ const renderAction = ({ fields, scores, nodes, t }) =>  {
           </Col>
           <Col lg="11" md="10">
             <Row>
-              <Col lg="5" md="5">
+              <Col lg="4">
                 <Field
                   name={`${action}.name`}
                   component={InputField}
@@ -96,19 +100,57 @@ const renderAction = ({ fields, scores, nodes, t }) =>  {
                   validate={[ required, minLength2, maxLength200 ]}
                 />
               </Col>
-              <Col lg="6" md="5">
+              <Col lg="3">
                 <Field
-                  name={`${action}.point_to.id`}
+                  name={`${action}.point_to_type`}
                   component={SelectField}
                   label={t("Point to")}
-                  placeholder={ t("New node you will create later") }
-                  choices={ nodes }
+                  placeholder={ t("Nothing for now") }
+                  choices={ [
+                    { value: "nothing", label: "Nothing for now" },
+                    { value: "logic_node", label: "Logic Nodes" },
+                    { value: "content_node", label: "Content Nodes" },
+                    { value: "trees", label: "Trees" }
+                  ] }
+                  onChange={ onChangePointTo }
+                  validate={ required }
                 />
+              </Col>
+              <Col lg="5">
+                { pointTo === "logic_node" &&
+                <Field
+                  name={`${action}.point_to_node.id`}
+                  component={SelectField}
+                  label={t("Point to Logic node")}
+                  placeholder={ t("Point to an Existing logic node") }
+                  choices={ allNodes.logicNodes }
+                  validate={ [ required ] }
+                />
+                }
+                { pointTo === "content_node" &&
+                  <Field
+                    name={`${action}.point_to_node.id`}
+                    component={SelectField}
+                    label={t("Point to Content node")}
+                    placeholder={ t("Point to an Existing content node") }
+                    choices={ allNodes.contentNodes }
+                    validate={ [ required ] }
+                  />
+                }
+                {pointTo === "trees" && <Field
+                  name={`${action}.point_to_tree.id`}
+                  component={SelectField}
+                  label={t("Point to tree")}
+                  placeholder={ t("Point to an Existing tree") }
+                  choices={ allTrees }
+                  validate={ [ required ] }
+                />
+                }
               </Col>
             </Row>
             <Row>
               <Col lg="12">
-                <FieldArray name={`${action}.values`} scores={scores} component={renderValues} t={t} />
+                <FieldArray name={`${action}.values`} allScores={allScores} component={renderValues} t={t} />
               </Col>
             </Row>
           </Col>
@@ -121,7 +163,9 @@ const renderAction = ({ fields, scores, nodes, t }) =>  {
 let ContentNodeForm = (props) => {
 
   const { t } = useTranslation()
-  const { handleSubmit, scores, nodes, isLoading=false, reset } = props
+  const { handleSubmit, allScores, allNodes, allTrees, isLoading=false, reset } = props
+
+  const [ pointTo, setPointTo ] = React.useState("nodes")
 
   React.useEffect(() => {
     if (props.errors && props.errors.error && props.errors.error.match("bad-request")){
@@ -160,8 +204,17 @@ let ContentNodeForm = (props) => {
         placeholder={t("Enter a question or prompt")}
         type="text"
         validate={[ required, minLength2, maxLength500 ]}
-      />       
-      <FieldArray name="actions" scores={scores} nodes={nodes} component={renderAction} t={t} />
+      />
+      <FieldArray 
+        name="actions" 
+        allScores={allScores} 
+        allNodes={allNodes} 
+        allTrees={ allTrees } 
+        pointTo={ pointTo } 
+        setPointTo={ setPointTo } 
+        component={renderAction} 
+        t={t} 
+      />
       <div className="text-center mt-5 border-top">
         <Button className="mt-4 pl-5 pr-5" color="primary" type="submit">
           { isLoading ? <Spinner color="white mr-2" /> : <i className="fas fa-save mr-2"></i> }

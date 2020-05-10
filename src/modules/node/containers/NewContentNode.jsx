@@ -7,7 +7,7 @@ import { withTranslation } from "react-i18next"
 // reactstrap components
 import { Card, Row, CardBody, Col, Container } from "reactstrap"
 
-import { createContentNode as createNode, clearNodeForm, fetchAllScores, fetchAllNodes } from "./../actions"
+import { createContentNode as createNode, clearNodeForm, fetchAllScores, fetchAllTrees, fetchAllNodes } from "./../actions"
 import userRoutes from "./../../../routes/user"
 
 import ContentNodeForm from "./../components/ContentNodeForm"
@@ -21,6 +21,7 @@ class ContentNodeNew extends React.Component {
   componentWillMount() {
     const { params } = this.props.match
     this.props.clearNodeForm(params)
+    this.props.fetchAllTrees()
     this.props.fetchAllScores(params)
     this.props.fetchAllNodes(params)
   }
@@ -38,7 +39,7 @@ class ContentNodeNew extends React.Component {
   }
 
   render() {
-    const { error, scores, isLoading, nodes, t } = this.props
+    const { error, scores, isLoading, allNodes, allTrees, allScores, t } = this.props
     return (
       <>
         <Container className="py-lg-md d-flex pb-5">
@@ -62,7 +63,7 @@ class ContentNodeNew extends React.Component {
           <Col lg="12" md="12">
             <Card className="shadow">
               <CardBody className="px-lg-5 py-lg-5">
-                <ContentNodeForm scores={scores} errors={error} isLoading={isLoading} nodes={nodes} onSubmit={this.onSubmit} />
+                <ContentNodeForm allScores={allScores} errors={error} isLoading={isLoading} allNodes={allNodes} allTrees={ allTrees } onSubmit={this.onSubmit} />
               </CardBody>
             </Card>
           </Col>
@@ -72,7 +73,7 @@ class ContentNodeNew extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ createNode, clearNodeForm, fetchAllScores, fetchAllNodes }, dispatch)
+const mapDispatchToProps = (dispatch) => bindActionCreators({ createNode, clearNodeForm, fetchAllScores, fetchAllTrees, fetchAllNodes }, dispatch)
 const mapStateToProps = state => state.node
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ContentNodeNew))

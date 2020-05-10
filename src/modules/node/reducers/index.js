@@ -1,7 +1,22 @@
-import { ACTIONS } from "./../constants"
+import { ACTIONS, NODE_TYPE } from "./../constants"
 
 
-export default (state = { items: [], tree: null, item: null, hasMore: true, isLoading: false, error: null, searchTerm: "", success: false }, action) => {
+const initState = { 
+  items: [],
+  tree: null, 
+  page: 0,
+  allScores: [],
+  allTrees: [],
+  allNodes: { contentNodes: [], logicNodes: [] },
+  item: null, 
+  hasMore: true,
+  isLoading: false, 
+  error: null, 
+  searchTerm: "", 
+  success: false 
+}
+
+export default (state = initState, action) => {
   
   const { payload, type } = action
   
@@ -10,8 +25,8 @@ export default (state = { items: [], tree: null, item: null, hasMore: true, isLo
       return { ...state, isLoading: true, hasMore: false, error: null }
     }
     case ACTIONS.FETCH_NODES_SUCCEDED : {
-      const { items, has_more: hasMore } = payload
-      return { ...state, items: [ ...state.items, ...items ], hasMore, isLoading: false, error: null }
+      const { items, has_more: hasMore, page } = payload
+      return { ...state, items: page === 1 ? items : [ ...state.items, ...items ], hasMore, isLoading: false, page, error: null }
     }
     case ACTIONS.FETCH_NODES_FAILED : {
       return { ...state, isLoading: false, error: payload }
@@ -28,23 +43,34 @@ export default (state = { items: [], tree: null, item: null, hasMore: true, isLo
     }
 
     case ACTIONS.FETCH_ALL_SCORES_INIT: {
-      return { ...state, isLoading: true, scores: [] }
+      return { ...state, isLoading: true, AllScores: [] }
     }
     case ACTIONS.FETCH_ALL_SCORES_SUCCEDED: {
-      return { ...state, isLoading: false, scores: payload.items }
+      return { ...state, isLoading: false, allScores: payload.items }
     }
     case ACTIONS.FETCH_ALL_SCORES_FAILED: {
       return { ...state, isLoading: false, error: null }
     }
 
     case ACTIONS.FETCH_ALL_NODES_INIT: {
-      return { ...state, isLoading: true, scores: [] }
+      return { ...state, isLoading: true, allNodes: { contentNodes: [], logicNodes: [] } }
     }
     case ACTIONS.FETCH_ALL_NODES_SUCCEDED: {
-      const nodes = state.item ? payload.items.filter((item) => item.value !== state.item.id) : payload.items
-      return { ...state, isLoading: false, nodes  }
+      const contentNodes = payload.items.filter((node) => node.type === NODE_TYPE.CONTENT_NODE)
+      const logicNodes = payload.items.filter((node) => node.type === NODE_TYPE.LOGIC_NODE)
+      return { ...state, isLoading: false, allNodes: { contentNodes, logicNodes }  }
     }
     case ACTIONS.FETCH_ALL_NODES_FAILED: {
+      return { ...state, isLoading: false, error: null }
+    }
+
+    case ACTIONS.FETCH_ALL_TREES_INIT: {
+      return { ...state, isLoading: true, allTrees: [] }
+    }
+    case ACTIONS.FETCH_ALL_TREES_SUCCEDED: {
+      return { ...state, isLoading: false, allTrees: payload.items }
+    }
+    case ACTIONS.FETCH_ALL_TREES_FAILED: {
       return { ...state, isLoading: false, error: null }
     }
 
@@ -79,6 +105,16 @@ export default (state = { items: [], tree: null, item: null, hasMore: true, isLo
       return { ...state, item: payload, isLoading: false, error: null }
     }
     case ACTIONS.FETCH_NODE_FAILED : {
+      return { ...state, isLoading: false, error: payload }
+    }
+
+    case ACTIONS.SET_FIRST_NODE_INIT : {
+      return { ...state, isLoading: true, error: null, success: false }
+    }
+    case ACTIONS.SET_FIRST_NODE_SUCCEDED : {
+      return { ...state, tree: { ...state.tree, first_node: payload }, isLoading: false, error: null }
+    }
+    case ACTIONS.SET_FIRST_NODE_FAILED : {
       return { ...state, isLoading: false, error: payload }
     }
 
