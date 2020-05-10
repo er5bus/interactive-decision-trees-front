@@ -44,7 +44,8 @@ export default (state = { items: [], item: {}, page: 0, isLoading: false, search
       return { ...state, isLoading: true, hasMore: false, error: null }
     }
     case ACTIONS.FETCH_TAGS_SUCCEDED : {
-      return { ...state, items: [ ...state.items, ...payload.items], page: payload.page, hasMore: payload.has_more, isLoading: false, error: null }
+      const { items, has_more: hasMore, page } = payload
+      return { ...state, items: page === 1 ? items : [ ...state.items, ...items], page, hasMore, isLoading: false, error: null }
     }
     case ACTIONS.FETCH_TAGS_FAILED : {
       return { ...state, isLoading: false, hasMore: false, error: payload }
