@@ -29,13 +29,13 @@ class TagList extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      showModal: false,
+      openModal: false,
       uid: null,
     }
   }
 
   onToggleModal = (uid) => {
-    this.setState({ showModal: !this.state.showModal, uid })
+    this.setState({ openModal: !this.state.openModal, uid })
   }
 
   onFetchTags = (pageNumber) => {
@@ -83,15 +83,14 @@ class TagList extends React.Component {
           </div>
         </Container>
         <Container>
-          { this.state.showModal && <ConfirmModal
-            open={ this.state.showModal }
+          <ConfirmModal
+            isOpen={ this.state.openModal }
             title={ t("Confirmation") }
             content={ t("Are you sure you want to delete this tag ?") }
             onClick={ this.onDeleteTag }
             onToggle={ this.onToggleModal }
             buttonText={ t("Delete this tag") }
           />
-          }
           <Row>
             <Col className="pb-5" lg="12">
               <FilterNavbar onSearch={this.onSearch} value={ searchTerm } />

@@ -11,6 +11,7 @@ class InfiniteScroll extends React.PureComponent {
   }
 
   componentDidMount(){
+    window.scrollTo(0, 0)
     window.addEventListener('scroll', this.handleScroll)
     this.handleScroll()
   }
@@ -61,7 +62,7 @@ class InfiniteScroll extends React.PureComponent {
     return (
       <>
         { pageNumber > 0 && children }
-        { isLoading &&  loader }
+        { (isLoading || pageNumber === 0 ) &&  loader }
       </>
     )
   }

@@ -92,15 +92,14 @@ class TreeList extends React.Component {
           </div>
         </Container>
         <Container>
-          { this.state.showModal && <ConfirmModal
-            open={ this.state.showModal }
+          <ConfirmModal
+            isOpen={ this.state.showModal }
             title={ t("Confirmation") }
             content={ t("Are you sure you want to delete this tree ?") }
             onClick={ this.onDeleteTree }
             onToggle={ this.onToggleModal }
             buttonText={ t("Delete this tree") }
           />
-          }
           <Row>
             <Col className="pb-5" lg="12">
               <TreeFilter tags={ tags } onChange={ this.onFilter } initialValues={ filters } />
