@@ -39,8 +39,8 @@ sessionService.initSessionService(store, {refreshOnCheckAuth: true})
         <BrowserRouter>
           <React.Suspense fallback={<Loader />}>
             <Switch>
-              <Route onEnter={sessionService.checkAuth} path={ routes.anonymous.path } component={AnonymousLayout} />
-              <Route path={ routes.user.path } component={UserLayout} />
+              <Route path={ routes.anonymous.path } component={AnonymousLayout} />
+              <Route onEnter={sessionService.checkAuth} path={ routes.user.path } component={UserLayout} />
               <Redirect from="*" to={ routes.anonymous.path } />
             </Switch>
           </React.Suspense>

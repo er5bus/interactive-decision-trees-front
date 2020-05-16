@@ -8,19 +8,19 @@ import { logout } from "./../actions"
 import ConfirmModal from "./../../../components/ConfirmModal"
 
 
-const Logout = ({ logout, onToggle }) => {
+const Logout = ({ logout, openModal, onToggle }) => {
   const { t } = useTranslation()
 
-
-    return (
-      <ConfirmModal
-        title={ t("Confirmation") }
-        content={ t("Are you sure you want to logout ?") }
-        onToggle={onToggle}
-        onClick={ logout }
-        buttonText={ t("Logout") }
-      />
-    )
+  return (
+    <ConfirmModal
+      isOpen={ openModal }
+      title={ t("Confirmation") }
+      content={ t("Are you sure you want to logout ?") }
+      onToggle={onToggle}
+      onClick={ logout }
+      buttonText={ t("Logout") }
+    />
+  )
 }
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({ logout }, dispatch)

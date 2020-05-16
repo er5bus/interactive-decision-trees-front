@@ -44,7 +44,7 @@ const UserNavbar = ({ userName }) => {
 
   return (
     <>
-      { showModal && <LogoutModal onToggle={onToggleModal} /> }
+      <LogoutModal openModal={ showModal } onToggle={onToggleModal} />
       <header className="navbar-horizontal">
         <Navbar
           className="navbar-main navbar-transparent navbar-light headroom"
