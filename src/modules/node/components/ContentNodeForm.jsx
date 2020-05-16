@@ -1,6 +1,6 @@
 import React from "react"
 import { Field, FieldArray, reduxForm, stopSubmit, clearSubmitErrors } from "redux-form"
-import { Button, Spinner, DropdownMenu } from "reactstrap"
+import { Button, Spinner } from "reactstrap"
 import { useTranslation } from "react-i18next"
 import { connect } from "react-redux"
 
@@ -8,8 +8,11 @@ import { Row, Col } from "reactstrap"
 
 import { required, maxLength, minLength } from "./../../../utils/validations"
 
+import { POINT_TO } from './../constants'
+
 import Form from "./../../../components/Form"
 import InputField from "./../../../components/InputField"
+import InputOrderField from "./../../../components/InputOrderField"
 import InputTextareaField from "./../../../components/InputTextareaField"
 import EditorField from "./../../../components/EditorField"
 import SelectField from "./../../../components/SelectField"
@@ -66,16 +69,16 @@ const renderValues = ({ fields, allScores, t }) =>  {
   )
 }
 
-const renderAction = ({ fields, setPointTo, pointTo, allScores, allNodes, allTrees, t }) =>  {
+let pointTo = {}
 
-  const onChangePointTo = (value) => {
-    setPointTo(value)
-  }
+const renderAction = ({ fields, allScores, allNodes, allTrees, t }) =>  {
 
   return (
     <>
       <div className="mt-4">
-        <Button onClick={() => fields.push({})} color="primary" type="button">
+        <Button onClick={async () => {
+          fields.push({})
+        }} color="primary" type="button">
           <i className="fas fa-plus-circle" />
           { t(" Add actions") }
         </Button>
@@ -83,13 +86,21 @@ const renderAction = ({ fields, setPointTo, pointTo, allScores, allNodes, allTre
       { fields.map((action, index) => (
         <Row key={index} className="mt-4">
           <Col lg="1" md="2">
-            <Button className="form-controle-button" onClick={() => fields.remove(index)} color="danger" type="button">
+            <Button className="form-controle-button" onClick={async () => {
+              fields.remove(index)
+            }} color="danger" type="button">
               <i className="fas fa-trash" />
             </Button>
           </Col>
           <Col lg="11" md="10">
             <Row>
               <Col lg="4">
+                <Field
+                  name={`${action}.order`}
+                  type="hidden"
+                  component={ InputOrderField }
+                  index={ index }
+                />
                 <Field
                   name={`${action}.name`}
                   component={InputField}
@@ -107,17 +118,18 @@ const renderAction = ({ fields, setPointTo, pointTo, allScores, allNodes, allTre
                   label={t("Point to")}
                   placeholder={ t("Nothing for now") }
                   choices={ [
-                    { value: "nothing", label: "Nothing for now" },
-                    { value: "logic_node", label: "Logic Nodes" },
-                    { value: "content_node", label: "Content Nodes" },
-                    { value: "trees", label: "Trees" }
+                    { value: POINT_TO.NOTHING, label: "Nothing for now" },
+                    { value: POINT_TO.LOGIC_NODE, label: "Logic Nodes" },
+                    { value: POINT_TO.CONTENT_NODE, label: "Content Nodes" },
+                    { value: POINT_TO.TREES, label: "Trees" }
                   ] }
-                  onChange={ onChangePointTo }
+                  onChange={ (value) => pointTo[index] = value }
+                  format={ (value, name) => { pointTo[index] = value; return value }}
                   validate={ required }
                 />
               </Col>
               <Col lg="5">
-                { pointTo === "logic_node" &&
+                { pointTo[index] === POINT_TO.LOGIC_NODE &&
                 <Field
                   name={`${action}.point_to_node.id`}
                   component={SelectField}
@@ -127,7 +139,7 @@ const renderAction = ({ fields, setPointTo, pointTo, allScores, allNodes, allTre
                   validate={ [ required ] }
                 />
                 }
-                { pointTo === "content_node" &&
+                { pointTo[index] === POINT_TO.CONTENT_NODE &&
                   <Field
                     name={`${action}.point_to_node.id`}
                     component={SelectField}
@@ -137,7 +149,8 @@ const renderAction = ({ fields, setPointTo, pointTo, allScores, allNodes, allTre
                     validate={ [ required ] }
                   />
                 }
-                {pointTo === "trees" && <Field
+                {pointTo[index] === POINT_TO.TREES && 
+                  <Field
                   name={`${action}.point_to_tree.id`}
                   component={SelectField}
                   label={t("Point to tree")}
@@ -164,8 +177,6 @@ let ContentNodeForm = (props) => {
 
   const { t } = useTranslation()
   const { handleSubmit, allScores, allNodes, allTrees, isLoading=false, reset } = props
-
-  const [ pointTo, setPointTo ] = React.useState("nodes")
 
   React.useEffect(() => {
     if (props.errors && props.errors.error && props.errors.error.match("bad-request")){
@@ -205,15 +216,14 @@ let ContentNodeForm = (props) => {
         type="text"
         validate={[ required, minLength2, maxLength500 ]}
       />
-      <FieldArray 
-        name="actions" 
-        allScores={allScores} 
-        allNodes={allNodes} 
-        allTrees={ allTrees } 
-        pointTo={ pointTo } 
-        setPointTo={ setPointTo } 
-        component={renderAction} 
-        t={t} 
+      <FieldArray
+        name="actions"
+        allScores={allScores}
+        allNodes={allNodes}
+        allTrees={ allTrees }
+        rerenderOnEveryChange={true}
+        component={renderAction}
+        t={t}
       />
       <div className="text-center mt-5 border-top">
         <Button className="mt-4 pl-5 pr-5" color="primary" type="submit">

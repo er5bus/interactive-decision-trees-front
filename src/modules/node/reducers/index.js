@@ -42,6 +42,16 @@ export default (state = initState, action) => {
       return { ...state, isLoading: false, error: null }
     }
 
+    case ACTIONS.SET_FIRST_NODE_INIT : {
+      return { ...state, isLoading: true, error: null, success: false }
+    }
+    case ACTIONS.SET_FIRST_NODE_SUCCEDED : {
+      return { ...state, tree: { ...state.tree, first_node: payload }, isLoading: false, error: null }
+    }
+    case ACTIONS.SET_FIRST_NODE_FAILED : {
+      return { ...state, isLoading: false, error: payload }
+    }
+
     case ACTIONS.FETCH_ALL_SCORES_INIT: {
       return { ...state, isLoading: true, AllScores: [] }
     }
@@ -105,16 +115,6 @@ export default (state = initState, action) => {
       return { ...state, item: payload, isLoading: false, error: null }
     }
     case ACTIONS.FETCH_NODE_FAILED : {
-      return { ...state, isLoading: false, error: payload }
-    }
-
-    case ACTIONS.SET_FIRST_NODE_INIT : {
-      return { ...state, isLoading: true, error: null, success: false }
-    }
-    case ACTIONS.SET_FIRST_NODE_SUCCEDED : {
-      return { ...state, tree: { ...state.tree, first_node: payload }, isLoading: false, error: null }
-    }
-    case ACTIONS.SET_FIRST_NODE_FAILED : {
       return { ...state, isLoading: false, error: payload }
     }
 

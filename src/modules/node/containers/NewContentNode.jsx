@@ -39,7 +39,7 @@ class ContentNodeNew extends React.Component {
   }
 
   render() {
-    const { error, scores, isLoading, allNodes, allTrees, allScores, t } = this.props
+    const { error, isLoading, allNodes, allTrees, allScores, t } = this.props
     return (
       <>
         <Container className="py-lg-md d-flex pb-5">
@@ -63,7 +63,7 @@ class ContentNodeNew extends React.Component {
           <Col lg="12" md="12">
             <Card className="shadow">
               <CardBody className="px-lg-5 py-lg-5">
-                <ContentNodeForm allScores={allScores} errors={error} isLoading={isLoading} allNodes={allNodes} allTrees={ allTrees } onSubmit={this.onSubmit} />
+                <ContentNodeForm errors={error} isLoading={isLoading} allScores={allScores} allNodes={allNodes} allTrees={ allTrees } onSubmit={this.onSubmit} />
               </CardBody>
             </Card>
           </Col>

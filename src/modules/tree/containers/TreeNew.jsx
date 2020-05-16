@@ -35,34 +35,34 @@ class TreeNew extends React.Component {
 
   render() {
     const { error, t, tags, isLoading } = this.props
-      return (
-        <>
-          <Container className="py-lg-md d-flex pb-5">
-            <div className="col px-0">
-              <Row>
-                <Col lg="12" className="text-center">
-                  <h1 className="display-3 text-white">
-                    <img className="icon-lg" src={graphIcon} alt="Graph icon" />
-                    {" "}{t("Create New Tree")}
-                  </h1>
-                  <p className="lead text-white">
-                    { t("Start a new decision tree") }
-                  </p>
-                </Col>
-              </Row>
-            </div>
-          </Container>
-          <Row className="justify-content-center">
-            <Col lg="12" md="12">
-              <Card className="shadow">
-                <CardBody className="px-lg-5 py-lg-5">
-                  <TreeForm onSubmit={this.onSubmit} isLoading={isLoading} tags={tags} errors={error || {}} />
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </>
-      )
+    return (
+      <>
+        <Container className="py-lg-md d-flex pb-5">
+          <div className="col px-0">
+            <Row>
+              <Col lg="12" className="text-center">
+                <h1 className="display-3 text-white">
+                  <img className="icon-lg" src={graphIcon} alt="Graph icon" />
+                  {" "}{t("Create New Tree")}
+                </h1>
+                <p className="lead text-white">
+                  { t("Start a new decision tree") }
+                </p>
+              </Col>
+            </Row>
+          </div>
+        </Container>
+        <Row className="justify-content-center">
+          <Col lg="12" md="12">
+            <Card className="shadow">
+              <CardBody className="px-lg-5 py-lg-5">
+                <TreeForm onSubmit={this.onSubmit} isLoading={isLoading} tags={tags} errors={error || {}} />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </>
+    )
   }
 }
 

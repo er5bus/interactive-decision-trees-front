@@ -29,13 +29,13 @@ class TagList extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      showModal: false,
+      openModal: false,
       uid: null,
     }
   }
 
   onToggleModal = (uid) => {
-    this.setState({ showModal: !this.state.showModal, uid })
+    this.setState({ openModal: !this.state.openModal, uid })
   }
 
   onFetchTags = (pageNumber) => {
@@ -53,7 +53,7 @@ class TagList extends React.Component {
   }
 
   render() {
-    const { t, items, hasMore, searchTerm, isLoading } = this.props
+    const { t, items, page, hasMore, searchTerm, isLoading } = this.props
     return (
       <div>
         <Container className="py-lg-md d-flex pb-5">
@@ -83,15 +83,14 @@ class TagList extends React.Component {
           </div>
         </Container>
         <Container>
-          { this.state.showModal && <ConfirmModal
-            open={ this.state.showModal }
+          <ConfirmModal
+            isOpen={ this.state.openModal }
             title={ t("Confirmation") }
             content={ t("Are you sure you want to delete this tag ?") }
             onClick={ this.onDeleteTag }
             onToggle={ this.onToggleModal }
             buttonText={ t("Delete this tag") }
           />
-          }
           <Row>
             <Col className="pb-5" lg="12">
               <FilterNavbar onSearch={this.onSearch} value={ searchTerm } />
@@ -100,9 +99,9 @@ class TagList extends React.Component {
               <Row className="row-grid">
                 <InfiniteScroll
                   loadMore={this.onFetchTags}
-                  hasMore={hasMore}
-                  storeEmpty={items.length === 0}
+                  pageNumber={ page }
                   isLoading={isLoading}
+                  hasMore={ hasMore }
                   loader={<TagLoader />}
                 >
                   { !isLoading && !items.length && <CardNotFound /> }

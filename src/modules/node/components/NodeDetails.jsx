@@ -5,12 +5,28 @@ import { Link } from "react-router-dom"
 import { useTranslation } from 'react-i18next'
 import emptyIcon from "./../../../assets/img/empty.png"
 
+import { POINT_TO } from './../constants'
+
 import NodeDetailsLoader from './NodeDetailLoader'
 
 
 const NodeDetails = ({ item, isLoading, treeparam, nodeViewPath, mainPath, calculateScore=f=>f }) => {
 
   const { t } = useTranslation()
+
+  const pointToRoute = (action) => {
+    if (nodeViewPath && action.point_to_type === POINT_TO.TREES){
+      return mainPath + nodeViewPath
+        .replace(":treeparam", action.point_to_tree.uid)
+        .replace(":nodeparam", action.point_to_tree.uid && action.point_to_tree.first_node.uid)
+    }else if (nodeViewPath && (action.point_to_type === POINT_TO.CONTENT_NODE || action.point_to_type === POINT_TO.LOGIC_NODE) ){
+      return mainPath + nodeViewPath
+        .replace(":treeparam", treeparam)
+        .replace(":nodeparam", action.point_to_node.uid)
+    }else {
+      return "#"
+    }
+  }
 
   return (
     <Card className="shadow">
@@ -24,27 +40,27 @@ const NodeDetails = ({ item, isLoading, treeparam, nodeViewPath, mainPath, calcu
             <h1 className="pb-2">{ item.node_name }</h1>
             <p className="pb-2" dangerouslySetInnerHTML={{ __html: item.content_area }} />
             <div>
-              <h3 className="pb-4 text-primary">{ item.question && item.question } ?</h3>
+              <h3 className="pb-4 text-primary">{ item.question && item.question }</h3>
               { item.actions.map((action, i) =>
                 (item.display_style === "BUTTON"
-                  ? <div key={ action.point_to.uid + i}>
+                  ? <div key={ action.id }>
                     <Button
                       className="btn mt-4 mr-2"
                       color="primary"
-                      disabled={ !Boolean(action.point_to.uid) }
+                      disabled={ action.point_to_type === POINT_TO.NOTHING }
                       onClick={() => calculateScore(item, action) }
-                      to={ nodeViewPath ? (mainPath + nodeViewPath.replace(":treeparam", treeparam).replace(":nodeparam", action.point_to.uid)) : "#" }
+                      to={ pointToRoute(action) }
                       tag={Link}
                     >
                       { action.name }
                     </Button>
                   </div>
                   : <Link
-                    key={ action.point_to.uid + i}
+                    key={ action.id }
                     className="panel-link mb-2"
                     onClick={() => calculateScore(item, action) }
-                    disabled={ !Boolean(action.point_to.uid) }
-                    to={  nodeViewPath ? (mainPath + nodeViewPath.replace(":treeparam", treeparam).replace(":nodeparam", action.point_to.uid)) : "#" }
+                    disabled={ action.point_to_type === POINT_TO.NOTHING }
+                    to={ pointToRoute(action) }
                   >
                     { action.name }
                   </Link>

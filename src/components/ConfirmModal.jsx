@@ -4,13 +4,13 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap"
 import { useTranslation } from "react-i18next"
 
 
-const ConfirmModal = ({ title, content, onToggle, onClick, buttonText }) => {
+const ConfirmModal = ({ title, isOpen, content, onToggle, onClick, buttonText }) => {
 
   const { t } = useTranslation()
 
   return (
     <div>
-      <Modal isOpen={true} toggle={onToggle} className="modal-dialog-centered">
+      <Modal isOpen={isOpen} toggle={onToggle} className="modal-dialog-centered">
         <ModalHeader toggle={onToggle}>{title}</ModalHeader>
         <ModalBody>{content}</ModalBody>
         <ModalFooter>

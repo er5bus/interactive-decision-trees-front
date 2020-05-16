@@ -38,7 +38,7 @@ class LogicNodeNew extends React.Component {
   }
 
   render() {
-    const { error, scores, nodes, isLoading, t } = this.props
+    const { error, allNodes, allTrees, allScores, isLoading, t } = this.props
     return (
       <>
         <Container className="py-lg-md d-flex pb-5">
@@ -62,7 +62,7 @@ class LogicNodeNew extends React.Component {
           <Col lg="12" md="12">
             <Card className="shadow">
               <CardBody className="px-lg-5 py-lg-5">
-                <LogicNodeForm scores={scores} errors={error} isLoading={isLoading} nodes={nodes} onSubmit={this.onSubmit} />
+                <LogicNodeForm errors={error} isLoading={isLoading}  allScores={allScores} allNodes={allNodes} allTrees={ allTrees }  onSubmit={this.onSubmit} />
               </CardBody>
             </Card>
           </Col>

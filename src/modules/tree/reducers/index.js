@@ -4,8 +4,8 @@ const initState = {
   items: [], 
   item: {}, 
   nodes: [], 
+  page: 0,
   tags: [], 
-  tagList: null, 
   isLoading: false, 
   filters: {}, 
   hasMore: true, 
@@ -44,7 +44,7 @@ export default (state = initState, action) => {
     }
     case ACTIONS.FETCH_ALL_NODES_SUCCEDED: {
       const nodes = payload.items.filter((item) => item.type === "ContentNode")
-      return { ...state, isLoading: false, nodes  }
+      return { ...state, nodes, isLoading: false  }
     }
     case ACTIONS.FETCH_ALL_NODES_FAILED: {
       return { ...state, isLoading: false, error: null }
@@ -65,11 +65,11 @@ export default (state = initState, action) => {
     }
 
     case ACTIONS.FETCH_TREES_INIT : {
-      state.items = payload.page === 1 ? [] : state.items
       return { ...state, isLoading: true, hasMore: false, error: null }
     }
     case ACTIONS.FETCH_TREES_SUCCEDED : {
-      return { ...state, items: [ ...state.items, ...payload.items], hasMore: payload.has_more, isLoading: false, error: null }
+      const { items, has_more: hasMore, page } = payload
+      return { ...state, items:  page === 1 ? items : [ ...state.items, ...items], page, hasMore, isLoading: false, error: null }
     }
     case ACTIONS.FETCH_TREES_FAILED : {
       return { ...state, isLoading: false, hasMore: false, error: payload }

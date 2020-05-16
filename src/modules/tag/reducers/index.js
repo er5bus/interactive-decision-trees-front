@@ -1,7 +1,7 @@
 import { ACTIONS } from "./../constants"
 
 
-export default (state = { items: [], item: {}, isLoading: false, searchTerm: "", hasMore: true, error: null }, action) => {
+export default (state = { items: [], item: {}, page: 0, isLoading: false, searchTerm: "", hasMore: true, error: null }, action) => {
   const { payload, type } = action
   switch (type) {
     case ACTIONS.CLEAR_TAG_FORM : {
@@ -33,7 +33,7 @@ export default (state = { items: [], item: {}, isLoading: false, searchTerm: "",
     }
     case ACTIONS.FETCH_ALL_NODES_SUCCEDED: {
       const nodes = payload.items.filter((item) => item.type === "ContentNode")
-      return { ...state, isLoading: false, nodes  }
+      return { ...state, nodes, isLoading: false  }
     }
     case ACTIONS.FETCH_ALL_NODES_FAILED: {
       return { ...state, isLoading: false, error: null }
@@ -44,7 +44,8 @@ export default (state = { items: [], item: {}, isLoading: false, searchTerm: "",
       return { ...state, isLoading: true, hasMore: false, error: null }
     }
     case ACTIONS.FETCH_TAGS_SUCCEDED : {
-      return { ...state, items: [ ...state.items, ...payload.items], hasMore: payload.has_more, isLoading: false, error: null }
+      const { items, has_more: hasMore, page } = payload
+      return { ...state, items: page === 1 ? items : [ ...state.items, ...items], page, hasMore, isLoading: false, error: null }
     }
     case ACTIONS.FETCH_TAGS_FAILED : {
       return { ...state, isLoading: false, hasMore: false, error: payload }

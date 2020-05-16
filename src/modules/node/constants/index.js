@@ -11,6 +11,10 @@ export const ACTIONS = {
   FETCH_ALL_SCORES_SUCCEDED: "FETCH_ALL_SCORES_SUCCEDED",
   FETCH_ALL_SCORES_FAILED: "FETCH_ALL_SCORES_FAILED",
 
+  FETCH_ALL_TREES_INIT: "FETCH_ALL_TREES_INIT",
+  FETCH_ALL_TREES_SUCCEDED: "FETCH_ALL_TREES_SUCCEDED",
+  FETCH_ALL_TREES_FAILED: "FETCH_ALL_TREES_FAILED",
+
   FETCH_ALL_NODES_INIT: "FETCH_ALL_NODES_INIT",
   FETCH_ALL_NODES_SUCCEDED: "FETCH_ALL_NODES_SUCCEDED",
   FETCH_ALL_NODES_FAILED: "FETCH_ALL_NODES_FAILED",
@@ -20,6 +24,10 @@ export const ACTIONS = {
   CREATE_NODE_INIT: "CREATE_NODE_INIT",
   CREATE_NODE_SUCCEDED: "CREATE_NODE_SUCCEDED",
   CREATE_NODE_FAILED: "CREATE_NODE_FAILED",
+
+  SET_FIRST_NODE_INIT: "SET_FIRST_NODE_INIT",
+  SET_FIRST_NODE_SUCCEDED: "SET_FIRST_NODE_SUCCEDED",
+  SET_FIRST_NODE_FAILED: "SET_FIRST_NODE_FAILED",
 
   FETCH_NODE_INIT: "FETCH_NODE_INIT",
   FETCH_NODE_SUCCEDED: "FETCH_NODE_SUCCEDED",
@@ -36,8 +44,11 @@ export const ACTIONS = {
   FILTER_NODES: "FILTER_NODES"
 }
 
+export const POINT_TO = { LOGIC_NODE: "LOGIC_NODE", CONTENT_NODE: "CONTENT_NODE", TREES: "TREES", NOTHING: "NOTHING" }
+
 export const ENDPOINT = {
   TREE: "/api/tree/:param",
+  FIRST_NODE: "/api/tree/:treeparam/first/node/:nodeparam",
   NODES: "/api/tree/:treeparam/nodes",
   NODE: "/api/tree/:treeparam/node/:nodeparam",
   LOGIC_NODES: "/api/tree/:treeparam/node/logic",
@@ -45,7 +56,8 @@ export const ENDPOINT = {
   CONTENT_NODES: "/api/tree/:treeparam/node/content",
   CONTENT_NODE: "/api/tree/:treeparam/node/content/:nodeparam",
   TREE_ALL_SCORE: "/api/tree/:treeparam/all/scores",
-  TREE_ALL_NODES: "/api/tree/:treeparam/all/nodes"
+  TREE_ALL_NODES: "/api/tree/:treeparam/all/nodes",
+  ALL_TREES: "/api/trees/all"
 
 }
 
