@@ -4,6 +4,8 @@ import { Provider } from 'react-redux'
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom"
 import { sessionService } from 'redux-react-session'
 
+import * as Sentry from '@sentry/browser'
+
 // load style
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import "./assets/scss/main.scss"
@@ -14,16 +16,20 @@ import configureStore from "./configureStore"
 // loader
 import Loader from "./components/Loader"
 
+import { SENTRY_DSN } from './constants'
 import routes from "./routes"
 
 // load translation
 import './i18n'
 
-
 const AnonymousLayout = React.lazy( () => import("./modules/layouts/containers/AnonymousLayout"))
 const  UserLayout = React.lazy( () =>  import("./modules/layouts/containers/UserLayout"))
 
 const store = configureStore()
+
+Sentry.init({
+  dsn: SENTRY_DSN,
+});
 
 // Init the session service
 sessionService.initSessionService(store, {refreshOnCheckAuth: true})
@@ -43,3 +49,4 @@ sessionService.initSessionService(store, {refreshOnCheckAuth: true})
       document.getElementById("root")
     )
   )
+

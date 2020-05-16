@@ -18,6 +18,7 @@
     "chroma-js": "^2.1.0",
     "moment-timezone": "^0.5.28",
     "react-moment": "^0.9.7",
+    "@sentry/browser": "^5.15.5",
     "axios": "^0.18.0",
     "i18next": "^19.3.4",
     "node-sass": "^4.13.1",
