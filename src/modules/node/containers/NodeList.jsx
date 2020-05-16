@@ -74,7 +74,7 @@ class NodeList extends React.Component {
 
   render() {
     const { t, tree, page, match: { params: { param } }, searchTerm, isLoading, items, hasMore } = this.props
-    const { showDeleteModal, showUpdateModal, action } = this.state
+    const { showDeleteModal, showUpdateModal } = this.state
     return (
       <>
         <Container className="py-lg-md d-flex pb-5">

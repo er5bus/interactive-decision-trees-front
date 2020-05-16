@@ -8,7 +8,7 @@ import { withTranslation } from "react-i18next"
 import { Row, Col, Container } from "reactstrap"
 
 import { viewNode, fetchAllScores } from "./../actions"
-import { NODE_TYPE } from './../constants'
+import { NODE_TYPE, POINT_TO } from './../constants'
 
 import userRoutes from "./../../../routes/user"
 
@@ -40,14 +40,28 @@ class OverviewNode extends React.Component {
     if (item.rules){
       item.rules.forEach((rule) => {
         if ( this.checkOperatorLogicNode(rule.value, this.state.scores[rule.score.id], rule.operator )){
-          this.props.history.push( userRoutes.path + userRoutes.routes.nodeOverview.path.replace(":treeparam", treeparam).replace(":nodeparam", rule.point_to.uid))
+          if (rule.point_to_type === POINT_TO.CONTENT_NODE || rule.point_to_type === POINT_TO.LOGIC_NODE ){
+            this.props.history.push( userRoutes.path + userRoutes.routes.nodeOverview.path
+              .replace(":treeparam", treeparam)
+              .replace(":nodeparam", rule.point_to_node.uid))
+          }else if (rule.point_to_type === POINT_TO.TREES){
+            this.props.history.push( userRoutes.path + userRoutes.routes.nodeOverview.path
+              .replace(":treeparam", rule.point_to_tree.uid)
+              .replace(":nodeparam", rule.point_to_tree.first_node.uid))
+          }
           noRuleMatch = false
           return;
         }
       })
     }
-    if (noRuleMatch){
-      this.props.history.push(userRoutes.path + userRoutes.routes.nodeOverview.path.replace(":treeparam", treeparam).replace(":nodeparam", item.default_node.uid))
+    if (noRuleMatch && (item.default_point_to_type === POINT_TO.CONTENT_NODE || item.default_point_to_type === POINT_TO.LOGIC_NODE)){
+      this.props.history.push(userRoutes.path + userRoutes.routes.nodeOverview.path
+        .replace(":treeparam", treeparam)
+        .replace(":nodeparam", item.default_node.uid))
+    }else if (noRuleMatch && item.default_point_to_type === POINT_TO.TREES){
+      this.props.history.push(userRoutes.path + userRoutes.routes.nodeOverview.path
+        .replace(":treeparam", item.default_tree.uid)
+        .replace(":nodeparam", item.default_tree.first_node.uid))
     }
   }
 
@@ -79,7 +93,11 @@ class OverviewNode extends React.Component {
 
   componentDidUpdate(prevProps, prevState, snapshot){
     const { match : { params }, item : newItem } = this.props
-    const { match : { params: prevParams }, item } = prevProps
+    const { match : { params: prevParams } } = prevProps
+
+    if (params.treeparam && prevParams.treeparam && params.treeparam !== prevParams.treeparam){
+      this.props.fetchAllScores(params)
+    }
 
     if (params.nodeparam && prevParams.nodeparam && params.nodeparam !== prevParams.nodeparam){
       this.props.viewNode(params)
@@ -104,7 +122,7 @@ class OverviewNode extends React.Component {
   }
 
   render() {
-    const { scores, item, isLoading, match : { params : { treeparam } }, t } = this.props
+    const { allScores, item, isLoading, match : { params : { treeparam } }, t } = this.props
     return (
       <>
         <Container className="py-lg-md d-flex pb-5">
@@ -125,10 +143,17 @@ class OverviewNode extends React.Component {
         </Container>
         <Row className="justify-content-center">
           <Col lg="12">
-            <NodeScore scores={ scores } result={ this.state.scores } />
+            <NodeScore scores={ allScores } result={ this.state.scores } />
           </Col>
           <Col lg="12">
-            <NodeDetails item={item} calculateScore={ this.calculateScore } isLoading={isLoading} treeparam={treeparam} nodeViewPath={ userRoutes.routes.nodeOverview.path } mainPath={ userRoutes.path }  />
+            <NodeDetails 
+              item={item} 
+              calculateScore={ this.calculateScore } 
+              isLoading={isLoading} 
+              treeparam={treeparam} 
+              nodeViewPath={ userRoutes.routes.nodeOverview.path } 
+              mainPath={ userRoutes.path }  
+            />
           </Col>
         </Row>
       </>
