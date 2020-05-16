@@ -44,6 +44,8 @@ export const ACTIONS = {
   FILTER_NODES: "FILTER_NODES"
 }
 
+export const POINT_TO = { LOGIC_NODE: "LOGIC_NODE", CONTENT_NODE: "CONTENT_NODE", TREES: "TREES", NOTHING: "NOTHING" }
+
 export const ENDPOINT = {
   TREE: "/api/tree/:param",
   FIRST_NODE: "/api/tree/:treeparam/first/node/:nodeparam",

@@ -1,5 +1,5 @@
 import React from "react"
-import { Field, FieldArray, reduxForm, stopSubmit, clearSubmitErrors, change } from "redux-form"
+import { Field, FieldArray, reduxForm, stopSubmit, clearSubmitErrors } from "redux-form"
 import { Button, Spinner } from "reactstrap"
 import { useTranslation } from "react-i18next"
 import { connect } from "react-redux"
@@ -8,8 +8,11 @@ import { Row, Col } from "reactstrap"
 
 import { required, maxLength, minLength } from "./../../../utils/validations"
 
+import { POINT_TO } from './../constants'
+
 import Form from "./../../../components/Form"
 import InputField from "./../../../components/InputField"
+import InputOrderField from "./../../../components/InputOrderField"
 import InputTextareaField from "./../../../components/InputTextareaField"
 import EditorField from "./../../../components/EditorField"
 import SelectField from "./../../../components/SelectField"
@@ -21,7 +24,7 @@ const maxLength500 = maxLength(500)
 const maxLength1500 = maxLength(1500)
 
 
-const renderValues = ({ fields, scores, t }) =>  {
+const renderValues = ({ fields, allScores, t }) =>  {
 
   return (
     <>
@@ -44,7 +47,7 @@ const renderValues = ({ fields, scores, t }) =>  {
               name={`${value}.score.id`}
               component={SelectField}
               label={t("Scores")}
-              choices={ scores }
+              choices={ allScores }
               placeholder={t("Select A Score")}
               validate={[ required ]}
             />
@@ -66,9 +69,9 @@ const renderValues = ({ fields, scores, t }) =>  {
   )
 }
 
-const renderAction = ({ fields, setOrder, scores, nodes, t }) =>  {
+let pointTo = {}
 
-  setOrder(fields)
+const renderAction = ({ fields, allScores, allNodes, allTrees, t }) =>  {
 
   return (
     <>
@@ -91,12 +94,13 @@ const renderAction = ({ fields, setOrder, scores, nodes, t }) =>  {
           </Col>
           <Col lg="11" md="10">
             <Row>
-              <Field
-                name={`${action}.order`}
-                type="hidden"
-                component="input"
-              />
-              <Col lg="6" md="6">
+              <Col lg="4">
+                <Field
+                  name={`${action}.order`}
+                  type="hidden"
+                  component={ InputOrderField }
+                  index={ index }
+                />
                 <Field
                   name={`${action}.name`}
                   component={InputField}
@@ -107,19 +111,59 @@ const renderAction = ({ fields, setOrder, scores, nodes, t }) =>  {
                   validate={[ required, minLength2, maxLength200 ]}
                 />
               </Col>
-              <Col lg="6" md="6">
+              <Col lg="3">
                 <Field
-                  name={`${action}.point_to.id`}
+                  name={`${action}.point_to_type`}
                   component={SelectField}
                   label={t("Point to")}
-                  placeholder={ t("New node you will create later") }
-                  choices={ nodes }
+                  placeholder={ t("Nothing for now") }
+                  choices={ [
+                    { value: POINT_TO.NOTHING, label: "Nothing for now" },
+                    { value: POINT_TO.LOGIC_NODE, label: "Logic Nodes" },
+                    { value: POINT_TO.CONTENT_NODE, label: "Content Nodes" },
+                    { value: POINT_TO.TREES, label: "Trees" }
+                  ] }
+                  onChange={ (value) => pointTo[index] = value }
+                  format={ (value, name) => { pointTo[index] = value; return value }}
+                  validate={ required }
                 />
+              </Col>
+              <Col lg="5">
+                { pointTo[index] === POINT_TO.LOGIC_NODE &&
+                <Field
+                  name={`${action}.point_to_node.id`}
+                  component={SelectField}
+                  label={t("Point to Logic node")}
+                  placeholder={ t("Point to an Existing logic node") }
+                  choices={ allNodes.logicNodes }
+                  validate={ [ required ] }
+                />
+                }
+                { pointTo[index] === POINT_TO.CONTENT_NODE &&
+                  <Field
+                    name={`${action}.point_to_node.id`}
+                    component={SelectField}
+                    label={t("Point to Content node")}
+                    placeholder={ t("Point to an Existing content node") }
+                    choices={ allNodes.contentNodes }
+                    validate={ [ required ] }
+                  />
+                }
+                {pointTo[index] === POINT_TO.TREES && 
+                  <Field
+                  name={`${action}.point_to_tree.id`}
+                  component={SelectField}
+                  label={t("Point to tree")}
+                  placeholder={ t("Point to an Existing tree") }
+                  choices={ allTrees }
+                  validate={ [ required ] }
+                />
+                }
               </Col>
             </Row>
             <Row>
               <Col lg="12">
-                <FieldArray name={`${action}.values`} scores={scores} component={renderValues} t={t} />
+                <FieldArray name={`${action}.values`} allScores={allScores} component={renderValues} t={t} />
               </Col>
             </Row>
           </Col>
@@ -132,7 +176,7 @@ const renderAction = ({ fields, setOrder, scores, nodes, t }) =>  {
 let ContentNodeForm = (props) => {
 
   const { t } = useTranslation()
-  const { handleSubmit, scores, nodes, isLoading=false, dispatch, reset } = props
+  const { handleSubmit, allScores, allNodes, allTrees, isLoading=false, reset } = props
 
   React.useEffect(() => {
     if (props.errors && props.errors.error && props.errors.error.match("bad-request")){
@@ -141,12 +185,6 @@ let ContentNodeForm = (props) => {
       props.dispatch(clearSubmitErrors("content_node"))
     }
   }, [props])
-
-  const setOrder = (fields) => {
-    fields.forEach((action, index) => {
-      props.dispatch(change("content_node", `${action}.order`, index ))
-    })
-  }
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -178,7 +216,15 @@ let ContentNodeForm = (props) => {
         type="text"
         validate={[ required, minLength2, maxLength500 ]}
       />
-      <FieldArray name="actions" scores={scores} nodes={nodes} setOrder={setOrder} component={renderAction} t={t} />
+      <FieldArray
+        name="actions"
+        allScores={allScores}
+        allNodes={allNodes}
+        allTrees={ allTrees }
+        rerenderOnEveryChange={true}
+        component={renderAction}
+        t={t}
+      />
       <div className="text-center mt-5 border-top">
         <Button className="mt-4 pl-5 pr-5" color="primary" type="submit">
           { isLoading ? <Spinner color="white mr-2" /> : <i className="fas fa-save mr-2"></i> }
