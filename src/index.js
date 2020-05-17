@@ -28,6 +28,7 @@ const  UserLayout = React.lazy( () =>  import("./modules/layouts/containers/User
 const store = configureStore()
 
 Sentry.init({
+  release: 'tree-decision-front@1.0.0',
   dsn: SENTRY_DSN,
 });
 

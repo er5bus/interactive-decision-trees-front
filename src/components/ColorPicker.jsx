@@ -13,8 +13,21 @@ class ColorPicker extends PureComponent {
       color: '#fff'
     }
 
-    this.toggleColor = this.toggleColor.bind(this)
-    this.handleChangeComplete = this.handleChangeComplete.bind(this)
+    this.colorPickerNode = null
+  }
+
+  componentDidMount() {
+    document.addEventListener('mousedown', this.handleClickOutside)
+  }
+
+  componentDidUnMount(){
+    document.removeEventListener('mousedown', this.handleClickOutside)
+  }
+
+  handleClickOutside = (e) => {
+    if (this.state.showPicker && this.colorPickerNode && !this.colorPickerNode.contains(e.target) ){
+      this.setState({  showPicker: false })
+    }
   }
 
   componentDidUpdate(prevProps, prevState, snapshot){
@@ -22,7 +35,7 @@ class ColorPicker extends PureComponent {
     this.setState({ color: input.value })
   }
 
-  toggleColor(e) {
+  toggleColor = (e) => {
     e.preventDefault()
 
     this.setState({
@@ -30,7 +43,7 @@ class ColorPicker extends PureComponent {
     })
   }
 
-  handleChangeComplete(color, event) {
+  handleChangeComplete = (color, event) => {
     const { input } = this.props
     this.setState({ color: color.hex })
     input.onChange(color.hex)
@@ -39,24 +52,26 @@ class ColorPicker extends PureComponent {
   render() {
     const { input, label, t, meta: { touched, error, warning } } = this.props
     return (
-      <Row className="pb-2">
-        <Col lg="5">
-          <input type="hidden" {...input} />
-          <Button color="primary btn-block" onClick={this.toggleColor}>
-            { label }
-            <div className="color-picker__color" style={{ backgroundColor: this.state.color }}></div>
-          </Button>
-          {this.state.showPicker && <div className="color-picker__picker">
-            <TwitterPicker color={ this.state.color }
-              onChangeComplete={this.handleChangeComplete}
-              disableAlpha={true} width={250} />
-          </div>}
+      <div ref={ (node) => this.colorPickerNode = node }>
+        <Row className="pb-2">
+          <Col lg="5">
+            <input type="hidden" {...input} />
+            <Button color="primary btn-block" onClick={this.toggleColor}>
+              { label }
+              <div className="color-picker__color" style={{ backgroundColor: this.state.color }}></div>
+            </Button>
+            {this.state.showPicker && <div className="color-picker__picker">
+              <TwitterPicker color={ this.state.color }
+                onChangeComplete={this.handleChangeComplete}
+                disableAlpha={true} width={250} />
+            </div>}
 
-          <div className="danger-msg">
-            {touched && ((error && <span>{t(error)}</span>) || (warning && <span>{t(warning)}</span>))}
-          </div>
-        </Col>
-      </Row>
+            <div className="danger-msg">
+              {touched && ((error && <span>{t(error)}</span>) || (warning && <span>{t(warning)}</span>))}
+            </div>
+          </Col>
+        </Row>
+      </div>
     )
   }
 }
