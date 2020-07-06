@@ -1,9 +1,15 @@
-version: '2'
+version: '3'
 
 services:
   decision_trees_prod:
-    image: predictanalyse/tree-decision-creator-front:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.build
+    volumes:
+      - ./public:/app/public
+      - ./src:/app/src
     env_file:
       - ./.env
     ports:
       - "80:80"
+
