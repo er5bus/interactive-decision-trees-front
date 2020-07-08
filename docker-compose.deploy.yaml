@@ -2,7 +2,7 @@ version: '2'
 
 services:
   decision_tree_deploy:
-    container_name: decision_tree
+    container_name: decision_tree_deploy
     image: predictanalyse/tree-decision-creator-front:latest
     env_file:
       - ./.env

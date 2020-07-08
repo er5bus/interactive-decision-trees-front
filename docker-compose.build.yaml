@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  decision_trees_prod:
+  decision_trees_build:
     build:
       context: .
       dockerfile: Dockerfile.build
