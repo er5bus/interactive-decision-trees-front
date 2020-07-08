@@ -10,6 +10,3 @@ services:
       - ./src:/app/src
     env_file:
       - ./.env
-    ports:
-      - "80:80"
-

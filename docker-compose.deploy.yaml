@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+  decision_tree_deploy:
+    container_name: decision_tree
+    image: predictanalyse/tree-decision-creator-front:latest
+    env_file:
+      - ./.env
+    networks:
+      - traefik
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.decision_tree.rule=Host(`predict-a.tk`)
+      - traefik.http.services.decision_tree.loadbalancer.server.port=80
+
+networks:
+  traefik:
+    external: true

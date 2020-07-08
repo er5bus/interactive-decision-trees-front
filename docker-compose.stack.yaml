@@ -1,9 +1,0 @@
-version: '2'
-
-services:
-  decision_trees_stack:
-    image: predictanalyse/tree-decision-creator-front:latest
-    env_file:
-      - ./.env
-    ports:
-      - "8081:80"
