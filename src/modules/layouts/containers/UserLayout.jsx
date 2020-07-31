@@ -13,14 +13,14 @@ class UserLayout extends React.Component {
 
   render() {
 
-    const { user: { full_name  }, authenticated, notifications = null } = this.props
+    const { user: { fullName  }, authenticated, notifications = null } = this.props
 
     return !authenticated
       ? <Redirect to={ anonymousRoutes.path } />
       : (
         <>
           { notifications && <Notifications notifications={notifications} />}
-          <UserNavbar userName={full_name} />
+          <UserNavbar userName={fullName} />
           <main>
             <div className="position-relative">
               {/* shape Hero */}

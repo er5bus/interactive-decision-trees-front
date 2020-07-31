@@ -25,11 +25,11 @@ export default (state = initState, action) => {
       return { ...state, isLoading: true, hasMore: false, error: null }
     }
     case ACTIONS.FETCH_NODES_SUCCEDED : {
-      const { items, has_more: hasMore, page } = payload
+      const { items, hasMore, page } = payload
       return { ...state, items: page === 1 ? items : [ ...state.items, ...items ], hasMore, isLoading: false, page, error: null }
     }
     case ACTIONS.FETCH_NODES_FAILED : {
-      return { ...state, isLoading: false, error: payload }
+      return { ...state, isLoading: false, hasMore: false, error: payload }
     }
 
     case ACTIONS.DELETE_NODE_INIT : {
@@ -46,9 +46,19 @@ export default (state = initState, action) => {
       return { ...state, isLoading: true, error: null, success: false }
     }
     case ACTIONS.SET_FIRST_NODE_SUCCEDED : {
-      return { ...state, tree: { ...state.tree, first_node: payload }, isLoading: false, error: null }
+      return { ...state, tree: { ...state.tree, firstNode: payload }, isLoading: false, error: null }
     }
     case ACTIONS.SET_FIRST_NODE_FAILED : {
+      return { ...state, isLoading: false, error: payload }
+    }
+
+    case ACTIONS.SET_LAST_NODE_INIT : {
+      return { ...state, isLoading: true, error: null, success: false }
+    }
+    case ACTIONS.SET_LAST_NODE_SUCCEDED : {
+      return { ...state, tree: { ...state.tree, lastNode: payload }, isLoading: false, error: null }
+    }
+    case ACTIONS.SET_LAST_NODE_FAILED : {
       return { ...state, isLoading: false, error: payload }
     }
 
@@ -85,7 +95,11 @@ export default (state = initState, action) => {
     }
 
     case ACTIONS.CLEAR_NODE_FORM : {
-      return { ...state, item: null, isLoading: false, success: false, error: null }
+      return { ...state, item: null, hasMore: false, isLoading: false, success: false, error: null }
+    }
+
+    case ACTIONS.CLEAR_NODES : {
+      return { ...state, items: [], page: 0, item: null, hasMore: true, isLoading: false, success: false, error: null }
     }
 
     case ACTIONS.CREATE_NODE_INIT : {

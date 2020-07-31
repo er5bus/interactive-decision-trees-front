@@ -40,28 +40,28 @@ class OverviewNode extends React.Component {
     if (item.rules){
       item.rules.forEach((rule) => {
         if ( this.checkOperatorLogicNode(rule.value, this.state.scores[rule.score.id], rule.operator )){
-          if (rule.point_to_type === POINT_TO.CONTENT_NODE || rule.point_to_type === POINT_TO.LOGIC_NODE ){
+          if (rule.pointToType === POINT_TO.CONTENT_NODE || rule.pointToType === POINT_TO.LOGIC_NODE ){
             this.props.history.push( userRoutes.path + userRoutes.routes.nodeOverview.path
               .replace(":treeparam", treeparam)
-              .replace(":nodeparam", rule.point_to_node.uid))
-          }else if (rule.point_to_type === POINT_TO.TREES){
+              .replace(":nodeparam", rule.pointToNode.uid))
+          }else if (rule.pointToType === POINT_TO.TREES){
             this.props.history.push( userRoutes.path + userRoutes.routes.nodeOverview.path
-              .replace(":treeparam", rule.point_to_tree.uid)
-              .replace(":nodeparam", rule.point_to_tree.first_node.uid))
+              .replace(":treeparam", rule.pointToTree.uid)
+              .replace(":nodeparam", rule.pointToTree.firstNode.uid))
           }
           noRuleMatch = false
           return;
         }
       })
     }
-    if (noRuleMatch && (item.default_point_to_type === POINT_TO.CONTENT_NODE || item.default_point_to_type === POINT_TO.LOGIC_NODE)){
+    if (noRuleMatch && (item.defaultPointToType === POINT_TO.CONTENT_NODE || item.defaultPointToType === POINT_TO.LOGIC_NODE)){
       this.props.history.push(userRoutes.path + userRoutes.routes.nodeOverview.path
         .replace(":treeparam", treeparam)
-        .replace(":nodeparam", item.default_node.uid))
-    }else if (noRuleMatch && item.default_point_to_type === POINT_TO.TREES){
+        .replace(":nodeparam", item.defaultNode.uid))
+    }else if (noRuleMatch && item.defaultPointToType === POINT_TO.TREES){
       this.props.history.push(userRoutes.path + userRoutes.routes.nodeOverview.path
-        .replace(":treeparam", item.default_tree.uid)
-        .replace(":nodeparam", item.default_tree.first_node.uid))
+        .replace(":treeparam", item.defaultTree.uid)
+        .replace(":nodeparam", item.defaultTree.firstNode.uid))
     }
   }
 

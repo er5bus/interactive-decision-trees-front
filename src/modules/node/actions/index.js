@@ -2,6 +2,12 @@ import { ACTIONS, ENDPOINT, NODE_TYPE } from "./../constants"
 import { CALL_API, HTTP_METHODS } from "./../../../constants"
 
 
+export const clearNodes = () =>
+  ({
+    type: ACTIONS.CLEAR_NODES
+  })
+
+
 export const filterNodes = (searchTerm) =>
   ({
     type: ACTIONS.FILTER_NODES,
@@ -98,6 +104,26 @@ export const setFirstNode = ({ treeparam, nodeparam }) =>
         fail: "Something went wrong please try again"
       },
       endpoint: ENDPOINT.FIRST_NODE.replace(":treeparam", treeparam).replace(":nodeparam", nodeparam),
+      method: HTTP_METHODS.POST,
+      jwt: true
+    }
+  })
+
+
+export const setLastNode = ({ treeparam, nodeparam }) =>
+  ({
+    type: CALL_API,
+    meta: {
+      actions: {
+        init: ACTIONS.SET_LAST_NODE_INIT,
+        success: ACTIONS.SET_LAST_NODE_SUCCEDED,
+        fail: ACTIONS.SET_LAST_NODE_FAILED
+      },
+      messages: {
+        success: "Your node has been updated successfuly",
+        fail: "Something went wrong please try again"
+      },
+      endpoint: ENDPOINT.LAST_NODE.replace(":treeparam", treeparam).replace(":nodeparam", nodeparam),
       method: HTTP_METHODS.POST,
       jwt: true
     }

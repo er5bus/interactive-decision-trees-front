@@ -29,7 +29,6 @@ class EditContentNode extends React.Component {
 
   onSubmit = (values) => {
     const { params } = this.props.match
-    console.log(values)
     this.props.editNode(params, values)
   }
 

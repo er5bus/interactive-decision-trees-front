@@ -29,7 +29,7 @@ const RegisterForm = (props) => {
   return (
     <Form onSubmit={handleSubmit}>
       <Field
-        name="full_name"
+        name="fullName"
         component={InputField}
         className="form-control"
         icon="ni ni-hat-3"
@@ -56,7 +56,7 @@ const RegisterForm = (props) => {
         validate={[required, minLength4, maxLength30]}
       />
       <Field
-        name="privacy_policy"
+        name="privacyPolicy"
         component={InputRadioField}
         type="checkbox"
         label={t("I agree with the Privacy Policy")}

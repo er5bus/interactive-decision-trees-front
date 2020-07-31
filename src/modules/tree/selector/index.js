@@ -10,7 +10,7 @@ export const getFilteredTreesBySearchTerm = createSelector(
   [getTrees, getSearchTerm],
   (trees, searchTerm) => trees.filter(tree =>
     (
-      tree.tree_name.match(new RegExp(searchTerm, 'i')) ||
+      tree.treeName.match(new RegExp(searchTerm, 'i')) ||
       tree.description.match(new RegExp(searchTerm, 'i')) ||
       tree.uid.match(new RegExp(searchTerm, 'i'))
     )

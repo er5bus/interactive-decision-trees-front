@@ -19,7 +19,6 @@ class TreeEdit extends React.Component {
   UNSAFE_componentWillMount(){
     this.props.fetchAllTags()
     this.props.fetchTree(this.props.match.params)
-    this.props.fetchAllNodes(this.props.match.params)
   }
 
   onSubmit = (values) => {
@@ -28,7 +27,7 @@ class TreeEdit extends React.Component {
   }
 
   render() {
-    const { error, t, isLoading, nodes, tags } = this.props
+    const { error, t, isLoading, tags } = this.props
     return (
       <>
         <Container className="py-lg-md d-flex pb-5">
@@ -50,7 +49,7 @@ class TreeEdit extends React.Component {
           <Col lg="12">
             <Card className="shadow">
               <CardBody className="px-lg-5 py-lg-5">
-                <TreeForm onSubmit={this.onSubmit} nodes={nodes} tags={ tags } errors={error} isLoading={isLoading} />
+                <TreeForm onSubmit={this.onSubmit} tags={ tags } errors={error} isLoading={isLoading} />
               </CardBody>
             </Card>
           </Col>

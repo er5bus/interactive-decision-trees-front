@@ -113,7 +113,7 @@ const renderAction = ({ fields, allScores, allNodes, allTrees, t }) =>  {
               </Col>
               <Col lg="3">
                 <Field
-                  name={`${action}.point_to_type`}
+                  name={`${action}.pointToType`}
                   component={SelectField}
                   label={t("Point to")}
                   placeholder={ t("Nothing for now") }
@@ -131,7 +131,7 @@ const renderAction = ({ fields, allScores, allNodes, allTrees, t }) =>  {
               <Col lg="5">
                 { pointTo[index] === POINT_TO.LOGIC_NODE &&
                 <Field
-                  name={`${action}.point_to_node.id`}
+                  name={`${action}.pointToNode.id`}
                   component={SelectField}
                   label={t("Point to Logic node")}
                   placeholder={ t("Point to an Existing logic node") }
@@ -141,7 +141,7 @@ const renderAction = ({ fields, allScores, allNodes, allTrees, t }) =>  {
                 }
                 { pointTo[index] === POINT_TO.CONTENT_NODE &&
                   <Field
-                    name={`${action}.point_to_node.id`}
+                    name={`${action}.pointToNode.id`}
                     component={SelectField}
                     label={t("Point to Content node")}
                     placeholder={ t("Point to an Existing content node") }
@@ -151,7 +151,7 @@ const renderAction = ({ fields, allScores, allNodes, allTrees, t }) =>  {
                 }
                 {pointTo[index] === POINT_TO.TREES && 
                   <Field
-                  name={`${action}.point_to_tree.id`}
+                  name={`${action}.pointToTree.id`}
                   component={SelectField}
                   label={t("Point to tree")}
                   placeholder={ t("Point to an Existing tree") }
@@ -189,7 +189,7 @@ let ContentNodeForm = (props) => {
   return (
     <Form onSubmit={handleSubmit}>
       <Field
-        name="node_name"
+        name="name"
         component={InputField}
         className="form-control"
         label={t("Node Name")}
@@ -198,7 +198,7 @@ let ContentNodeForm = (props) => {
         validate={[ required, minLength2, maxLength200 ]}
       />
       <Field
-        name="content_area"
+        name="contentArea"
         component={EditorField}
         className="form-control"
         label={t("Content area")}

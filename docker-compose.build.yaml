@@ -2,6 +2,7 @@ version: '3'
 
 services:
   decision_trees_build:
+    image: predictanalyse/tree-decision-creator-front:latest
     build:
       context: .
       dockerfile: Dockerfile.build

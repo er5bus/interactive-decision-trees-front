@@ -84,7 +84,7 @@ const renderRule = ({ fields, allScores, allNodes, allTrees, t }) =>  {
           <Col lg="1"/>
           <Col lg="5">
             <Field
-              name={`${rule}.point_to_type`}
+              name={`${rule}.pointToType`}
               component={SelectField}
               label={t("Point to")}
               placeholder={ t("Choose a type") }
@@ -101,7 +101,7 @@ const renderRule = ({ fields, allScores, allNodes, allTrees, t }) =>  {
           <Col lg="6">
             { pointTo[index] === POINT_TO.LOGIC_NODE &&
             <Field
-              name={`${rule}.point_to_node.id`}
+              name={`${rule}.pointToNode.id`}
               component={SelectField}
               label={t("Point to Logic node")}
               placeholder={ t("Point to an Existing logic node") }
@@ -111,7 +111,7 @@ const renderRule = ({ fields, allScores, allNodes, allTrees, t }) =>  {
             }
             { pointTo[index] === POINT_TO.CONTENT_NODE &&
               <Field
-                name={`${rule}.point_to_node.id`}
+                name={`${rule}.pointToNode.id`}
                 component={SelectField}
                 label={t("Point to Content node")}
                 placeholder={ t("Point to an Existing content node") }
@@ -120,7 +120,7 @@ const renderRule = ({ fields, allScores, allNodes, allTrees, t }) =>  {
               />
             }
             {pointTo[index] === POINT_TO.TREES && <Field
-              name={`${rule}.point_to_tree.id`}
+              name={`${rule}.pointToTree.id`}
               component={SelectField}
               label={t("Point to tree")}
               placeholder={ t("Point to an Existing tree") }
@@ -153,7 +153,7 @@ let LogicNodeForm = (props) => {
   return (
     <Form onSubmit={handleSubmit}>
       <Field
-        name="node_name"
+        name="name"
         component={InputField}
         className="form-control"
         label={t("Node Name")}
@@ -178,7 +178,7 @@ let LogicNodeForm = (props) => {
       <Row>
         <Col lg="4">
           <Field
-            name="default_point_to_type"
+            name="defaultPointToType"
             component={SelectField}
             label={t("Point to")}
             placeholder={ t("Choose a type") }
@@ -195,7 +195,7 @@ let LogicNodeForm = (props) => {
         <Col lg="8">
           { pointTo === POINT_TO.LOGIC_NODE &&
           <Field
-            name="default_node.id"
+            name="defaultNode.id"
             component={SelectField}
             label={t("Point to Logic node ")}
             placeholder={ t("Point to an Existing logic node") }
@@ -205,7 +205,7 @@ let LogicNodeForm = (props) => {
           }
           { pointTo === POINT_TO.CONTENT_NODE &&
             <Field
-              name="default_node.id"
+              name="defaultNode.id"
               component={SelectField}
               label={t("Point to Content node ")}
               placeholder={ t("Point to an Existing content node") }
@@ -215,7 +215,7 @@ let LogicNodeForm = (props) => {
           }
           {pointTo === POINT_TO.TREES && 
             <Field
-            name="default_tree.id"
+            name="defaultTree.id"
             component={SelectField}
             label={t("Point to tree")}
             placeholder={ t("Point to an Existing tree") }

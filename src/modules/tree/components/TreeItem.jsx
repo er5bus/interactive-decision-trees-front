@@ -5,7 +5,7 @@ import {Badge, Button, Card, CardBody, Col} from "reactstrap"
 
 import userRoutes from "./../../../routes/user"
 
-export default ({ onToggleModal=f=>f, onFilterByTag=f=>f, tagList, first_node = null, tags, tree_name, description, scores, uid }) => {
+export default ({ onToggleModal=f=>f, onFilterByTag=f=>f, tagList, firstNode = null, tags, treeName, description, scores, uid }) => {
 
   const { t } = useTranslation()
 
@@ -17,7 +17,7 @@ export default ({ onToggleModal=f=>f, onFilterByTag=f=>f, tagList, first_node = 
             <i className="fas fa-tree" />
           </div>
           <h6 className="text-primary text-uppercase">
-            { tree_name }
+            { treeName }
           </h6>
           <p className="description mt-3">
             { description }
@@ -31,9 +31,9 @@ export default ({ onToggleModal=f=>f, onFilterByTag=f=>f, tagList, first_node = 
           </div>
           <div className="pt-2">
             <h6 className="text-primary text-uppercase d-inline-block mr-2"> { t("Tags") } :</h6>
-            { tags.length ? tags.map((tag_id, i) =>
-            <span key={i} className="filter-tags" onClick={ () => onFilterByTag(tag_id) }>
-              <Badge style={{ backgroundColor: tagList[tag_id] && tagList[tag_id].color }} color="neutral mr-2 mb-2" pill>{ tagList[tag_id] && tagList[tag_id].name }</Badge>
+            { tags.length ? tags.map((tagId, i) =>
+            <span key={i} className="filter-tags" onClick={ () => onFilterByTag(tagId) }>
+              <Badge style={{ backgroundColor: tagList[tagId] && tagList[tagId].color }} color="neutral mr-2 mb-2" pill>{ tagList[tagId] && tagList[tagId].name }</Badge>
             </span>
             ) :  <Badge color="primary mr-2 mb-2" pill>{ t("No tags") }</Badge>
             }
@@ -47,11 +47,11 @@ export default ({ onToggleModal=f=>f, onFilterByTag=f=>f, tagList, first_node = 
             <i className="fas fa-eye" /> { t("View") }
           </Button>
           {
-            first_node && first_node.uid &&
+            firstNode && firstNode.uid &&
               <Button
                 className="btn-sm mt-4"
                 color="info"
-                to={ userRoutes.path + userRoutes.routes.nodeOverview.path.replace(":treeparam", uid).replace(":nodeparam", first_node.uid) }
+                to={ userRoutes.path + userRoutes.routes.nodeOverview.path.replace(":treeparam", uid).replace(":nodeparam", firstNode.uid) }
                 tag={Link}
               >
                 <i className="fas fa-eye" /> { t("overview") }

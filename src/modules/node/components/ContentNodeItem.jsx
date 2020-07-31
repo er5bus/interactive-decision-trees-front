@@ -7,7 +7,7 @@ import { Link } from "react-router-dom"
 import { NODE_TYPE } from "./../constants"
 import userRoutes from './../../../routes/user'
 
-export default ({ node_name, question, actions, isTheFirstNode, uid, onToggleDeleteModal, onToggleUpdateModal, treeparam }) => {
+export default ({ name, question, actions, isTheFirstNode, isTheLastNode, uid, onToggleDeleteModal, onToggleFirstNodeModal, onToggleLastNodeModal, treeparam }) => {
 
   const { t } = useTranslation()
   return (
@@ -19,7 +19,7 @@ export default ({ node_name, question, actions, isTheFirstNode, uid, onToggleDel
           </div>
           <div>
             <h6 className="text-primary text-uppercase">
-              { node_name }{ " (" }{ t("Content Node") }{") "}
+              { name }{ " (" }{ t("Content Node") }{") "}
               <span className="icon-sm ml-2">
               { isTheFirstNode ? <i className="fas fa-star"></i> : <i className="far fa-star"></i> }
               </span>
@@ -65,9 +65,17 @@ export default ({ node_name, question, actions, isTheFirstNode, uid, onToggleDel
             className="btn-sm mt-4"
             color="info"
             disabled={ isTheFirstNode }
-            onClick={() => onToggleUpdateModal(uid ) }
+            onClick={() => onToggleFirstNodeModal(uid ) }
           >
             <i className="fas fa-cog" /> { t("Set as the first node") }
+          </Button>
+          <Button
+            className="btn-sm mt-4"
+            color="info"
+            disabled={ isTheLastNode }
+            onClick={() => onToggleLastNodeModal(uid ) }
+          >
+            <i className="fas fa-cog" /> { t("Set as the last node") }
           </Button>
         </CardBody>
       </Card>

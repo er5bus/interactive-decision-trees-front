@@ -15,14 +15,14 @@ const NodeDetails = ({ item, isLoading, treeparam, nodeViewPath, mainPath, calcu
   const { t } = useTranslation()
 
   const pointToRoute = (action) => {
-    if (nodeViewPath && action.point_to_type === POINT_TO.TREES){
+    if (nodeViewPath && action.pointToType === POINT_TO.TREES){
       return mainPath + nodeViewPath
-        .replace(":treeparam", action.point_to_tree.uid)
-        .replace(":nodeparam", action.point_to_tree.uid && action.point_to_tree.first_node.uid)
-    }else if (nodeViewPath && (action.point_to_type === POINT_TO.CONTENT_NODE || action.point_to_type === POINT_TO.LOGIC_NODE) ){
+        .replace(":treeparam", action.pointToTree.uid)
+        .replace(":nodeparam", action.pointToTree.uid && action.pointToTree.first_node.uid)
+    }else if (nodeViewPath && (action.pointToType === POINT_TO.CONTENT_NODE || action.pointToType === POINT_TO.LOGIC_NODE) ){
       return mainPath + nodeViewPath
         .replace(":treeparam", treeparam)
-        .replace(":nodeparam", action.point_to_node.uid)
+        .replace(":nodeparam", action.pointToNode.uid)
     }else {
       return "#"
     }
@@ -37,17 +37,17 @@ const NodeDetails = ({ item, isLoading, treeparam, nodeViewPath, mainPath, calcu
         { isLoading ? <NodeDetailsLoader />
         : (item && item.type === "ContentNode")
           ? <>
-            <h1 className="pb-2">{ item.node_name }</h1>
-            <p className="pb-2" dangerouslySetInnerHTML={{ __html: item.content_area }} />
+            <h1 className="pb-2">{ item.nodeName }</h1>
+            <p className="pb-2" dangerouslySetInnerHTML={{ __html: item.contentArea }} />
             <div>
               <h3 className="pb-4 text-primary">{ item.question && item.question }</h3>
               { item.actions.map((action, i) =>
-                (item.display_style === "BUTTON"
+                (item.displayStyle === "BUTTON"
                   ? <div key={ action.id }>
                     <Button
                       className="btn mt-4 mr-2"
                       color="primary"
-                      disabled={ action.point_to_type === POINT_TO.NOTHING }
+                      disabled={ action.pointToType === POINT_TO.NOTHING }
                       onClick={() => calculateScore(item, action) }
                       to={ pointToRoute(action) }
                       tag={Link}
@@ -59,7 +59,7 @@ const NodeDetails = ({ item, isLoading, treeparam, nodeViewPath, mainPath, calcu
                     key={ action.id }
                     className="panel-link mb-2"
                     onClick={() => calculateScore(item, action) }
-                    disabled={ action.point_to_type === POINT_TO.NOTHING }
+                    disabled={ action.pointToType === POINT_TO.NOTHING }
                     to={ pointToRoute(action) }
                   >
                     { action.name }

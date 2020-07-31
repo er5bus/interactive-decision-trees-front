@@ -59,7 +59,7 @@ export const clearTreeForm = () =>
   ({
     type: ACTIONS.CLEAR_TREE_FORM,
     payload: {
-      display_style: "BUTTON"
+      displayStyle: "BUTTON"
     }
   })
 

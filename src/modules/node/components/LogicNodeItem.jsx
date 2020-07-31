@@ -7,7 +7,7 @@ import { Link } from "react-router-dom"
 import { NODE_TYPE } from "./../constants"
 import userRoutes from './../../../routes/user'
 
-export default ({ node_name, uid, onToggleModal, treeparam }) => {
+export default ({ name, uid, onToggleModal, treeparam }) => {
 
   const { t } = useTranslation()
   return (
@@ -18,7 +18,7 @@ export default ({ node_name, uid, onToggleModal, treeparam }) => {
             <i className="fas fa-tools" />
           </div>
           <h6 className="text-primary text-uppercase">
-            { node_name } {" ("}{ t("Logic Node") }{")"}
+            { name } {" ("}{ t("Logic Node") }{")"}
           </h6>
           <Button
             className="btn-sm mt-4"

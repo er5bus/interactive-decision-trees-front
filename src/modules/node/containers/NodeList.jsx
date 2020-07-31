@@ -1,5 +1,4 @@
 import React from "react"
-import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
 import { Container,Row, Col } from "reactstrap"
 import { Link } from "react-router-dom"
@@ -15,7 +14,7 @@ import NodeLoader from "./../components/NodeLoader"
 
 import nodeIcon from "./../../../assets/img/nodes.svg"
 
-import { fetchNodes, fetchTree, filterNodes, deleteNode, setFirstNode } from "./../actions"
+import { fetchNodes, fetchTree, filterNodes, deleteNode, setFirstNode, setLastNode, clearNodes } from "./../actions"
 import { NODE_TYPE } from './../constants'
 import { getFilteredNodes } from "./../selector"
 
@@ -32,7 +31,6 @@ class NodeList extends React.Component {
     this.state = {
       showDeleteModal: false,
       showUpdateModal: false,
-      clearStore: false,
       uid: null,
       type: null,
     }
@@ -40,10 +38,9 @@ class NodeList extends React.Component {
 
   componentDidMount() {
     const { match: { params }, tree } = this.props
-    const clearStore = (!tree || !params.param.match(tree.uid))
-    this.setState({ ...this.state, clearStore })
-    if (clearStore){
+    if (!tree || !params.param.match(tree.uid)){
       this.props.fetchTree(params)
+      this.props.clearNodes()
     }
   }
 
@@ -54,7 +51,8 @@ class NodeList extends React.Component {
   }
 
   onToggleDeleteModal = (uid, type) => this.setState({ showDeleteModal: !this.state.showDeleteModal, uid, type })
-  onToggleUpdateModal = (uid) => this.setState({ showUpdateModal: !this.state.showUpdateModal, uid })
+  onToggleFirstNodeModal= (uid) => this.setState({ showFirstNodeModal: !this.state.showFirstNodeModal, uid })
+  onToggleLastNodeModal= (uid) => this.setState({ showLastNodeModal: !this.state.showLastNodeModal, uid })
 
   onDeleteNode = () => {
     const { param: treeparam } = this.props.match.params
@@ -68,13 +66,19 @@ class NodeList extends React.Component {
     this.props.setFirstNode({ treeparam, nodeparam })
   }
 
+  onSetLastNode = () => {
+    const { param: treeparam } = this.props.match.params
+    const { uid: nodeparam } = this.state
+    this.props.setLastNode({ treeparam, nodeparam })
+  }
+
   onSearch = (e) => {
     this.props.filterNodes(e.target.value.trim())
   }
 
   render() {
     const { t, tree, page, match: { params: { param } }, searchTerm, isLoading, items, hasMore } = this.props
-    const { showDeleteModal, showUpdateModal } = this.state
+    const { showDeleteModal, showLastNodeModal, showFirstNodeModal } = this.state
     return (
       <>
         <Container className="py-lg-md d-flex pb-5">
@@ -108,10 +112,10 @@ class NodeList extends React.Component {
                     <span className="btn-inner--text">{t('New logic node')}</span>
                   </Link>
                   {
-                    tree && tree.first_node && tree.first_node.uid &&
+                    tree && tree.firstNode && tree.firstNode.uid &&
                       <Link
                         className="btn-icon mb-3 mb-sm-0 btn btn-info"
-                        to={ userRoutes.path + userRoutes.routes.nodeOverview.path.replace(":treeparam", param).replace(":nodeparam", tree.first_node.uid) }
+                        to={ userRoutes.path + userRoutes.routes.nodeOverview.path.replace(":treeparam", param).replace(":nodeparam", tree.firstNode.uid) }
                       >
                         <span className="btn-inner--icon mr-1">
                           <i className="fas fa-sitemap" />
@@ -134,12 +138,20 @@ class NodeList extends React.Component {
             buttonText={ t("Delete this node") }
           />
           <ConfirmModal
-            isOpen={ showUpdateModal }
+            isOpen={ showFirstNodeModal }
             title={ t("Confirmation") }
             content={ t("Are you sure you want to set this node as the start node ?") }
             onClick={ this.onSetFirstNode }
-            onToggle={ this.onToggleUpdateModal }
+            onToggle={ this.onToggleFirstNodeModal }
             buttonText={ t("Set as First node node") }
+          />
+          <ConfirmModal
+            isOpen={ showLastNodeModal }
+            title={ t("Confirmation") }
+            content={ t("Are you sure you want to set this node as the last node ?") }
+            onClick={ this.onSetLastNode }
+            onToggle={ this.onToggleLastNodeModal }
+            buttonText={ t("Set as Last node node") }
           />
           <Row>
             <Col lg="12" className="pb-5">
@@ -151,21 +163,22 @@ class NodeList extends React.Component {
                   loadMore={this.onFetchNodes}
                   hasMore={hasMore}
                   pageNumber={page}
-                  clearStore={ this.state.clearStore }
                   isLoading={isLoading}
                   loader={<NodeLoader />}
                 >
                   { !isLoading && items && items.length === 0 && <CardNotFound /> }
                   { items && items.length > 0 && items.map((node, i) => {
-                    if (node.node_type === NODE_TYPE.CONTENT_NODE){
+                    if (node.nodeType === NODE_TYPE.CONTENT_NODE){
                       return <ContentNodeItem key={i} {...node} 
-                        isTheFirstNode={ tree && tree.first_node && tree.first_node.uid === node.uid }
+                        isTheFirstNode={ tree && tree.firstNode && tree.firstNode.uid === node.uid }
+                        isTheLastNode={ tree && tree.lastNode && tree.lastNode.uid === node.uid }
                         treeparam={param} 
                         onToggleDeleteModal={this.onToggleDeleteModal} 
-                        onToggleUpdateModal={this.onToggleUpdateModal}
+                        onToggleFirstNodeModal={this.onToggleFirstNodeModal}
+                        onToggleLastNodeModal={this.onToggleLastNodeModal}
                       />
                     }
-                    if (node.node_type === NODE_TYPE.LOGIC_NODE){
+                    if (node.nodeType === NODE_TYPE.LOGIC_NODE){
                       return <LogicNodeItem key={i} {...node} treeparam={param} onToggleModal={this.onToggleDeleteModal} />
                     }
                     return <></>
@@ -181,10 +194,9 @@ class NodeList extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ fetchTree, setFirstNode, fetchNodes, deleteNode, filterNodes }, dispatch)
 const mapStateToProps = state => ({
   ...state.node, items: getFilteredNodes(state)
 })
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(NodeList))
+export default connect(mapStateToProps, { fetchTree, setFirstNode, setLastNode, fetchNodes, deleteNode, filterNodes, clearNodes })(withTranslation()(NodeList))

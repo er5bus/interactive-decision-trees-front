@@ -72,7 +72,7 @@ const renderScore = ({ fields, t }) =>  {
 let TreeForm = (props) => {
 
   const { t } = useTranslation()
-  const { handleSubmit, nodes = [], tags = [], isLoading, reset } = props
+  const { handleSubmit, tags = [], isLoading, reset } = props
 
   React.useEffect(() => {
     if (props.errors && props.errors.error && props.errors.error.match("bad-request")){
@@ -85,7 +85,7 @@ let TreeForm = (props) => {
   return (
     <Form onSubmit={handleSubmit}>
       <Field
-        name="tree_name"
+        name="treeName"
         component={InputField}
         className="form-control"
         label={t("Tree Name")}
@@ -104,7 +104,7 @@ let TreeForm = (props) => {
         validate={[ required, minLength2, maxLength500 ]}
       />
       <InputListField
-        name="display_style"
+        name="displayStyle"
         label={t("Display Style")}
         choices={{
           BUTTON: t("Button"),
@@ -114,15 +114,6 @@ let TreeForm = (props) => {
         type="radio"
         validate={[required]}
       />
-      {<div className="mt-4">
-        <Field
-          name="first_node.id"
-          component={SelectField}
-          label={t("Choose your start node")}
-          placeholder={ t("New node you will create later") }
-          choices={ nodes }
-        />
-      </div>}
       <div className="mt-4">
         <Field
           name="tags"

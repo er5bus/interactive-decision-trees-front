@@ -20,6 +20,7 @@ export const ACTIONS = {
   FETCH_ALL_NODES_FAILED: "FETCH_ALL_NODES_FAILED",
 
   CLEAR_NODE_FORM: "CLEAR_NODE_FORM",
+  CLEAR_NODES: "CLEAR_NODES",
 
   CREATE_NODE_INIT: "CREATE_NODE_INIT",
   CREATE_NODE_SUCCEDED: "CREATE_NODE_SUCCEDED",
@@ -28,6 +29,10 @@ export const ACTIONS = {
   SET_FIRST_NODE_INIT: "SET_FIRST_NODE_INIT",
   SET_FIRST_NODE_SUCCEDED: "SET_FIRST_NODE_SUCCEDED",
   SET_FIRST_NODE_FAILED: "SET_FIRST_NODE_FAILED",
+
+  SET_LAST_NODE_INIT: "SET_LAST_NODE_INIT",
+  SET_LAST_NODE_SUCCEDED: "SET_LAST_NODE_SUCCEDED",
+  SET_LAST_NODE_FAILED: "SET_LAST_NODE_FAILED",
 
   FETCH_NODE_INIT: "FETCH_NODE_INIT",
   FETCH_NODE_SUCCEDED: "FETCH_NODE_SUCCEDED",
@@ -49,6 +54,7 @@ export const POINT_TO = { LOGIC_NODE: "LOGIC_NODE", CONTENT_NODE: "CONTENT_NODE"
 export const ENDPOINT = {
   TREE: "/api/tree/:param",
   FIRST_NODE: "/api/tree/:treeparam/first/node/:nodeparam",
+  LAST_NODE: "/api/tree/:treeparam/last/node/:nodeparam",
   NODES: "/api/tree/:treeparam/nodes",
   NODE: "/api/tree/:treeparam/node/:nodeparam",
   LOGIC_NODES: "/api/tree/:treeparam/node/logic",
