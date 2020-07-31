@@ -11,8 +11,8 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.decision_trees_front.tls=${TLS}
-      - traefik.http.routers.decision_trees_fornt.rule=Host("${SITE_DOMAINE_NAME}")
-      - traefik.http.services.decision_tree_fornt_service.loadbalancer.server.port=80
+      - traefik.http.routers.decision_trees_front.rule=Host("${SITE_DOMAINE_NAME}")
+      - traefik.http.services.decision_tree_front_service.loadbalancer.server.port=80
 
 networks:
   traefik:
