@@ -5,10 +5,10 @@ services:
     build:
       context: .
     volumes:
-      - ./public:/app/public
+      - ./public/index.html:/app/public/index.html
       - ./src:/app/src
     env_file:
       - ./.env
     ports:
-      - "3000:3000"
+      - "4000:3000"
     tty: true
