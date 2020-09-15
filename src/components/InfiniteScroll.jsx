@@ -13,8 +13,8 @@ class InfiniteScroll extends React.PureComponent {
     window.removeEventListener('scroll', this.handleScroll)
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot){
-    this.initLoad()
+  componentDidUpdate(){
+    this.handleScroll()
   }
 
   initLoad = () => {
@@ -30,6 +30,7 @@ class InfiniteScroll extends React.PureComponent {
     const scrollTop = window.pageYOffset !== undefined ? window.pageYOffset : node.scrollTop;
     const offset = this.calculateOffset(node, scrollTop)
 
+    console.log(offset, hasMore, isLoading)
     if ( offset <= Number(threshold) && hasMore && !isLoading) {
       this.loadItems()
     }
@@ -45,7 +46,7 @@ class InfiniteScroll extends React.PureComponent {
     return node.offsetTop + this.calculateTopPosition(node.offsetParent)
   }
 
-  loadItems = (clearStore = false) => {
+  loadItems = () => {
     const { loadMore, pageNumber } = this.props
     loadMore.apply(null, [ pageNumber + 1 ])
   }

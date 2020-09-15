@@ -25,7 +25,7 @@ export default (state = initState, action) => {
       return { ...state, isLoading: true, hasMore: false, error: null }
     }
     case ACTIONS.FETCH_NODES_SUCCEDED : {
-      const { items, hasMore, page } = payload
+      const { items, has_more: hasMore, page } = payload
       return { ...state, items: page === 1 ? items : [ ...state.items, ...items ], hasMore, isLoading: false, page, error: null }
     }
     case ACTIONS.FETCH_NODES_FAILED : {
