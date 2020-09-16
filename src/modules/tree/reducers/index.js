@@ -51,14 +51,14 @@ export default (state = initState, action) => {
     }
 
     case ACTIONS.FETCH_ALL_TAGS_INIT: {
-      return { ...state, isLoading: true, tags: {} }
+      return { ...state, tags: {} }
     }
     case ACTIONS.FETCH_ALL_TAGS_SUCCEDED: {
       const tags = payload.items.reduce(((acc, item) => {
         acc[item.id] = item 
         return acc
       }), {})
-      return { ...state, isLoading: false, tags, error: null }
+      return { ...state, tags, error: null }
     }
     case ACTIONS.FETCH_ALL_TAGS_FAILED: {
       return { ...state, isLoading: false, error: null }

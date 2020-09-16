@@ -37,11 +37,9 @@ class NodeList extends React.Component {
   }
 
   componentDidMount() {
-    const { match: { params }, tree } = this.props
-    if (!tree || !params.param.match(tree.uid)){
-      this.props.fetchTree(params)
-      this.props.clearNodes()
-    }
+    const { match: { params } } = this.props
+    this.props.fetchTree(params)
+    this.props.clearNodes()
   }
 
   onFetchNodes = async (pageNumber) => {
@@ -166,14 +164,13 @@ class NodeList extends React.Component {
                   isLoading={isLoading}
                   loader={<NodeLoader />}
                 >
-                  { !isLoading && items && items.length === 0 && <CardNotFound /> }
                   { items && items.length > 0 && items.map((node, i) => {
                     if (node.nodeType === NODE_TYPE.CONTENT_NODE){
-                      return <ContentNodeItem key={i} {...node} 
+                      return <ContentNodeItem key={i} {...node}
                         isTheFirstNode={ tree && tree.firstNode && tree.firstNode.uid === node.uid }
                         isTheLastNode={ tree && tree.lastNode && tree.lastNode.uid === node.uid }
-                        treeparam={param} 
-                        onToggleDeleteModal={this.onToggleDeleteModal} 
+                        treeparam={param}
+                        onToggleDeleteModal={this.onToggleDeleteModal}
                         onToggleFirstNodeModal={this.onToggleFirstNodeModal}
                         onToggleLastNodeModal={this.onToggleLastNodeModal}
                       />
@@ -184,6 +181,7 @@ class NodeList extends React.Component {
                     return <></>
                   })
                   }
+                  { !isLoading && items && items.length === 0 && <CardNotFound /> }
                 </InfiniteScroll>
               </Row>
             </Col>

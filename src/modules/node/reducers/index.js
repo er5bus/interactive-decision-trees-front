@@ -78,7 +78,7 @@ export default (state = initState, action) => {
     case ACTIONS.FETCH_ALL_NODES_SUCCEDED: {
       const contentNodes = payload.items.filter((node) => node.type === NODE_TYPE.CONTENT_NODE)
       const logicNodes = payload.items.filter((node) => node.type === NODE_TYPE.LOGIC_NODE)
-      return { ...state, isLoading: false, allNodes: { contentNodes, logicNodes }  }
+      return { ...state, allNodes: { contentNodes, logicNodes }, isLoading: false }
     }
     case ACTIONS.FETCH_ALL_NODES_FAILED: {
       return { ...state, isLoading: false, error: null }
@@ -133,13 +133,13 @@ export default (state = initState, action) => {
     }
 
     case ACTIONS.FETCH_CURRENT_TREE_INIT : {
-      return { ...state, isLoading: true, tree: null, error: null }
+      return { ...state, tree: null, error: null }
     }
     case ACTIONS.FETCH_CURRENT_TREE_SUCCEDED : {
-      return { ...state, tree: payload, isLoading: false, error: null }
+      return { ...state, tree: payload, error: null }
     }
     case ACTIONS.FETCH_CURRENT_TREE_FAILED : {
-      return { ...state, isLoading: false, error: payload }
+      return { ...state, error: payload }
     }
 
     case ACTIONS.FILTER_NODES : {

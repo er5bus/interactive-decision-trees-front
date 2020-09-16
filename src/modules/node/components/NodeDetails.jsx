@@ -15,11 +15,11 @@ const NodeDetails = ({ item, isLoading, treeparam, nodeViewPath, mainPath, calcu
   const { t } = useTranslation()
 
   const pointToRoute = (action) => {
-    if (nodeViewPath && action.pointToType === POINT_TO.TREES){
+    if (nodeViewPath && action.pointToType === POINT_TO.TREES && action.pointToTree && action.pointToTree.uid){
       return mainPath + nodeViewPath
-        .replace(":treeparam", action.pointToTree.uid)
-        .replace(":nodeparam", action.pointToTree.uid && action.pointToTree.first_node.uid)
-    }else if (nodeViewPath && (action.pointToType === POINT_TO.CONTENT_NODE || action.pointToType === POINT_TO.LOGIC_NODE) ){
+        .replace(":treeparam", action.pointToTree.uid && action.pointToTree.uid)
+        .replace(":nodeparam", action.pointToTree.uid && action.pointToTree.firstNode.uid)
+    }else if (nodeViewPath && (action.pointToType === POINT_TO.CONTENT_NODE || action.pointToType === POINT_TO.LOGIC_NODE) && action.pointToNode ){
       return mainPath + nodeViewPath
         .replace(":treeparam", treeparam)
         .replace(":nodeparam", action.pointToNode.uid)
@@ -43,7 +43,7 @@ const NodeDetails = ({ item, isLoading, treeparam, nodeViewPath, mainPath, calcu
               <h3 className="pb-4 text-primary">{ item.question && item.question }</h3>
               { item.actions.map((action, i) =>
                 (item.displayStyle === "BUTTON"
-                  ? <div key={ action.id }>
+                  ? <div key={ i }>
                     <Button
                       className="btn mt-4 mr-2"
                       color="primary"
