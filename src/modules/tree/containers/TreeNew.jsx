@@ -26,7 +26,7 @@ class TreeNew extends React.Component {
     this.props.createTree(values)
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot){
+  componentDidUpdate(){
     const { item } = this.props
     if (item && item.uid){
       this.props.history.push(userRoutes.path + userRoutes.routes.nodeList.path.replace(":param", item.uid))
