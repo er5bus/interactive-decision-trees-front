@@ -214,7 +214,7 @@ let ContentNodeForm = (props) => {
         label={t("Question")}
         placeholder={t("Enter a question or prompt")}
         type="text"
-        validate={[ required, minLength2, maxLength500 ]}
+        validate={[ maxLength500 ]}
       />
       <FieldArray
         name="actions"

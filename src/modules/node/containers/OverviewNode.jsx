@@ -38,8 +38,9 @@ class OverviewNode extends React.Component {
     const { treeparam } = this.props.match.params
     let noRuleMatch = true
     if (item.rules){
-      item.rules.forEach((rule) => {
+      for (let rule of item.rules){
         if ( this.checkOperatorLogicNode(rule.value, this.state.scores[rule.score.id], rule.operator )){
+          console.log(rule)
           if (rule.pointToType === POINT_TO.CONTENT_NODE || rule.pointToType === POINT_TO.LOGIC_NODE ){
             this.props.history.push( userRoutes.path + userRoutes.routes.nodeOverview.path
               .replace(":treeparam", treeparam)
@@ -50,9 +51,9 @@ class OverviewNode extends React.Component {
               .replace(":nodeparam", rule.pointToTree.firstNode.uid))
           }
           noRuleMatch = false
-          return;
+          break;
         }
-      })
+      }
     }
     if (noRuleMatch && (item.defaultPointToType === POINT_TO.CONTENT_NODE || item.defaultPointToType === POINT_TO.LOGIC_NODE)){
       this.props.history.push(userRoutes.path + userRoutes.routes.nodeOverview.path
@@ -66,24 +67,25 @@ class OverviewNode extends React.Component {
   }
 
   checkOperatorLogicNode = (ruleValue, scoreValue, operator) => {
+    console.log(ruleValue, scoreValue, operator)
     switch (operator){
       case "=": {
-        return ruleValue === scoreValue
+        return parseInt(ruleValue) === parseInt(scoreValue)
       }
       case "!=": {
-        return ruleValue !== scoreValue
+        return parseInt(ruleValue) !== parseInt(scoreValue)
       }
       case ">": {
-        return ruleValue > scoreValue
+        return parseInt(ruleValue) < parseInt(scoreValue)
       }
       case "<": {
-        return ruleValue < scoreValue
+        return parseInt(ruleValue) > parseInt(scoreValue)
       }
       case ">=": {
-        return ruleValue >= scoreValue
+        return parseInt(ruleValue) <= parseInt(scoreValue)
       }
       case "=<": {
-        return ruleValue <= scoreValue
+        return parseInt(ruleValue) >= parseInt(scoreValue)
       }
       default: {
         return false
